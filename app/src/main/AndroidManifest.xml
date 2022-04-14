@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Calreminder">
         <activity
-            android:name=".MainActivity"
+            android:name=".ReminderActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

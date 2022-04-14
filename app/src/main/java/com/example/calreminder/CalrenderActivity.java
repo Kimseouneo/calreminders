@@ -15,7 +15,7 @@ class CalrendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_reminder);
         Date currentTime = Calendar.getInstance().getTime();//실시간 날짜 및 시간 받기
         SimpleDateFormat format = new SimpleDateFormat(format_yyyy, Locale.getDefault());
         SimpleDateFormat format2 = new SimpleDateFormat(format_Month, Locale.getDefault());

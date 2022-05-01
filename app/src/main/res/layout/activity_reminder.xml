@@ -2,12 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reminder_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ReminderActivity">
 
+
+    <!-- 리마인더 항목 편집시 나타나는 Fragment 기본값 gone 사용시 visible-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/reminderEditFragment"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:background="@color/purple_200"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 리마인더 항목 에서 리스트를 나타내는 Fragment-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/reminderListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!-- 리마인더 항목을 추가하는 버튼-->
     <ImageButton
-        android:id="@+id/add"
+        android:id="@+id/addButton"
         android:layout_width="53dp"
         android:layout_height="48dp"
         android:padding="0sp"
@@ -18,6 +45,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.991"
-        app:srcCompat="@drawable/plusimage"
-        />
+        app:srcCompat="@drawable/plusimage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

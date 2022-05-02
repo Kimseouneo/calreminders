@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReminderList"/>
+    tools:context=".ReminderList">
+
+    <!-- 리마인더 항목을 추가하는 버튼-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="53dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:padding="0sp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/plusimage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

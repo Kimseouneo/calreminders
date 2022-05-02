@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class EditComponent extends Fragment {
-
+    //리마인더 항목을 수정할때 나타나는 Fragment
     public EditComponent() {
         // Required empty public constructor
     }
@@ -25,8 +25,8 @@ public class EditComponent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_component, container, false);
-        // Inflate the layout for this fragment
 
+        // 취소 버튼
         Button cancelButton = (Button) view.findViewById(R.id.editFragment_button_cancle);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +34,15 @@ public class EditComponent extends Fragment {
                 FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
+            }
+        });
+
+        // 저장 버튼
+        Button saveButton = (Button) view.findViewById(R.id.editFragment_button_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

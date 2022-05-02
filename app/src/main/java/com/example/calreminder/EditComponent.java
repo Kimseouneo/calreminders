@@ -3,13 +3,16 @@ package com.example.calreminder;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-public class ReminderList extends Fragment {
-    public ReminderList() {
+public class EditComponent extends Fragment {
+
+    public EditComponent() {
         // Required empty public constructor
     }
 
@@ -21,14 +24,19 @@ public class ReminderList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reminder_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_component, container, false);
         // Inflate the layout for this fragment
-        view.findViewById(R.id.listFragment_button_add).setOnClickListener(new View.OnClickListener() {
+
+        Button cancelButton = (Button) view.findViewById(R.id.editFragment_button_cancle);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ReminderActivity)getActivity()).onAddButtonClicked(view);
+                FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(EditComponent.this).commit();
+                fragmentManager.popBackStack();
             }
         });
+
         return view;
     }
 }

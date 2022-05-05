@@ -21,9 +21,10 @@ public class ReminderActivity extends AppCompatActivity{
 
         CalreminderData.data = getSharedPreferences("com.example.calreminder", MODE_PRIVATE);
         CalreminderData.id = getSharedPreferences("com.example.calreminder.id", MODE_PRIVATE);
-        //25~ 26번 줄은 테스트 코드임
-        CalreminderData.data.edit().putString("123","test 항목").apply();
-        CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
+        // id 값 지정 어플 전체애서 한번만 실행됨
+        if (!CalreminderData.id.getAll().containsKey("ID"))
+            CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
+
         ImageButton addButton = (ImageButton) findViewById(R.id.listFragment_button_add);
 
 

@@ -18,6 +18,12 @@ public class ReminderActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
+
+        CalreminderData.data = getSharedPreferences("com.example.calreminder", MODE_PRIVATE);
+        CalreminderData.id = getSharedPreferences("com.example.calreminder.id", MODE_PRIVATE);
+        //25~ 26번 줄은 테스트 코드임
+        CalreminderData.data.edit().putString("123","test 항목").apply();
+        CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
         ImageButton addButton = (ImageButton) findViewById(R.id.listFragment_button_add);
 
 
@@ -37,11 +43,14 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onComponentButtonClicked(View view) {
+    public void onComponentButtonClicked(View view, String text, int id) {
         // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
-        // 미완성 데이터를 넘겨줘야함
+        // 미완성 현재 텍스트만 넘겨줌
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
+        args.putString("TEXT",text);
+        args.putInt("ID", id);
+
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.reminderListFragment, editEditComponentFragment);

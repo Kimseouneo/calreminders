@@ -18,7 +18,6 @@ public class ReminderActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
-
         CalreminderData.data = getSharedPreferences("com.example.calreminder", MODE_PRIVATE);
         CalreminderData.id = getSharedPreferences("com.example.calreminder.id", MODE_PRIVATE);
         // id 값 지정 어플 전체애서 한번만 실행됨
@@ -26,7 +25,6 @@ public class ReminderActivity extends AppCompatActivity{
             CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
 
         ImageButton addButton = (ImageButton) findViewById(R.id.listFragment_button_add);
-
 
         FragmentManager fm = getSupportFragmentManager();
         ReminderList listFragment = new ReminderList();

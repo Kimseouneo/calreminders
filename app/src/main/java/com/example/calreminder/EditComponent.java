@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class EditComponent extends Fragment {
     //리마인더 항목을 수정할때 나타나는 Fragment
@@ -46,20 +47,19 @@ public class EditComponent extends Fragment {
             @Override
             public void onClick(View view) {
                 EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
-                CalreminderData.text = editText.getText().toString();
-
+                String text = editText.getText().toString();
+                Integer id;
                 Bundle args = getArguments();
-                Log.d("????????????????????", args.toString());
                 if (args.containsKey("ID")) {
                     // 이미 있는 항목을 편집한 경우
-                    CalreminderData.currentId = args.getInt("ID");
+                    id = args.getInt("ID");
                 }
                 else {
                     // 새로운 항목을 저장한 경우
-                    CalreminderData.currentId = CalreminderData.id.getInt("ID", -1);
+                    id = CalreminderData.id.getInt("ID", -1);
                     CalreminderData.id.edit().putInt("ID", (CalreminderData.id.getInt("ID",-1)) + 1).apply();
-                    Log.d("?????????????????",Integer.toString(CalreminderData.id.getInt("ID",-1)));
                 }
+                CalreminderData.data.edit().putString(id.toString(),text).apply();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
@@ -76,9 +76,29 @@ public class EditComponent extends Fragment {
 
         // 만약 새로추가 버튼이 아닌 이미 존재하는 Component를 선택할 경우 값을 대입해줌
         Bundle args = getArguments();
-        if (args != null) {
+        if (args.containsKey("ID")) {
+            //삭제버튼 생성
+            Button buttonDelete = (Button) getActivity().findViewById(R.id.editFragment_button_delete);
+            buttonDelete.setVisibility(View.VISIBLE);
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //삭제버튼 클릭시 데이터와 리스트에서 해당하는 항목 삭제
+                    Integer id = args.getInt("ID");
+                    CalreminderData.data.edit().remove(id.toString()).apply();
+
+                    FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().remove(EditComponent.this).commit();
+                    fragmentManager.popBackStack();
+                }
+            });
+
             EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
             editText.setText(args.getString("TEXT"));
+        }
+        else {
+            Button buttonDelete = (Button) getActivity().findViewById(R.id.editFragment_button_delete);
+            buttonDelete.setVisibility(View.GONE);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="years">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="years" tools:ignore="ExtraTranslation">
         <item>2020</item>
         <item>2021</item>
         <item>2022</item>

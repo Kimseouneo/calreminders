@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 public class EditComponent extends Fragment {
     //리마인더 항목을 수정할때 나타나는 Fragment
     public EditComponent() {
@@ -50,16 +54,24 @@ public class EditComponent extends Fragment {
                 String text = editText.getText().toString();
                 Integer id;
                 Bundle args = getArguments();
+                ArrayList<String> arrayList;
+                JSONArray jsonArray;
+
                 if (args.containsKey("ID")) {
                     // 이미 있는 항목을 편집한 경우
                     id = args.getInt("ID");
+                    arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(id.toString(),null));
+                    arrayList.set(0, editText.getText().toString());
+                    jsonArray = CalreminderData.ArrayListToJson(arrayList);
                 }
                 else {
                     // 새로운 항목을 저장한 경우
                     id = CalreminderData.id.getInt("ID", -1);
                     CalreminderData.id.edit().putInt("ID", (CalreminderData.id.getInt("ID",-1)) + 1).apply();
+                    jsonArray = new JSONArray();
+                    jsonArray.put(editText.getText());
                 }
-                CalreminderData.data.edit().putString(id.toString(),text).apply();
+                CalreminderData.data.edit().putString(id.toString(),jsonArray.toString()).apply();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
@@ -94,7 +106,8 @@ public class EditComponent extends Fragment {
             });
 
             EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
-            editText.setText(args.getString("TEXT"));
+            ArrayList<String> arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(Integer.toString(args.getInt("ID")),null));
+            editText.setText(arrayList.get(0));
         }
         else {
             Button buttonDelete = (Button) getActivity().findViewById(R.id.editFragment_button_delete);

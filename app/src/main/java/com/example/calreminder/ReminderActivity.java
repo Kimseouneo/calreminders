@@ -5,10 +5,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import org.json.JSONArray;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
@@ -47,7 +50,6 @@ public class ReminderActivity extends AppCompatActivity{
         // 미완성 현재 텍스트만 넘겨줌
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
-        args.putString("TEXT",text);
         args.putInt("ID", id);
 
         editEditComponentFragment.setArguments(args);

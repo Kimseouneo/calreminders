@@ -15,6 +15,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ReminderList extends Fragment {
@@ -22,6 +27,7 @@ public class ReminderList extends Fragment {
     public ReminderList() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,20 +47,26 @@ public class ReminderList extends Fragment {
             }
         });
 
-        //리마인더 리스트 만들기
+        // 리마인더 리스트 만들기
         Map<String, ?> mp = CalreminderData.data.getAll();
-        LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         for(Map.Entry<String,?> entry : mp.entrySet()) {
             // 데이터에 저장된 항목으로 버튼들을 생성함, 현재 text와 id만 가능 수정 필요
             Button myButton = new Button(view.getContext());
             // Component의 내용 설정
+            String json = entry.getValue().toString();
+            ArrayList<String> arrayList = CalreminderData.jsonToArrayList(json);
+
+
             myButton.setId(Integer.parseInt(entry.getKey()));
-            myButton.setText(entry.getValue().toString());
+            myButton.setText(arrayList.get(0));
             myButton.setLayoutParams(layoutLayoutParams);
             myButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((ReminderActivity)getActivity()).onComponentButtonClicked(view, entry.getValue().toString(), Integer.parseInt(entry.getKey()));
+                    ((ReminderActivity)getActivity()).onComponentButtonClicked(view, entry.getValue().toString(),
+                            Integer.parseInt(entry.getKey()));
                 }
             });
             

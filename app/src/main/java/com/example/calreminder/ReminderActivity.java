@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 
 public class ReminderActivity extends AppCompatActivity{
@@ -27,7 +29,7 @@ public class ReminderActivity extends AppCompatActivity{
         if (!CalreminderData.id.getAll().containsKey("ID"))
             CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
 
-        ImageButton addButton = (ImageButton) findViewById(R.id.listFragment_button_add);
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.listFragment_button_add);
 
         FragmentManager fm = getSupportFragmentManager();
         ReminderList listFragment = new ReminderList();

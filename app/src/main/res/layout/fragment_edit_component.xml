@@ -110,6 +110,28 @@
                     android:text="장소"
                     tools:ignore="TouchTargetSizeCheck" />
 
+                <LinearLayout
+                    android:id="@+id/editFragment_locationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <Button
+                        android:id="@+id/editFragment_button_selectLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="장소 선택하기" />
+
+                    <TextView
+                        android:id="@+id/editFragment_textView_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

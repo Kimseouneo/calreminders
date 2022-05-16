@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.json.JSONArray;
@@ -102,6 +103,31 @@ public class EditComponent extends Fragment {
             }
         });
 
+
+        // 장소 스위치
+        Switch locationSwitch = (Switch) view.findViewById(R.id.editFragment_switch_location);
+        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                LinearLayout timeLayout = (LinearLayout) view.findViewById(R.id.editFragment_locationLayout);
+                if(isChecked){
+                    timeLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    timeLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        // 장소 선택 버튼
+        Button selectLocationButton = (Button)view.findViewById(R.id.editFragment_button_selectLocation);
+        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ReminderActivity)getActivity()).selectLocation();
+            }
+        });
+
         // 취소 버튼
         Button cancelButton = (Button) view.findViewById(R.id.editFragment_button_cancle);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +172,14 @@ public class EditComponent extends Fragment {
                         arrayList.set(1,"0");
                         arrayList.set(2,"0");
                     }
+                    // 장소 설정
+                    TextView addressTextView = (TextView) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_textView_address);
+                    LinearLayout locationLayout = (LinearLayout) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_locationLayout);
+                    if (locationLayout.getVisibility() == View.VISIBLE)
+                        arrayList.set(3,addressTextView.getText().toString());
+                    else
+                        arrayList.set(3,"");
+                    Log.d("!!!!!!!!!!!!!!!!!!!!",arrayList.get(3));
                     jsonArray = CalreminderData.ArrayListToJson(arrayList);
                 }
                 else {
@@ -170,6 +204,12 @@ public class EditComponent extends Fragment {
                         jsonArray.put("0");
                         jsonArray.put("0");
                     }
+                    // 장소 설정
+                    TextView addressTextView = (TextView) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_textView_address);
+                    if (addressTextView.getVisibility() == View.VISIBLE)
+                        jsonArray.put(addressTextView.getText().toString());
+                    else
+                        jsonArray.put("");
                 }
                 CalreminderData.data.edit().putString(id.toString(),jsonArray.toString()).apply();
 
@@ -209,6 +249,7 @@ public class EditComponent extends Fragment {
             // 기존 데이터 대입
             EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
             ArrayList<String> arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(Integer.toString(args.getInt("ID")),null));
+
             // 텍스트 대입
             editText.setText(arrayList.get(0));
             // 날짜 대입
@@ -219,6 +260,11 @@ public class EditComponent extends Fragment {
                     ((RadioButton)getActivity().findViewById(R.id.editFragment_radioTime)).setText(arrayList.get(2));
                 }
             }
+            // 장소 대입
+            if(!arrayList.get(3).equals("")){
+                ((Switch)getActivity().findViewById(R.id.editFragment_switch_location)).setChecked(true);
+                ((TextView)getActivity().findViewById(R.id.editFragment_textView_address)).setText(arrayList.get(3));
+            }
         }
         else {
             // 새로 추가버튼을 누른경우
@@ -226,4 +272,6 @@ public class EditComponent extends Fragment {
             buttonDelete.setVisibility(View.GONE);
         }
     }
+
+
 }

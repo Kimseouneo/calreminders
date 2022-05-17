@@ -219,19 +219,13 @@ public class EditComponent extends Fragment {
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         Bundle args = getArguments();
         if (args.containsKey("ID")) {
             // 만약 새로 추가 버튼이 아닌 이미 존재하는 Component를 선택할 경우 값을 대입해줌
-            
+
             //삭제버튼 생성
-            Button buttonDelete = (Button) getActivity().findViewById(R.id.editFragment_button_delete);
+            Button buttonDelete = (Button) view.findViewById(R.id.editFragment_button_delete);
             buttonDelete.setVisibility(View.VISIBLE);
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -247,31 +241,37 @@ public class EditComponent extends Fragment {
             });
 
             // 기존 데이터 대입
-            EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
+            EditText editText = (EditText) view.findViewById(R.id.editFragment_editText_content);
             ArrayList<String> arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(Integer.toString(args.getInt("ID")),null));
 
             // 텍스트 대입
             editText.setText(arrayList.get(0));
             // 날짜 대입
             if(!arrayList.get(1).equals("0")) {
-                ((Switch)getActivity().findViewById(R.id.editFragment_switch_time)).setChecked(true);
-                ((RadioButton)getActivity().findViewById(R.id.editFragment_radioDate)).setText(arrayList.get(1));
+                ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
+                ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(arrayList.get(1));
                 if(!arrayList.get(2).equals("0")){
-                    ((RadioButton)getActivity().findViewById(R.id.editFragment_radioTime)).setText(arrayList.get(2));
+                    ((RadioButton)view.findViewById(R.id.editFragment_radioTime)).setText(arrayList.get(2));
                 }
             }
             // 장소 대입
             if(!arrayList.get(3).equals("")){
-                ((Switch)getActivity().findViewById(R.id.editFragment_switch_location)).setChecked(true);
-                ((TextView)getActivity().findViewById(R.id.editFragment_textView_address)).setText(arrayList.get(3));
+                ((Switch)view.findViewById(R.id.editFragment_switch_location)).setChecked(true);
+                ((TextView)view.findViewById(R.id.editFragment_textView_address)).setText(arrayList.get(3));
             }
         }
         else {
             // 새로 추가버튼을 누른경우
-            Button buttonDelete = (Button) getActivity().findViewById(R.id.editFragment_button_delete);
+            Button buttonDelete = (Button) view.findViewById(R.id.editFragment_button_delete);
             buttonDelete.setVisibility(View.GONE);
         }
+
+        return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+    }
 }

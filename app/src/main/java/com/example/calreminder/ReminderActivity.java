@@ -80,8 +80,8 @@ public class ReminderActivity extends AppCompatActivity{
             Bundle bundle = new Bundle();
 
             bundle.putString(SimplePlacePicker.API_KEY, getString(R.string.key_google_apis_android));
-            bundle.putString(SimplePlacePicker.COUNTRY, "korea");
-            bundle.putString(SimplePlacePicker.LANGUAGE, "korea");
+            bundle.putString(SimplePlacePicker.COUNTRY, "KR");
+            bundle.putString(SimplePlacePicker.LANGUAGE, "Korea");
             bundle.putStringArray(SimplePlacePicker.SUPPORTED_AREAS, new String[0]);
 
             intent.putExtras(bundle);

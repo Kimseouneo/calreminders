@@ -261,13 +261,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
                         }
 
-                        rippleBg.startRippleAnimation();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                rippleBg.stopRippleAnimation();
-                            }
-                        }, 2000);
                     }
                 })
                         .addOnFailureListener(new OnFailureListener() {

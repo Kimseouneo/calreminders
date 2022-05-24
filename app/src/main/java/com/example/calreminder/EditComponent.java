@@ -21,6 +21,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.github.dhaval2404.colorpicker.ColorPickerDialog;
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
+import com.github.dhaval2404.colorpicker.listener.ColorListener;
+
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -42,6 +46,20 @@ public class EditComponent extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_component, container, false);
 
+        Button colorPicker = view.findViewById(R.id.editFragment_colorPicker);
+        colorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialColorPickerDialog.Builder(getContext())
+                        .setColorListener(new ColorListener() {
+                            @Override
+                            public void onColorSelected(int color, String colorHex) {
+                                colorPicker.setBackgroundColor(color);
+                            }
+                        })
+                        .show();
+            }
+        });
         // 시간 스위치를 눌렀을때 나오는 레이아웃에서 Radio버튼을 누르면 원하는 항목이 표시되도록 만듦
         RadioGroup timeRadioGroup = (RadioGroup) view.findViewById(R.id.editFragment_radioGroupTime);
         timeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -102,7 +120,6 @@ public class EditComponent extends Fragment {
                 timeRadioButton.setText(time);
             }
         });
-
 
         // 장소 스위치
         Switch locationSwitch = (Switch) view.findViewById(R.id.editFragment_switch_location);

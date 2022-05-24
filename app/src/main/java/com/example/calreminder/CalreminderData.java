@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class CalreminderData {
     //리마인더와 캘린더 데이터를 관리하는 클래스
 
-    // 리마인더 항목들을 저장하는 데이터 key: id / value : JSON ARRAY {텍스트, 날짜, 시간, 장소}
+    // 리마인더 항목들을 저장하는 데이터 key: id / value : JSON ARRAY {텍스트, 날짜, 시간, 장소, colorHex, color}
     public static SharedPreferences data;
     // 새로운 항목을 추가할때 부여하는 id를 저장하는 데이터
     public static SharedPreferences id;

@@ -37,10 +37,16 @@
                     android:text="리마인더 항목 추가" />
 
                 <LinearLayout
+                    android:id="@+id/editFragment_textLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/item_background"
+                    android:orientation="horizontal"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="5dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayout2"
@@ -52,6 +58,7 @@
                             android:id="@+id/editFragment_editText_content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="textAutoCorrect"
                             android:hint="메모"
                             tools:ignore="TouchTargetSizeCheck" />
 
@@ -59,9 +66,10 @@
 
                     <Button
                         android:id="@+id/editFragment_colorPicker"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_action_colorpick"
                         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                 </LinearLayout>

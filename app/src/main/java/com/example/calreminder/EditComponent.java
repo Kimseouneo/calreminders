@@ -33,6 +33,7 @@ import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
 import com.github.dhaval2404.colorpicker.listener.ColorListener;
 
 import org.json.JSONArray;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,8 +45,8 @@ public class EditComponent extends Fragment {
     private String mDate = "";
     private String mTime = "";
     private String mPlace = "";
-    private String mColorHex = "";
-    private Integer mColor = 0;
+    private String mColorHex = "#e0e0e0";
+    private Integer mColor = -2039584;
 
     public EditComponent() {
         // Required empty public constructor
@@ -66,16 +67,15 @@ public class EditComponent extends Fragment {
             @Override
             public void onClick(View v) {
                 new MaterialColorPickerDialog.Builder(getContext())
+                        .setTitle("배경색을 선택해주세요")
                         .setDefaultColor(mColorHex)
                         .setColorListener(new ColorListener() {
                             @Override
-                            public void onColorSelected(int color, String colorHex) {
-                                LinearLayout textLayout = view.findViewById(R.id.editFragment_textLayout);
-                                Drawable drawable = getResources().getDrawable(R.drawable.item_background);
-                                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-                                textLayout.setBackground(drawable);
+                            public void onColorSelected(int color, String colorHex) { ;
                                 mColor = color;
                                 mColorHex = colorHex;
+                                TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
+                                titleTextView.setBackgroundColor(mColor);
                             }
                         })
                         .show();
@@ -216,6 +216,9 @@ public class EditComponent extends Fragment {
                     }
                     else
                         arrayList.set(3,"");
+                    // 배경색 설정
+                    arrayList.set(4,mColorHex);
+                    arrayList.set(5,mColor.toString());
                     jsonArray = CalreminderData.ArrayListToJson(arrayList);
                 }
                 else {
@@ -245,6 +248,9 @@ public class EditComponent extends Fragment {
                     }
                     else
                         jsonArray.put("");
+                    // 배경색 설정
+                    jsonArray.put(mColorHex);
+                    jsonArray.put(mColor.toString());
                 }
                 CalreminderData.data.edit().putString(id.toString(),jsonArray.toString()).apply();
 
@@ -259,7 +265,7 @@ public class EditComponent extends Fragment {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(s.toString().equals(""))
+                if(s.length() == 0)
                     saveButton.setEnabled(false);
                 else
                     saveButton.setEnabled(true);
@@ -272,7 +278,7 @@ public class EditComponent extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().equals(""))
+                if(s.length() == 0)
                     saveButton.setEnabled(false);
                 else
                     saveButton.setEnabled(true);
@@ -322,11 +328,21 @@ public class EditComponent extends Fragment {
                 ((Switch)view.findViewById(R.id.editFragment_switch_location)).setChecked(true);
                 ((TextView)view.findViewById(R.id.editFragment_textView_address)).setText(mPlace);
             }
+            // 배경색 대입
+            mColorHex = arrayList.get(4);
+            mColor = Integer.parseInt(arrayList.get(5));
+            TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
+            titleTextView.setBackgroundColor(mColor);
         }
         else {
             // 새로 추가버튼을 누른경우
             Button buttonDelete = (Button) view.findViewById(R.id.editFragment_button_delete);
             buttonDelete.setVisibility(View.GONE);
+            saveButton.setEnabled(false);
+
+            // 배경색 대입
+            TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
+            titleTextView.setBackgroundColor(mColor);
         }
 
         return view;

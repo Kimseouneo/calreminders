@@ -41,25 +41,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/item_background"
-                    android:orientation="horizontal"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingBottom="5dp">
+                    android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayout2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:inputType="textAutoCorrect"
+                        android:hint="메모">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editFragment_editText_content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textAutoCorrect"
-                            android:hint="메모"
                             tools:ignore="TouchTargetSizeCheck" />
 
                     </com.google.android.material.textfield.TextInputLayout>

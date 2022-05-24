@@ -1,5 +1,7 @@
 package com.example.calreminder;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,8 +51,11 @@ public class ReminderList extends Fragment {
 
         // 리마인더 리스트 만들기
         Map<String, ?> mp = CalreminderData.data.getAll();
-        LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
         for(Map.Entry<String,?> entry : mp.entrySet()) {
             // 데이터에 저장된 항목으로 버튼들을 생성함, 현재 text와 id만 가능 수정 필요
             Button myButton = new Button(view.getContext());
@@ -58,7 +63,7 @@ public class ReminderList extends Fragment {
             String json = entry.getValue().toString();
             ArrayList<String> arrayList = CalreminderData.jsonToArrayList(json);
 
-
+            layoutLayoutParams.setMargins(10,10,10,10);
             myButton.setId(Integer.parseInt(entry.getKey()));
             myButton.setText(arrayList.get(0));
             myButton.setLayoutParams(layoutLayoutParams);
@@ -69,7 +74,11 @@ public class ReminderList extends Fragment {
                             Integer.parseInt(entry.getKey()));
                 }
             });
-            
+            Drawable drawable = getResources().getDrawable(R.drawable.item_background);
+            if (!arrayList.get(5).equals(""))
+                drawable.setColorFilter(Integer.parseInt(arrayList.get(5)), PorterDuff.Mode.SRC_ATOP);
+            myButton.setBackground(drawable);
+
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.listFragment_listLayout);
             linearLayout.addView(myButton);
         }

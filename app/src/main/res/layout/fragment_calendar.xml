@@ -75,109 +75,31 @@
                 android:layout_height="102dp"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/calendar_year"
+                <Button
+                    android:id="@+id/button_minus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/years"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:prompt="@string/calendar_ys"
+                    android:layout_weight="1"
                     android:gravity="center"
+                    android:text="TextView"
+                    android:textSize="36dp"
+                    android:textStyle="bold" />
 
-                    />
-
+                <Button
+                    android:id="@+id/button_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="+" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/calendar_month"
-                android:layout_width="match_parent"
-                android:layout_height="94dp"
-                android:text="달"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="18dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="#eaeae9"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#DA0303"
-                    android:gravity="center"
-                    android:text="일"
-                    android:textColor="@color/white"
-                    android:textSize="9sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="월"
-                    android:textColor="@color/black"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:background="#D8D7D7"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="화"
-                    android:textColor="@color/black"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:background="#D8D7D7"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="수"
-                    android:textColor="@color/black"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:background="#D8D7D7"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="목"
-                    android:textColor="@color/black"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:background="#D8D7D7"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#D8D7D7"
-                    android:gravity="center"
-                    android:text="금"
-                    android:textColor="@color/black"
-                    android:textSize="9sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#0332DA"
-                    android:gravity="center"
-                    android:text="토"
-                    android:textColor="@color/white"
-                    android:textSize="9sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/Calendar_list"

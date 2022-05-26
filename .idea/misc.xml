@@ -25,6 +25,10 @@
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_component.xml" value="0.33" />
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_edit_component.xml" value="0.33" />
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_reminder_list.xml" value="0.22" />
+        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_calendar.xml" value="0.1" />
+        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_calendar_month.xml" value="0.1" />
+        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_edit_component.xml" value="0.1" />
+        <entry key="..\:/media_calremiders/app/src/main/res/layout/item_list.xml" value="0.1" />
       </map>
     </option>
   </component>

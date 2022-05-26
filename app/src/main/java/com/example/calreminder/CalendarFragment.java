@@ -1,23 +1,27 @@
 package com.example.calreminder;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.TextView;
 
-//디자인 완료
-//다이알로그 스피너 구현
-//뷰페이저의 슬라이드 움직임에 따라서 calendar_month값 증가
-//캘린더 리스트 구현
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import java.util.Calendar;
+
 public class CalendarFragment extends Fragment {
-
+    Calendar c;
+    FragmentStateAdapter set;
+    View v;
+    static TextView years;
+    Button yearMinus;
+    Button yearPlus;
+    ViewPager2 CalendarPager;
+    static int year;
     public CalendarFragment() {
         // Required empty public constructor
     }
@@ -28,23 +32,61 @@ public class CalendarFragment extends Fragment {
         if (getArguments() != null) {
         }
     }
+    @Override
+    public void onResume(){
+        super.onResume();
 
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_calendar, container, false);
-        Spinner s = (Spinner) v.findViewById(R.id.calendar_year);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this.getContext(), R.array.years, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        setCalendarlist(v);
+        c = Calendar.getInstance();
+        v = inflater.inflate(R.layout.fragment_calendar, container, false);
+        years = (TextView)v.findViewById(R.id.years);
+        yearMinus = (Button)v.findViewById(R.id.button_minus);
+        yearPlus = (Button)v.findViewById(R.id.button_plus);
+        CalendarPager = v.findViewById(R.id.Calendar_list);
+        set = new com.example.calendar2.CalendarListAdapter(getActivity());
+        Thread thread = new Thread(){
+            public void run(){
+                try {
+                    CalendarPager.setAdapter(set);
+                    CalendarPager.setOffscreenPageLimit(1000);
+                }catch(IllegalStateException e){
+
+                }
+            }
+        };
+        CalendarPager.post(new Runnable() {
+            @Override
+            public void run() {
+                CalendarPager.setCurrentItem(c.get(Calendar.MONTH)+1200, false);
+            }
+        });
+        year = c.get(Calendar.YEAR);
+        years.setText(year + "");
+
+        yearMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                years.setText(year-1+"");
+                CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()-12);
+                year = year-1;
+            }
+        });
+        yearPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                years.setText(year+1+"");
+                CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()+12);
+                year = year+1;
+            }
+        });
+
+        thread.start();
         return v;
     }
 
-    private void setCalendarlist(View v){
-        ViewPager2 CalendarPager = v.findViewById(R.id.Calendar_list);
-
-    }
 }

@@ -48,7 +48,7 @@ public class CalendarFragment extends Fragment {
         yearMinus = (Button)v.findViewById(R.id.button_minus);
         yearPlus = (Button)v.findViewById(R.id.button_plus);
         CalendarPager = v.findViewById(R.id.Calendar_list);
-        set = new com.example.calendar2.CalendarListAdapter(getActivity());
+        set = new CalendarListAdapter(getActivity());
         Thread thread = new Thread(){
             public void run(){
                 try {

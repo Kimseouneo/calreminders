@@ -73,6 +73,16 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
+    public void onTestButtonClicked(View view) {
+        // 테스트용, 실제 구현시 제거
+        CalendarFragment calendarFragment = new CalendarFragment();
+        Bundle args = new Bundle();
+        calendarFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.reminderListFragment, calendarFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
     public void selectLocation() {
         // 장소 선택 activity를 실행하는 함수
         if (hasPermissionInManifest(ReminderActivity.this,1, Manifest.permission.ACCESS_FINE_LOCATION)) {

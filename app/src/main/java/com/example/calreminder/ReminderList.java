@@ -83,6 +83,14 @@ public class ReminderList extends Fragment {
             linearLayout.addView(myButton);
         }
 
+        // 테스트 버튼 구현, 나중에 제거할것
+        Button testButton = view.findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ReminderActivity)getActivity()).onTestButtonClicked(v);
+            }
+        });
         return view;
     }
 

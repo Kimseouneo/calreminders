@@ -62,6 +62,7 @@ public class EditComponent extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_component, container, false);
 
+        // colorPicker
         Button colorPicker = view.findViewById(R.id.editFragment_colorPicker);
         colorPicker.setOnClickListener(new View.OnClickListener() {
             @Override

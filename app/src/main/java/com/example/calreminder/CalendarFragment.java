@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -17,9 +18,11 @@ public class CalendarFragment extends Fragment {
     Calendar c;
     FragmentStateAdapter set;
     View v;
+    FragmentTransaction transaction;
     static TextView years;
     Button yearMinus;
     Button yearPlus;
+    Button check;
     ViewPager2 CalendarPager;
     static int year;
     public CalendarFragment() {
@@ -46,6 +49,7 @@ public class CalendarFragment extends Fragment {
         years = (TextView)v.findViewById(R.id.years);
         yearMinus = (Button)v.findViewById(R.id.button_minus);
         yearPlus = (Button)v.findViewById(R.id.button_plus);
+        check = (Button)v.findViewById(R.id.check);
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
         Thread thread = new Thread(){
@@ -83,9 +87,10 @@ public class CalendarFragment extends Fragment {
                 year = year+1;
             }
         });
-
         thread.start();
         return v;
     }
+
+
 
 }

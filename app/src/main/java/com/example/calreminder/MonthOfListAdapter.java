@@ -31,6 +31,10 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<Holder> {
     @Override
     public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
         holder.tx.setText(list.get(position));
+        if(position % 7 == 0)
+            holder.tx.setTextColor(Color.BLUE);
+        if((position+1) % 7 == 0)
+            holder.tx.setTextColor(Color.RED);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

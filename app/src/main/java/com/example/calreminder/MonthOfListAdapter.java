@@ -17,6 +17,8 @@ import java.util.Calendar;
 
 public class MonthOfListAdapter extends RecyclerView.Adapter<Holder> {
     ArrayList<String> list;
+    View saveData = null;
+    Calendar check = Calendar.getInstance();
     public MonthOfListAdapter(ArrayList<String> list){
         this.list = list;
     }
@@ -37,11 +39,20 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<Holder> {
             holder.day.setTextColor(Color.BLUE);
         if((position+1) % 7 == 0)
             holder.day.setTextColor(Color.RED);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    v.setBackgroundColor(Color.GRAY);
+                    if(saveData == null){
+                        saveData = v;
+                        v.setBackgroundColor(Color.GREEN);
+                    }
+                    else {
+                        saveData.setBackgroundColor(Color.WHITE);
+                        v.setBackgroundColor(Color.GREEN);
+                        saveData = v;
+                    }
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
 

@@ -31,11 +31,12 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
-        holder.tx.setText(list.get(position));
+        holder.day.setText(list.get(position));
+        holder.schedule.setText("일정");
         if(position % 7 == 0)
-            holder.tx.setTextColor(Color.BLUE);
+            holder.day.setTextColor(Color.BLUE);
         if((position+1) % 7 == 0)
-            holder.tx.setTextColor(Color.RED);
+            holder.day.setTextColor(Color.RED);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +46,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<Holder> {
                 } catch (InterruptedException e) {
 
                 }
-                Log.d("클릳되었다.", list.get(position));
+                Log.d("클릭되었다.", holder.schedule.getText().toString());
             }
             });
     }

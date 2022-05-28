@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class Holder extends RecyclerView.ViewHolder {
-    TextView tx;
+    TextView day;
+    TextView schedule;
     public Holder(@NonNull View itemView){
         super(itemView);
-        tx = itemView.findViewById(R.id.yesdw2);
+        day = itemView.findViewById(R.id.days);
+        schedule = itemView.findViewById(R.id.schedule);
     }
 }

@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
@@ -36,13 +37,10 @@ public class ReminderActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
-        CalreminderData.data = getSharedPreferences("com.example.calreminder", MODE_PRIVATE);
-        CalreminderData.id = getSharedPreferences("com.example.calreminder.id", MODE_PRIVATE);
-        // id 값 지정 어플 전체애서 한번만 실행됨
-        if (!CalreminderData.id.getAll().containsKey("ID"))
-            CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
-
-        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.listFragment_button_add);
+        CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database-Component").
+                allowMainThreadQueries().build();
+        CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
 
         FragmentManager fm = getSupportFragmentManager();
         ReminderList listFragment = new ReminderList();
@@ -60,7 +58,7 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onComponentButtonClicked(View view, String text, int id) {
+    public void onComponentButtonClicked(View view, int id) {
         // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();

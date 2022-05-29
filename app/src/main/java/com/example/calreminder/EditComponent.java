@@ -187,73 +187,76 @@ public class EditComponent extends Fragment {
                 String text = editText.getText().toString();
                 Integer id;
                 Bundle args = getArguments();
-                ArrayList<String> arrayList;
-                JSONArray jsonArray;
+                Component component = new Component();
 
                 if (args.containsKey("ID")) {
                     // 이미 있는 항목을 편집한 경우
                     id = args.getInt("ID");
-                    arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(id.toString(),null));
+                    component.Id = id - CalreminderData.baseId;
                     // 텍스트 설정
-                    arrayList.set(0, mText);
+                    component.text = mText;
                     // 날짜 설정
                     RadioButton dateRadioButton = ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_radioDate);
                     LinearLayout timeLayout = (LinearLayout) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_timeLayout);
                     if(timeLayout.getVisibility() == View.VISIBLE){
-                        RadioButton timeRadioButton = ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_radioTime);
-                        arrayList.set(1, mDate);
-                        arrayList.set(2, mTime);
+                        mDate = dateRadioButton.getText().toString();
+                        component.date = mDate;
+                        component.time = mTime;
                     }
                     else {
-                        arrayList.set(1,"");
-                        arrayList.set(2,"");
+                        component.date = "";
+                        component.time = "";
                     }
                     // 장소 설정
                     TextView addressTextView = (TextView) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_textView_address);
                     LinearLayout locationLayout = (LinearLayout) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_locationLayout);
                     if (locationLayout.getVisibility() == View.VISIBLE) {
                         mPlace = addressTextView.getText().toString();
-                        arrayList.set(3, mPlace);
+                        component.place = mPlace;
                     }
                     else
-                        arrayList.set(3,"");
+                        component.place = "";
                     // 배경색 설정
-                    arrayList.set(4,mColorHex);
-                    arrayList.set(5,mColor.toString());
-                    jsonArray = CalreminderData.ArrayListToJson(arrayList);
+                    component.colorHex = mColorHex;
+                    component.color = mColor;
+                    CalreminderData.componentDataDao.updateComponent(
+                            component.Id,
+                            component.text,
+                            component.date,
+                            component.time,
+                            component.place,
+                            component.colorHex,
+                            component.color);
                 }
                 else {
                     // 새로운 항목을 저장한 경우
-                    id = CalreminderData.id.getInt("ID", -1);
-                    CalreminderData.id.edit().putInt("ID", (CalreminderData.id.getInt("ID", -1)) + 1).apply();
-                    jsonArray = new JSONArray();
+
                     // 텍스트 설정
-                    jsonArray.put(mText);
+                    component.text = mText;
                     // 날짜 설정
                     RadioButton dateRadioButton = ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_radioDate);
                     LinearLayout timeLayout = (LinearLayout) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_timeLayout);
                     if (timeLayout.getVisibility() == View.VISIBLE) {
-                        RadioButton timeRadioButton = ((ReminderActivity) getActivity()).findViewById(R.id.editFragment_radioTime);
                         mDate = dateRadioButton.getText().toString();
-                        jsonArray.put(mDate);
-                        jsonArray.put(mTime);
+                        component.date = mDate;
+                        component.time = mTime;
                     } else {
-                        jsonArray.put("");
-                        jsonArray.put("");
+                        component.date = "";
+                        component.time = "";
                     }
                     // 장소 설정
                     TextView addressTextView = (TextView) ((ReminderActivity) getActivity()).findViewById(R.id.editFragment_textView_address);
                     if (addressTextView.getVisibility() == View.VISIBLE){
                         mPlace = addressTextView.getText().toString();
-                        jsonArray.put(mPlace);
+                        component.place = mPlace;
                     }
                     else
-                        jsonArray.put("");
+                        component.place = "";
                     // 배경색 설정
-                    jsonArray.put(mColorHex);
-                    jsonArray.put(mColor.toString());
+                    component.colorHex = mColorHex;
+                    component.color = mColor;
+                    CalreminderData.componentDataDao.insertComponent(new ComponentData(component));
                 }
-                CalreminderData.data.edit().putString(id.toString(),jsonArray.toString()).apply();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
@@ -299,7 +302,7 @@ public class EditComponent extends Fragment {
                 public void onClick(View view) {
                     //삭제버튼 클릭시 데이터와 리스트에서 해당하는 항목 삭제
                     Integer id = args.getInt("ID");
-                    CalreminderData.data.edit().remove(id.toString()).apply();
+                    CalreminderData.componentDataDao.deleteComponent(id - CalreminderData.baseId);
 
                     FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
@@ -308,30 +311,30 @@ public class EditComponent extends Fragment {
             });
 
             // 기존 데이터 대입
-            ArrayList<String> arrayList = CalreminderData.jsonToArrayList(CalreminderData.data.getString(Integer.toString(args.getInt("ID")),null));
-
+            Integer id = args.getInt("ID");
+            Component component = CalreminderData.componentDataDao.getComponentById(id - CalreminderData.baseId);
             // 텍스트 대입
-            mText = arrayList.get(0);
+            mText = component.text;
             editText.setText(mText);
             // 날짜 대입
-            if(!arrayList.get(1).equals("")) {
-                mDate = arrayList.get(1);
+            if(!component.date.equals("")) {
+                mDate = component.date;
                 ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
                 ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
-                if(!arrayList.get(2).equals("")){
-                    mTime = arrayList.get(2);
+                if(!component.time.equals("")){
+                    mTime = component.time;
                     ((RadioButton)view.findViewById(R.id.editFragment_radioTime)).setText(mTime);
                 }
             }
             // 장소 대입
-            if(!arrayList.get(3).equals("")){
-                mPlace = arrayList.get(3);
+            if(!component.place.equals("")){
+                mPlace = component.place;
                 ((Switch)view.findViewById(R.id.editFragment_switch_location)).setChecked(true);
                 ((TextView)view.findViewById(R.id.editFragment_textView_address)).setText(mPlace);
             }
             // 배경색 대입
-            mColorHex = arrayList.get(4);
-            mColor = Integer.parseInt(arrayList.get(5));
+            mColorHex = component.colorHex;
+            mColor = component.color;
             TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
             titleTextView.setBackgroundColor(mColor);
         }

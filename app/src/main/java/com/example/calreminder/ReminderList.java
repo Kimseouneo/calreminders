@@ -22,9 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ReminderList extends Fragment {
+    private AppDatabase db;
     //리마인더의 Fragment에 관한 Class
     public ReminderList() {
         // Required empty public constructor
@@ -50,33 +52,29 @@ public class ReminderList extends Fragment {
         });
 
         // 리마인더 리스트 만들기
-        Map<String, ?> mp = CalreminderData.data.getAll();
+        List<Component> list = CalreminderData.componentDataDao.getAllComponent();
         LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        for(Map.Entry<String,?> entry : mp.entrySet()) {
+        for(Component component : list) {
             // 데이터에 저장된 항목으로 버튼들을 생성함, 현재 text와 id만 가능 수정 필요
             Button myButton = new Button(view.getContext());
             // Component의 내용 설정
-            String json = entry.getValue().toString();
-            ArrayList<String> arrayList = CalreminderData.jsonToArrayList(json);
 
             layoutLayoutParams.setMargins(10,10,10,10);
-            myButton.setId(Integer.parseInt(entry.getKey()));
-            myButton.setText(arrayList.get(0));
+            myButton.setId(component.Id + CalreminderData.baseId);
+            myButton.setText(component.text);
             myButton.setLayoutParams(layoutLayoutParams);
             myButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((ReminderActivity)getActivity()).onComponentButtonClicked(view, entry.getValue().toString(),
-                            Integer.parseInt(entry.getKey()));
+                    ((ReminderActivity)getActivity()).onComponentButtonClicked(view, component.Id + CalreminderData.baseId);
                 }
             });
             Drawable drawable = getResources().getDrawable(R.drawable.item_background);
-            if (!arrayList.get(5).equals(""))
-                drawable.setColorFilter(Integer.parseInt(arrayList.get(5)), PorterDuff.Mode.SRC_ATOP);
+            drawable.setColorFilter(component.color, PorterDuff.Mode.SRC_ATOP);
             myButton.setBackground(drawable);
 
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.listFragment_listLayout);

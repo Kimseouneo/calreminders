@@ -1,19 +1,18 @@
 package com.example.calreminder;
 
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +27,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.github.dhaval2404.colorpicker.ColorPickerDialog;
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
 import com.github.dhaval2404.colorpicker.listener.ColorListener;
-
-import org.json.JSONArray;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 public class EditComponent extends Fragment {
     //리마인더 항목을 수정할때 나타나는 Fragment
@@ -72,7 +66,7 @@ public class EditComponent extends Fragment {
                         .setDefaultColor(mColorHex)
                         .setColorListener(new ColorListener() {
                             @Override
-                            public void onColorSelected(int color, String colorHex) { ;
+                            public void onColorSelected(int color, String colorHex) {
                                 mColor = color;
                                 mColorHex = colorHex;
                                 TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
@@ -127,7 +121,7 @@ public class EditComponent extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 RadioButton dateRadioButton = (RadioButton) view.findViewById(R.id.editFragment_radioDate);
-                mDate = Integer.toString(year) + '/' + Integer.toString(month+1) +'/'+ Integer.toString(dayOfMonth);
+                mDate = Integer.toString(year) + '/' + (month+1) +'/'+ dayOfMonth;
                 dateRadioButton.setText(mDate);
             }
         });
@@ -184,7 +178,6 @@ public class EditComponent extends Fragment {
             @Override
             public void onClick(View view) {
                 EditText editText = (EditText) getActivity().findViewById(R.id.editFragment_editText_content);
-                String text = editText.getText().toString();
                 Integer id;
                 Bundle args = getArguments();
                 Component component = new Component();
@@ -206,6 +199,8 @@ public class EditComponent extends Fragment {
                     else {
                         component.date = "";
                         component.time = "";
+                        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getActivity());
+                        notificationManagerCompat.cancel(id);
                     }
                     // 장소 설정
                     TextView addressTextView = (TextView) ((ReminderActivity)getActivity()).findViewById(R.id.editFragment_textView_address);
@@ -240,6 +235,7 @@ public class EditComponent extends Fragment {
                         mDate = dateRadioButton.getText().toString();
                         component.date = mDate;
                         component.time = mTime;
+
                     } else {
                         component.date = "";
                         component.time = "";
@@ -255,9 +251,39 @@ public class EditComponent extends Fragment {
                     // 배경색 설정
                     component.colorHex = mColorHex;
                     component.color = mColor;
-                    CalreminderData.componentDataDao.insertComponent(new ComponentData(component));
+                    long rowId = CalreminderData.componentDataDao.insertComponent(new ComponentData(component));
+                    id = CalreminderData.componentDataDao.getId(rowId);
                 }
 
+                // 날짜를 설정한 경우 알림을 설정함
+                if(!component.date.equals("")) {
+                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getActivity(), AlertReceiver.class);
+                    intent.putExtra("Title", component.text);
+                    intent.putExtra("Text",component.date + " " + component.place);
+                    intent.putExtra("Id",id);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    Calendar calendar = Calendar.getInstance();
+                    String date[] = mDate.split("/");
+                    calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
+                    if(!component.time.equals("")) {
+                        // 시간을 설정한 경우
+                        String time[] = mTime.split(":");
+                        calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(time[0]));
+                        calendar.set(Calendar.MINUTE,Integer.parseInt(time[1]));
+                    }
+
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+                }
+                else {
+                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getActivity(), AlertReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    alarmManager.cancel(pendingIntent);
+                }
+                
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();

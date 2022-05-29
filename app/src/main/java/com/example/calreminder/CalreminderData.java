@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Button;
 
+import androidx.core.app.NotificationCompat;
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Database;
@@ -55,6 +56,7 @@ class ComponentData{
         this.colorHex = colorHex;
         this.color = color;
     }
+
     @Ignore
     public ComponentData(Component component) {
         this.Id = null;
@@ -69,8 +71,9 @@ class ComponentData{
 
 @Dao
 interface ComponentDataDao {
+
     @Insert
-    public void insertComponent(ComponentData... ComponentData);
+    public long insertComponent(ComponentData componentData);
 
     @Query("DELETE FROM ComponentData")
     public void deleteAllComponent();
@@ -83,6 +86,9 @@ interface ComponentDataDao {
 
     @Query("SELECT * FROM ComponentData")
     public List<Component> getAllComponent();
+
+    @Query("SELECT id FROM ComponentData WHERE rowId = :rowId")
+    public Integer getId(long rowId);
 
     @Query("SELECT * FROM COMPONENTDATA WHERE date LIKE '%/' ")
     public List<Component> getHasDateComponent();
@@ -122,7 +128,7 @@ class Component {
 
 }
 
-@Database(entities = {ComponentData.class}, version = 1)
+@Database(entities = {ComponentData.class}, version = 1, exportSchema = false)
 abstract class AppDatabase extends RoomDatabase {
     public abstract ComponentDataDao componentDataDao();
 }
@@ -132,7 +138,6 @@ public class CalreminderData {
     public static AppDatabase db;
     public static ComponentDataDao componentDataDao;
     public static final Integer baseId = 0x800;
-
     CalreminderData() {
     }
 }

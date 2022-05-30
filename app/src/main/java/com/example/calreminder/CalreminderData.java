@@ -90,7 +90,7 @@ interface ComponentDataDao {
     @Query("SELECT id FROM ComponentData WHERE rowId = :rowId")
     public Integer getId(long rowId);
 
-    @Query("SELECT * FROM COMPONENTDATA WHERE date LIKE '%/' ")
+    @Query("SELECT * FROM COMPONENTDATA WHERE date LIKE '%/%' ")
     public List<Component> getHasDateComponent();
 
     @Query("UPDATE ComponentData " +

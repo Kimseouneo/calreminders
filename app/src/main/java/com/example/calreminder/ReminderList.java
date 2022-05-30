@@ -16,12 +16,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +91,7 @@ public class ReminderList extends Fragment {
                 ((ReminderActivity)getActivity()).onTestButtonClicked(v);
             }
         });
+
         return view;
     }
 

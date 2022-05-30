@@ -59,6 +59,7 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void onAddButtonClicked(View view) {
         //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
+
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
         editEditComponentFragment.setArguments(args);
@@ -70,6 +71,7 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void onComponentButtonClicked(View view, int id) {
         // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
+
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
         args.putInt("ID", id);
@@ -83,6 +85,7 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void onCheckClicked(View view) {
         // Calendar Fragment에서 check버튼을 눌렀을 때 실행되는 코드
+
         ReminderList reminderList = new ReminderList();
         Bundle args = new Bundle();
         reminderList.setArguments(args);

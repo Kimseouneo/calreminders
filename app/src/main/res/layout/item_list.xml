@@ -19,8 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="17dp"
         android:layout_marginEnd="43dp"
-        android:layout_marginBottom="25dp"
-        android:text="일정" />
+        android:layout_marginBottom="25dp" />
 
 
 </RelativeLayout>

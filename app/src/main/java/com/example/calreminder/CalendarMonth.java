@@ -43,7 +43,7 @@ public class CalendarMonth extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
+        adapter.notifyDataSetChanged();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,8 +69,10 @@ public class CalendarMonth extends Fragment {
         return v;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        adapter.notifyDataSetChanged();
     }
 }

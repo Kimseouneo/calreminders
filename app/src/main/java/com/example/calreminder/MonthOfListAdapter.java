@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     public CalendarHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_list, parent, false);
+        View view = inflater.inflate(R.layout.calendar_list, parent, false);
         return new CalendarHolder(view);
     }
 
@@ -105,5 +104,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     public int getItemCount() {
         return list.size();
     }
+
 }
 

@@ -283,7 +283,6 @@ public class EditComponent extends Fragment {
 
                     alarmManager.cancel(pendingIntent);
                 }
-                
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarMonth extends Fragment {
+    //뷰페이저2에 사용할 페이지
     View v;
     Calendar check = Calendar.getInstance();
     int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};

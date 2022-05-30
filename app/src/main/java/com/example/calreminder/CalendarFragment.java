@@ -17,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
+    //캘린더를 생성하는 프래그먼트
     private static ViewPager2 CalendarPager;
     Calendar c;
     FragmentStateAdapter set;

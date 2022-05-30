@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class CalendarListAdapter extends FragmentStateAdapter {
+    //캘린더를 만들 때 사용하는 뷰페이저2와 연결할 FragmentStateAdapter
     public CalendarListAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }

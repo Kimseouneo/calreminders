@@ -17,8 +17,9 @@ import java.util.List;
 
 //더블클릭 하면 리사이클러뷰 등장하는 걸 아직 못시킴
 //현재 onbindviewholder에서 어레이리스트를 선언하고 거기에 데이터를 저장하면 값이 저장된다는 사실을 확인했음
-//이걸 이용하여 리사이클러뷰를 하나 더 만들 예정
+//이걸 이용하여 다이얼로그를 만들고 다이얼로그 안에 리사이클러뷰를 넣어볼 예정
 public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
+    //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
     ArrayList<String> list;
     static View plusButton = null;
     View saveData = null;
@@ -44,6 +45,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CalendarHolder holder, @SuppressLint("RecyclerView") int position) {
+        //리사이클러뷰의 아이템을 설정하는 메소드
         ArrayList<String> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
         if(holder.day.getText().toString() == "")
@@ -78,6 +80,8 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
+            //리사이클러뷰의 아이템을 클릭했을 때 작동하는 메서드
+            //현재 더블탭 구현
             public void onClick(View v) {
                 if(System.currentTimeMillis() > checktime + 500){
                     checktime = System.currentTimeMillis();

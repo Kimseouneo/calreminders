@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CalendarHolder extends RecyclerView.ViewHolder {
+    //캘린더를 리사이클러뷰로 구현할 때 사용할 뷰홀더
     TextView day;
     TextView schedule;
     public CalendarHolder(@NonNull View itemView){

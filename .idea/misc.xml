@@ -26,13 +26,7 @@
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_component.xml" value="0.33" />
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_edit_component.xml" value="0.33" />
         <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/fragment_reminder_list.xml" value="0.22" />
-        <entry key="..\:/media_calremiders/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.133" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/activity_component.xml" value="0.2368659420289855" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/activity_reminder.xml" value="0.1" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_calendar.xml" value="0.2368659420289855" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_edit_component.xml" value="0.2368659420289855" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/fragment_reminder_list.xml" value="0.1" />
-        <entry key="..\:/media_calremiders/app/src/main/res/layout/item_list.xml" value="0.375" />
+        <entry key="..\:/Users/USER/calreminders/app/src/main/res/layout/item_list.xml" value="0.3619791666666667" />
       </map>
     </option>
   </component>
@@ -41,8 +35,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="SuppressKotlinCodeStyleNotification">
-    <option name="disableForAll" value="true" />
   </component>
 </project>

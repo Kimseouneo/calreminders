@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,8 +13,15 @@ import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,16 +36,17 @@ import org.json.JSONArray;
 import com.essam.simpleplacepicker.MapActivity;
 import com.essam.simpleplacepicker.utils.SimplePlacePicker;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-
+            
+        //데이터베이스 지정
         CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-Component").
                 allowMainThreadQueries().build();

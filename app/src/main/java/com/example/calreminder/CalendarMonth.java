@@ -61,7 +61,7 @@ public class CalendarMonth extends Fragment {
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
             b.add(Integer.toString(i));
         }
-        adapter = new MonthOfListAdapter(b);
+        adapter = new MonthOfListAdapter(b, month);
         recyclerView = v.findViewById(R.id.monthList);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
         recyclerView.setAdapter(adapter);

@@ -41,14 +41,20 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     @Override
     public void onBindViewHolder(@NonNull CalendarHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.day.setText(list.get(position));
+        if(holder.day.getText().toString() == "")
+            holder.setVisibility(2);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-        for(int i = 0; i < componentArrayList.size(); i++){
-            if(componentArrayList.get(i).date.equals(Integer.toString(year)+'/'+Integer.toString(month)+'/'+ list.get(position))) {
-                //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
-                holder.schedule.setText("일정");
-                break;
+        try {
+            for (int i = 0; i < componentArrayList.size(); i++) {
+                if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
+                    //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
+                    Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
+                    holder.schedule.setText("일정");
+                    break;
+                }
             }
+        }catch(Exception e){
+
         }
         try {
             if (position % 7 == 0)

@@ -14,4 +14,8 @@ public class CalendarHolder extends RecyclerView.ViewHolder {
         day = itemView.findViewById(R.id.days);
         schedule = itemView.findViewById(R.id.schedule);
     }
+
+    public void setVisibility(int invisible) {
+        schedule.setVisibility(invisible);
+    }
 }

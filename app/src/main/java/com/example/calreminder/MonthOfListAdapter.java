@@ -22,6 +22,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     ArrayList<String> list;
     static View plusButton = null;
     View saveData = null;
+    long checktime = 0;
     int month;
     int year;
     List<Component> componentArrayList;
@@ -78,24 +79,32 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(saveData == null){
-                    saveData = v;
-                    v.setBackgroundColor(Color.GREEN);
-                    plusButton = v;
-                    CalendarFragment.plus.setEnabled(true);
-                }
-                else{
-                    saveData.setBackgroundColor(Color.WHITE);
-                    v.setBackgroundColor(Color.GREEN);
-                    saveData = v;
-                    plusButton = v;
-                }
-                if(holder.schedule.getText().toString() == "일정"){
-                    for(int i = 0; i < toDo.size(); i++) {
-                        Log.d("!!!!!!!!!!!!!!!!!!", toDo.get(i));
+                if(System.currentTimeMillis() > checktime + 500){
+                    checktime = System.currentTimeMillis();
+                    if (saveData == null) {
+                        saveData = v;
+                        v.setBackgroundColor(Color.GREEN);
+                        plusButton = v;
+                        CalendarFragment.plus.setEnabled(true);
+                    } else {
+                        saveData.setBackgroundColor(Color.WHITE);
+                        v.setBackgroundColor(Color.GREEN);
+                        saveData = v;
+                        plusButton = v;
                     }
+                    if (holder.schedule.getText().toString() == "일정") {
+                        for (int i = 0; i < toDo.size(); i++) {
+                            Log.d("!!!!!!!!!!!!!!!!!!", toDo.get(i));
+                        }
+                    }
+                    return;
+                }
+                if(System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정"){
+                    Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
+                    checktime = 0;
                 }
             }
+
             });
     }
 

@@ -50,6 +50,7 @@ public class CalendarMonth extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if(v==null) {
+            CalendarFragment.plus.setEnabled(false);
             v = inflater.inflate(R.layout.fragment_calendar_month, container, false);
             monthText = (TextView) v.findViewById(R.id.months);
             monthText.setText(month+"월");

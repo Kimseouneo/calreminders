@@ -8,13 +8,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
+    private static ViewPager2 CalendarPager;
     Calendar c;
     FragmentStateAdapter set;
     View v;
@@ -23,7 +26,7 @@ public class CalendarFragment extends Fragment {
     Button yearMinus;
     Button yearPlus;
     Button check;
-    ViewPager2 CalendarPager;
+    static Button plus;
     static int year;
     public CalendarFragment() {
         // Required empty public constructor
@@ -38,7 +41,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
+        if(MonthOfListAdapter.plusButton != null)
+            plus.setEnabled(true);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +54,8 @@ public class CalendarFragment extends Fragment {
         yearMinus = (Button)v.findViewById(R.id.button_minus);
         yearPlus = (Button)v.findViewById(R.id.button_plus);
         check = (Button)v.findViewById(R.id.check);
+        plus = (Button)v.findViewById(R.id.plus);
+        plus.setEnabled(false);
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
         Thread thread = new Thread(){
@@ -90,7 +96,12 @@ public class CalendarFragment extends Fragment {
         thread.start();
         return v;
     }
+    //리사이클러뷰 내부에서 페이지를 넘길 수 있게 메소드를 구현
+    static void leftPageMove(){
+        CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()-1);
+    }
 
-
-
+    static void rightPageMove(){
+        CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()+1);
+    }
 }

@@ -22,6 +22,8 @@ import java.util.List;
 public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
     ArrayList<String> list;
+    CalendarDialog dialog;
+    Context context;
     static View plusButton = null;
     View saveData = null;
     long checktime = 0;
@@ -29,7 +31,8 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     int year;
     List<Component> componentArrayList;
     Calendar checkCalendar = Calendar.getInstance();
-    public MonthOfListAdapter(ArrayList<String> list, int month){
+    public MonthOfListAdapter(Context context, ArrayList<String> list, int month){
+        this.context = CalendarFragment.Calendarcontext;
         this.list = list;
         this.month = month;
         this.year = CalendarFragment.year;
@@ -106,9 +109,13 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                 }
                 if(System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정"){
                     Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
-                    CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
+                    /*CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
                     componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
-                    notifyItemChanged(position);
+                    notifyItemChanged(position);*/
+                        dialog = new CalendarDialog(context, toDo);
+                        dialog.setContentView(saveData);
+                        dialog.show();
+                        Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                 }
             }
 

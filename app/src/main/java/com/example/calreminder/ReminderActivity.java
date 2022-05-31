@@ -106,10 +106,9 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-
     public void onTestButtonClicked(View view) {
         // 테스트용, 실제 구현시 제거
-        CalendarFragment calendarFragment = new CalendarFragment();
+        CalendarFragment calendarFragment = new CalendarFragment(this);
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

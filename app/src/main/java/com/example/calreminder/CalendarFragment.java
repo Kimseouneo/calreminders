@@ -1,5 +1,6 @@
 package com.example.calreminder;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,10 @@ public class CalendarFragment extends Fragment {
     Button check;
     static Button plus;
     static int year;
-    public CalendarFragment() {
+    static Context Calendarcontext;
+    public CalendarFragment(Context context) {
         // Required empty public constructor
+        Calendarcontext = context;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.calreminder;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.util.Calendar;
 public class CalendarMonth extends Fragment {
     //뷰페이저2에 사용할 페이지
     View v;
+    Context context;
     Calendar check = Calendar.getInstance();
     int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     ArrayList<String> b = new ArrayList<>();
@@ -62,7 +64,7 @@ public class CalendarMonth extends Fragment {
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
             b.add(Integer.toString(i));
         }
-        adapter = new MonthOfListAdapter(b, month);
+        adapter = new MonthOfListAdapter(context, b, month);
         recyclerView = v.findViewById(R.id.monthList);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
         recyclerView.setAdapter(adapter);

@@ -30,6 +30,7 @@ public class CalendarDialog extends Dialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+
         Log.d("!!!!", "다이얼로그 오픈");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_dialog);

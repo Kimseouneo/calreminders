@@ -38,21 +38,24 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
         holder.todoList.setBackgroundColor(todos.get(position).color);
     }
 
+    //구현해야 되는 함수 시작
     @Override
     public boolean onItemMove(int from_position, int to_position) {
         return false;
     }
 
+    //아이템 스와이프 기능(추가할 거 없으면 놔둬도 됨)
     @Override
     public void onItemSwipe(int position){
-        //데이터베이스 데이터도 제거해야 함
     }
 
+    //오른쪽으로 스와이프 했을 때 나오는 왼쪽 버튼의 수정 기능(삭제 기능만 구현할 거면 안해도 됨)
     @Override
     public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
 
     }
 
+    //왼쪽으로 스와이프 했을 때 나오는 오른쪽 버튼의 삭제 기능
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder){
         CalreminderData.componentDataDao.deleteComponent(todos.get(position).Id);
@@ -60,6 +63,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
         notifyItemRemoved(position);
     }
 
+    //구현해야 되는 함수 끝
     @Override
     public int getItemCount(){
         return todos.size();

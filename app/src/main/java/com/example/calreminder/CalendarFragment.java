@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -59,10 +57,18 @@ public class CalendarFragment extends Fragment {
         yearMinus = (Button)v.findViewById(R.id.button_minus);
         yearPlus = (Button)v.findViewById(R.id.button_plus);
         check = (Button)v.findViewById(R.id.check);
-        plus = (Button)v.findViewById(R.id.plus);
+        plus = (Button)v.findViewById(R.id.calendarFragment_button_plus);
         plus.setEnabled(false);
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
+        Button button = (Button) v.findViewById(R.id.calendarFragment_button_plus);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ReminderActivity)getActivity()).onPlusClicked(v,selectedDate);
+            }
+        });
+
         Thread thread = new Thread(){
             public void run(){
                 try {

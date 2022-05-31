@@ -101,6 +101,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         v.setBackgroundColor(Color.GREEN);
                         saveData = v;
                         plusButton = v;
+                        CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
                     }
                     if (holder.schedule.getText().toString() == "일정") {
                         for (int i = 0; i < toDo.size(); i++) {

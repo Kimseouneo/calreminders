@@ -28,6 +28,7 @@ public class CalendarFragment extends Fragment {
     Button yearMinus;
     Button yearPlus;
     Button check;
+    static String selectedDate;
     static Button plus;
     static int year;
     static Context Calendarcontext;

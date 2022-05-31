@@ -95,6 +95,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         v.setBackgroundColor(Color.GREEN);
                         plusButton = v;
                         CalendarFragment.plus.setEnabled(true);
+                        CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
                     } else {
                         saveData.setBackgroundColor(Color.WHITE);
                         v.setBackgroundColor(Color.GREEN);
@@ -109,18 +110,17 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     return;
                 }
                 if(System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정"){
-
                     Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
                     /*CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
                     componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                     notifyItemChanged(position);*/
-                    dialog = new CalendarDialog(context, toDo);
-                    if (saveData.getParent() != null)
-                        ((ViewGroup) saveData.getParent()).removeView(saveData);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(saveData);
-                    dialog.show();
-                    Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
+                        dialog = new CalendarDialog(context, toDo);
+                        if (saveData.getParent() != null)
+                            ((ViewGroup) saveData.getParent()).removeView(saveData);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setContentView(saveData);
+                        dialog.show();
+                        Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                 }
             }
 

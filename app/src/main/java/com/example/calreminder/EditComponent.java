@@ -181,7 +181,6 @@ public class EditComponent extends Fragment {
                 Integer id;
                 Bundle args = getArguments();
                 Component component = new Component();
-
                 if (args.containsKey("ID")) {
                     // 이미 있는 항목을 편집한 경우
                     id = args.getInt("ID");

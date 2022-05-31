@@ -64,9 +64,9 @@ public class CalendarMonth extends Fragment {
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
             b.add(Integer.toString(i));
         }
-        adapter = new MonthOfListAdapter(context, b, month);
+        adapter = new MonthOfListAdapter(getActivity(), b, month);
         recyclerView = v.findViewById(R.id.monthList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
         recyclerView.setAdapter(adapter);
         return v;
     }

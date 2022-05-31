@@ -19,12 +19,12 @@ public class CalendarDialog extends Dialog {
     ArrayList<Component> components;
     ToDoOfCalendarAdapter adapter;
     RecyclerView recyclerView;
-    Context mContex;
+    Context mContext;
     TextView bottomText;
 
     public CalendarDialog(@NonNull Context context, ArrayList<Component> components){
         super(context);
-        mContex = context;
+        mContext = context;
         this.components = components;
     }
 
@@ -37,8 +37,9 @@ public class CalendarDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         adapter = new ToDoOfCalendarAdapter(this.getContext(), components);
         recyclerView = findViewById(R.id.todolist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
+
     }
 
 

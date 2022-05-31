@@ -23,8 +23,6 @@ import java.util.List;
 //삭제버튼 테스트 성공! 커스텀 다이얼로그 제작해야함
 public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
-    RecyclerView recyclerView;
-    MonthListInAdapter adapter;
     ArrayList<String> list;
     CalendarDialog dialog;
     Context context;
@@ -48,9 +46,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.calendar_list, parent, false);
-        recyclerView = view.findViewById(R.id.schedule);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.context));
-        recyclerView.setVisibility(View.INVISIBLE);
         return new CalendarHolder(view);
     }
 
@@ -60,33 +55,20 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         ArrayList<Component> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
         if(holder.day.getText().toString() == "")
-            holder.setVisibility(2);
+            holder.setVisibility(View.INVISIBLE);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-        try {
             for (int i = 0; i < componentArrayList.size(); i++) {
                 if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
                     //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                    toDo.add(componentArrayList.get(i));
+                    if(holder.schedule.getText().toString() == "") {
+                        holder.setVisibility(0);
+                        holder.schedule.setText("일정");
+                        toDo.add(componentArrayList.get(i));
+                    }
+                    else
+                        toDo.add(componentArrayList.get(i));
                 }
             }
-        }catch(Exception e){
-
-        }
-        if(toDo.size() != 0){
-            adapter = new MonthListInAdapter(toDo);
-            recyclerView.setVisibility(View.VISIBLE);
-            Thread thread = new Thread(){
-                public void run(){
-                    try {
-                        recyclerView.setAdapter(adapter);
-                    }catch (IllegalStateException e){
-
-                    }
-                }
-            };
-            thread.start();
-
-        }
         try {
             if (position % 7 == 0)
                 holder.day.setTextColor(Color.BLUE);
@@ -106,20 +88,20 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     checktime = System.currentTimeMillis();
                     if (saveData == null) {
                         saveData = v;
-                        v.setBackgroundColor(Color.WHITE);
+                        v.setBackgroundColor(Color.GREEN);
                         plusButton = v;
                         CalendarFragment.plus.setEnabled(true);
                         CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
                     } else {
                         saveData.setBackgroundColor(Color.WHITE);
-                        v.setBackgroundColor(Color.WHITE);
+                        v.setBackgroundColor(Color.GREEN);
                         saveData = v;
                         plusButton = v;
                         CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
                     }
                     return;
                 }
-                if(System.currentTimeMillis() <= 500 + checktime && toDo.size() != 0){
+                if(System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정"){
                     Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
                     /*CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
                     componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();

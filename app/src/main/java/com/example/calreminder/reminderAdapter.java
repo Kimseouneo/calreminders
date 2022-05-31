@@ -41,6 +41,12 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
             }
         });
         holder.textView.setBackgroundColor(component.color);
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

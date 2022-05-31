@@ -368,11 +368,6 @@ public class EditComponent extends Fragment {
             buttonDelete.setVisibility(View.GONE);
             saveButton.setEnabled(false);
 
-            if (args.containsKey("Date")) {
-                mDate = args.getString("Date");
-                ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
-                ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
-            }
             // 배경색 대입
             TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
             titleTextView.setBackgroundColor(mColor);

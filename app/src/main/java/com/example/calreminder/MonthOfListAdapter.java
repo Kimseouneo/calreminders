@@ -115,7 +115,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         v.setBackgroundColor(Color.WHITE);
                         saveData = v;
                         plusButton = v;
-                        CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
                     }
                     return;
                 }

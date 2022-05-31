@@ -23,8 +23,6 @@ import java.util.List;
 //삭제버튼 테스트 성공! 커스텀 다이얼로그 제작해야함
 public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
-    RecyclerView recyclerView;
-    MonthListInAdapter adapter;
     ArrayList<String> list;
     CalendarDialog dialog;
     Context context;
@@ -48,9 +46,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.calendar_list, parent, false);
-        recyclerView = view.findViewById(R.id.schedule);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.context));
-        recyclerView.setVisibility(View.INVISIBLE);
         return new CalendarHolder(view);
     }
 
@@ -65,28 +60,19 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         try {
             for (int i = 0; i < componentArrayList.size(); i++) {
                 if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
-                    //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
+                    //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를
+                    if(holder.schedule.getText().toString() == ""){
+                        holder.setVisibility(View.VISIBLE);
+                        holder.schedule.setText("일정");
+                        toDo.add(componentArrayList.get(i));
+                    }
                     toDo.add(componentArrayList.get(i));
                 }
             }
         }catch(Exception e){
 
         }
-        if(toDo.size() != 0){
-            adapter = new MonthListInAdapter(toDo);
-            recyclerView.setVisibility(View.VISIBLE);
-            Thread thread = new Thread(){
-                public void run(){
-                    try {
-                        recyclerView.setAdapter(adapter);
-                    }catch (IllegalStateException e){
 
-                    }
-                }
-            };
-            thread.start();
-
-        }
         try {
             if (position % 7 == 0)
                 holder.day.setTextColor(Color.BLUE);

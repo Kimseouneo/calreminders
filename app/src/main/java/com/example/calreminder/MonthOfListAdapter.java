@@ -57,18 +57,20 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         if(holder.day.getText().toString() == "")
             holder.setVisibility(View.INVISIBLE);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-            for (int i = 0; i < componentArrayList.size(); i++) {
-                if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
-                    //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                    if(holder.schedule.getText().toString() == "") {
-                        holder.setVisibility(0);
-                        holder.schedule.setText("일정");
-                        toDo.add(componentArrayList.get(i));
-                    }
-                    else
-                        toDo.add(componentArrayList.get(i));
+
+        for (int i = 0; i < componentArrayList.size(); i++) {
+            if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
+                //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
+                if(holder.schedule.getText().toString() == "") {
+                    holder.setVisibility(0);
+                    Log.d("!!!!!!!!!!!!!!!!", "재갱신");
+                    holder.schedule.setText("일정");
+                    toDo.add(componentArrayList.get(i));
                 }
+                else
+                    toDo.add(componentArrayList.get(i));
             }
+        }
         try {
             if (position % 7 == 0)
                 holder.day.setTextColor(Color.BLUE);
@@ -106,17 +108,17 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     /*CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
                     componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                     notifyItemChanged(position);*/
-                        dialog = new CalendarDialog(context, toDo);
-                        if (saveData.getParent() != null)
-                            ((ViewGroup) saveData.getParent()).removeView(saveData);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(saveData);
-                        dialog.show();
-                        Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
+                    dialog = new CalendarDialog(context, toDo);
+                    if (saveData.getParent() != null)
+                        ((ViewGroup) saveData.getParent()).removeView(saveData);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(saveData);
+                    dialog.show();
+                    Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                 }
             }
 
-            });
+        });
     }
 
 
@@ -126,4 +128,3 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     }
 
 }
-

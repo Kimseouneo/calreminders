@@ -20,3 +20,4 @@ public class CalendarHolder extends RecyclerView.ViewHolder {
         schedule.setVisibility(invisible);
     }
 }
+

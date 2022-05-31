@@ -45,7 +45,7 @@ public class ReminderActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-            
+
         //데이터베이스 지정
         CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-Component").

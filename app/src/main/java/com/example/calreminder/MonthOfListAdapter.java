@@ -30,6 +30,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     long checktime = 0;
     int month;
     int year;
+    static boolean is = false;
     List<Component> componentArrayList;
     Calendar checkCalendar = Calendar.getInstance();
     public MonthOfListAdapter(Context context, ArrayList<String> list, int month){

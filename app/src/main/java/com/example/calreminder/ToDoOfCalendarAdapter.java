@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHolder> implements ItemTouchHelperListener{
     //캘린더 다이얼로그를 만들 때 쓸 리사이클러뷰 어댑터
+    //삭제 후 갱신이 즉각되지 않음 그렇다면 배열을 이용?
     ArrayList<Component> todos;
     Context context;
     public ToDoOfCalendarAdapter(Context context, ArrayList<Component> todos){
@@ -25,7 +26,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
     public ToDoOfCalendarHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.todolist_calendar, parent, false);
+        View view = inflater.inflate(R.layout.todolist_item, parent, false);
         return new ToDoOfCalendarHolder(view);
     }
 
@@ -34,6 +35,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
         holder.todoList.setText(todos.get(position).text);
         holder.time.setText(todos.get(position).time);
         holder.place.setText(todos.get(position).place);
+        holder.todoList.setBackgroundColor(todos.get(position).color);
     }
 
     @Override

@@ -17,11 +17,11 @@ import java.util.List;
 public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<Component> ReminderData = null;
-    private Context context;
+
     reminderAdapter(List<Component> list) { this.ReminderData = list; }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-         context = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.reminder_item , parent , false);
@@ -34,12 +34,6 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Component component = ReminderData.get(position);
         holder.textView.setText(component.text);
-        holder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReminderActivity)context).onComponentButtonClicked(component.Id + CalreminderData.baseId);
-            }
-        });
         holder.textView.setBackgroundColor(component.color);
     }
 

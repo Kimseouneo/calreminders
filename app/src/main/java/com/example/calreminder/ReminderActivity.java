@@ -95,11 +95,10 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onPlusClicked(View view, String date) {
+    public void onPlusClicked(View view) {
         // Calendar Fragment에서 plus버튼을 눌렀을 때 실행되는 코드
         EditComponent editComponent = new EditComponent();
         Bundle args = new Bundle();
-        args.putString("Date",date);
         editComponent.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.reminderListFragment, editComponent);

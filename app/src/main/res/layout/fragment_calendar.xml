@@ -41,7 +41,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/plus"
+                    android:id="@+id/calendarFragment_button_plus"
                     android:layout_width="75dp"
                     android:layout_height="71dp"
                     android:layout_marginStart="152dp"
@@ -62,7 +62,7 @@
                     android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/plus"
+                    app:layout_constraintStart_toEndOf="@+id/calendarFragment_button_plus"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

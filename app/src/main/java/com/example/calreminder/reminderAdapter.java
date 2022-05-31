@@ -16,9 +16,9 @@ import java.util.List;
 
 public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private ArrayList<String> ReminderData = null;
+    private List<Component> ReminderData = null;
 
-    reminderAdapter(ArrayList<String> list) { this.ReminderData = list; }
+    reminderAdapter(List<Component> list) { this.ReminderData = list; }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Context context = parent.getContext();
@@ -32,9 +32,9 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        String text = ReminderData.get(position);
-        holder.textView.setText(text);
-
+        Component component = ReminderData.get(position);
+        holder.textView.setText(component.text);
+        holder.textView.setBackgroundColor(component.color);
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

@@ -46,11 +46,7 @@ public class ReminderList extends Fragment {
         });
 
         // 리마인더 리스트 만들기
-        ArrayList<String> list = new ArrayList<>();
-
-        for(int i=0; i<list.size() ; i++){
-            list.add(String.format("Text %d", i));
-        }
+        List<Component> list = CalreminderData.componentDataDao.getAllComponent();
 
         RecyclerView recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

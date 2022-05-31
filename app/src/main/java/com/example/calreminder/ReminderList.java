@@ -4,29 +4,17 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 public class ReminderList extends Fragment {
     private AppDatabase db;
@@ -73,7 +61,7 @@ public class ReminderList extends Fragment {
             myButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((ReminderActivity)getActivity()).onComponentButtonClicked(view, component.Id + CalreminderData.baseId);
+                    ((ReminderActivity)getActivity()).onComponentButtonClicked(component.Id + CalreminderData.baseId);
                 }
             });
             Drawable drawable = getResources().getDrawable(R.drawable.item_background);

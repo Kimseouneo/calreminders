@@ -69,7 +69,7 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onComponentButtonClicked(View view, int id) {
+    public void onComponentButtonClicked(int id) {
         // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
 
         EditComponent editEditComponentFragment = new EditComponent();

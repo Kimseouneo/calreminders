@@ -1,0 +1,45 @@
+package com.example.calreminder;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+    private ArrayList<String> ReminderData = null;
+
+    reminderAdapter(ArrayList<String> list) { this.ReminderData = list; }
+
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.reminder_item , parent , false);
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        String text = ReminderData.get(position);
+        holder.textView.setText(text);
+
+    }
+
+    // getItemCount() - 전체 데이터 갯수 리턴.
+    @Override
+    public int getItemCount() {
+        return ReminderData.size() ;
+    }
+}

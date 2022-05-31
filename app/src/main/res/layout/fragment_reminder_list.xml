@@ -23,6 +23,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@color/ic_background_search_background" />
 
+        <!--리사이클러뷰 메인 xml에 추가함-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reminder_Recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="0dp"

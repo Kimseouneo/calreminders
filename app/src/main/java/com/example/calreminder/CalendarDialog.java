@@ -1,6 +1,7 @@
 package com.example.calreminder;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +23,7 @@ public class CalendarDialog extends Dialog {
     RecyclerView recyclerView;
     Context mContext;
     TextView bottomText;
-
+    ItemTouchHelper helper;
     public CalendarDialog(@NonNull Context context, ArrayList<Component> components){
         super(context);
         mContext = context;
@@ -47,7 +49,17 @@ public class CalendarDialog extends Dialog {
         recyclerView = findViewById(R.id.todolist);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
+        helper.attachToRecyclerView(recyclerView);
+    }
 
+    private void setUpRecyclerView(){
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                helper.onDraw(c,parent, state);
+            }
+        });
     }
 
 

@@ -121,6 +121,8 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(saveData);
                     dialog.show();
+                    componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                    notifyItemChanged(position);
                     Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                 }
             }

@@ -9,6 +9,7 @@
 
 
     <!-- Fragment Container View-->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/reminderListFragment"
         android:layout_width="match_parent"

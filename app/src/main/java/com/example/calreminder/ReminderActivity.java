@@ -4,24 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,21 +28,36 @@ import org.json.JSONArray;
 import com.essam.simpleplacepicker.MapActivity;
 import com.essam.simpleplacepicker.utils.SimplePlacePicker;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-            
-        //데이터베이스 지정
-        CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-Component").
-                allowMainThreadQueries().build();
-        CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
+
+        ArrayList<String> list = new ArrayList<>();
+
+        for(int i=0; i<list.size() ; i++){
+            list.add(String.format("Text %d", i));
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.reminder_Recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        reminderAdapter reminderAdapter = new reminderAdapter(list);
+        recyclerView.setAdapter(reminderAdapter);
+
+        CalreminderData.data = getSharedPreferences("com.example.calreminder", MODE_PRIVATE);
+        CalreminderData.id = getSharedPreferences("com.example.calreminder.id", MODE_PRIVATE);
+        // id 값 지정 어플 전체애서 한번만 실행됨
+        if (!CalreminderData.id.getAll().containsKey("ID"))
+            CalreminderData.id.edit().putInt("ID",0X8000 + 1000).apply();
+
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.listFragment_button_add);
 
         FragmentManager fm = getSupportFragmentManager();
         ReminderList listFragment = new ReminderList();
@@ -59,7 +66,6 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void onAddButtonClicked(View view) {
         //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
-
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
         editEditComponentFragment.setArguments(args);
@@ -69,9 +75,8 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onComponentButtonClicked(View view, int id) {
+    public void onComponentButtonClicked(View view, String text, int id) {
         // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
-
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
         args.putInt("ID", id);
@@ -85,7 +90,6 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void onCheckClicked(View view) {
         // Calendar Fragment에서 check버튼을 눌렀을 때 실행되는 코드
-
         ReminderList reminderList = new ReminderList();
         Bundle args = new Bundle();
         reminderList.setArguments(args);
@@ -106,9 +110,10 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
+
     public void onTestButtonClicked(View view) {
         // 테스트용, 실제 구현시 제거
-        CalendarFragment calendarFragment = new CalendarFragment(this);
+        CalendarFragment calendarFragment = new CalendarFragment();
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

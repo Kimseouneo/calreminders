@@ -19,10 +19,12 @@ public class CalendarDialog extends Dialog {
     ArrayList<Component> components;
     ToDoOfCalendarAdapter adapter;
     RecyclerView recyclerView;
+    Context mContex;
     TextView bottomText;
 
     public CalendarDialog(@NonNull Context context, ArrayList<Component> components){
         super(context);
+        mContex = context;
         this.components = components;
     }
 
@@ -30,13 +32,12 @@ public class CalendarDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState){
         Log.d("!!!!", "다이얼로그 오픈");
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.calendar_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         adapter = new ToDoOfCalendarAdapter(this.getContext(), components);
         recyclerView = findViewById(R.id.todolist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        setContentView(R.layout.calendar_dialog);
     }
 
 

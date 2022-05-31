@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -83,6 +84,25 @@ public class ReminderList extends Fragment {
             linearLayout.addView(myButton);
         }
 
+        // 검색기능
+        SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(query);
+                Log.d("OUT", "QuerySubmit");
+                Log.d("OUT",searchList.toString());
+                for(Component i : searchList)
+                    Log.d("OUT",i.toString());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("OUT", "QueryChange");
+                return false;
+            }
+        });
         // 테스트 버튼 구현, 나중에 제거할것
         Button testButton = view.findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {

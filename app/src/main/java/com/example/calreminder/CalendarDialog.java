@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,14 +39,7 @@ public class CalendarDialog extends Dialog {
         recyclerView = findViewById(R.id.todolist);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
-        bottomText = findViewById(R.id.closeOrDelete);
-        bottomText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    bottomText.setBackgroundColor(Color.GRAY);
-                    dismiss();
-            }
-        });
+
     }
 
 

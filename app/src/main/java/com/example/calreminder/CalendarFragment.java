@@ -28,7 +28,6 @@ public class CalendarFragment extends Fragment {
     Button check;
     static String selectedDate;
     static Button plus;
-    Thread thread;
     static int year;
     static Context Calendarcontext;
     public CalendarFragment(Context context) {
@@ -70,7 +69,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        thread = new Thread(){
+        Thread thread = new Thread(){
             public void run(){
                 try {
                     CalendarPager.setAdapter(set);
@@ -107,12 +106,6 @@ public class CalendarFragment extends Fragment {
         });
         thread.start();
         return v;
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        thread.interrupt();
     }
     //리사이클러뷰 내부에서 페이지를 넘길 수 있게 메소드를 구현
     static void leftPageMove(){

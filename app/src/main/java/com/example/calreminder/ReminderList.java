@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReminderList extends Fragment {
@@ -43,34 +46,17 @@ public class ReminderList extends Fragment {
         });
 
         // 리마인더 리스트 만들기
-        List<Component> list = CalreminderData.componentDataDao.getAllComponent();
-        LinearLayout.LayoutParams layoutLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+        ArrayList<String> list = new ArrayList<>();
 
-        for(Component component : list) {
-            // 데이터에 저장된 항목으로 버튼들을 생성함, 현재 text와 id만 가능 수정 필요
-            Button myButton = new Button(view.getContext());
-            // Component의 내용 설정
-
-            layoutLayoutParams.setMargins(10,10,10,10);
-            myButton.setId(component.Id + CalreminderData.baseId);
-            myButton.setText(component.text);
-            myButton.setLayoutParams(layoutLayoutParams);
-            myButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((ReminderActivity)getActivity()).onComponentButtonClicked(component.Id + CalreminderData.baseId);
-                }
-            });
-            Drawable drawable = getResources().getDrawable(R.drawable.item_background);
-            drawable.setColorFilter(component.color, PorterDuff.Mode.SRC_ATOP);
-            myButton.setBackground(drawable);
-
-            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.listFragment_listLayout);
-            linearLayout.addView(myButton);
+        for(int i=0; i<list.size() ; i++){
+            list.add(String.format("Text %d", i));
         }
+
+        RecyclerView recyclerView = view.findViewById(R.id.reminder_Recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        reminderAdapter reminderAdapter = new reminderAdapter(list);
+        recyclerView.setAdapter(reminderAdapter);
 
         // 검색기능
         SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);

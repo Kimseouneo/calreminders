@@ -5,15 +5,49 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHolder> implements ItemTouchHelperListener{
+public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAdapter.ToDoOfCalendarHolder> implements ItemTouchHelperListener{
     //캘린더 다이얼로그를 만들 때 쓸 리사이클러뷰 어댑터
     //삭제 후 갱신이 즉각되지 않음 그렇다면 배열을 이용?
+    public interface OnItemClickListener{
+        void onItemClick(View v, int pos);
+    }
+    private OnItemClickListener mListener = null;
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+    }
+
+    public class ToDoOfCalendarHolder extends RecyclerView.ViewHolder {
+        //캘린더 다이얼로그를 만들 때 리사이클러뷰에 넣을 뷰홀더
+        TextView todoList;
+        TextView time;
+        TextView place;
+        public ToDoOfCalendarHolder(@NonNull View itemView){
+            super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        if(mListener != null){
+                            mListener.onItemClick(view, pos);
+                        }
+                    }
+                }
+            });
+            todoList = itemView.findViewById(R.id.todos);
+            time = itemView.findViewById(R.id.time);
+            place = itemView.findViewById(R.id.place);
+        }
+
+    }
     ArrayList<Component> todos;
     Context context;
     public ToDoOfCalendarAdapter(Context context, ArrayList<Component> todos){
@@ -63,3 +97,4 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
         return todos.size();
     }
 }
+

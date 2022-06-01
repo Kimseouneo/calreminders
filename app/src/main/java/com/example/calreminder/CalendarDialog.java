@@ -46,6 +46,14 @@ public class CalendarDialog extends Dialog {
         });
         //주석 추가
         adapter = new ToDoOfCalendarAdapter(this.getContext(), components);
+        adapter.setOnItemClickListener(new ToDoOfCalendarAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                dismiss();
+                ((ReminderActivity)mContext).onComponentButtonClicked(components.get(pos).Id + CalreminderData.baseId);
+                adapter.notifyItemChanged(pos);
+            }
+        });
         recyclerView = findViewById(R.id.todolist);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);

@@ -26,7 +26,6 @@ public class ReminderList extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +72,7 @@ public class ReminderList extends Fragment {
                 return false;
             }
         });
+
         // 테스트 버튼 구현, 나중에 제거할것
         Button testButton = view.findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {

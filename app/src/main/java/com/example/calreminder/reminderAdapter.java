@@ -33,6 +33,7 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Component component = ReminderData.get(position);
         holder.textView.setText(component.text);
+        holder.Time.setText(component.date);
         holder.textView.setBackgroundColor(component.color);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override

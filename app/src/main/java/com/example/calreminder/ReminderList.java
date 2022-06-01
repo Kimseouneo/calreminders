@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ReminderList extends Fragment {
@@ -75,6 +76,7 @@ public class ReminderList extends Fragment {
 
         // 리마인더 리스트 만들기
         List<Component> list = CalreminderData.componentDataDao.getAllComponent();
+        Collections.reverse(list);
 
         recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -94,7 +96,7 @@ public class ReminderList extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(newText);
-
+                Collections.reverse(searchList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 com.example.calreminder.reminderAdapter adapter = new reminderAdapter(searchList);
                 recyclerView.setAdapter(adapter);

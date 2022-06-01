@@ -4,9 +4,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +31,8 @@ import android.widget.TimePicker;
 
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
 import com.github.dhaval2404.colorpicker.listener.ColorListener;
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
@@ -51,6 +55,7 @@ public class EditComponent extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,6 +122,8 @@ public class EditComponent extends Fragment {
 
         // 날짜를 선택했을때 캘린더 위젯의 작동을 구현
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.editFragment_calendarView);
+        Calendar calendar = Calendar.getInstance();
+        calendarView.setMinDate(calendar.getTimeInMillis());
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
@@ -132,7 +139,10 @@ public class EditComponent extends Fragment {
             @Override
             public void onTimeChanged(TimePicker timePicker,  int hourOfDay, int minute) {
                 RadioButton timeRadioButton = (RadioButton)view.findViewById(R.id.editFragment_radioTime);
-                mTime = Integer.toString(hourOfDay)+':'+ Integer.toString(minute);
+                if (minute < 10)
+                    mTime = Integer.toString(hourOfDay)+':'+ "0" + Integer.toString(minute);
+                else
+                    mTime = Integer.toString(hourOfDay)+':'+ Integer.toString(minute);
                 timeRadioButton.setText(mTime);
             }
         });
@@ -153,8 +163,8 @@ public class EditComponent extends Fragment {
         });
 
         // 장소 선택 버튼
-        Button selectLocationButton = (Button)view.findViewById(R.id.editFragment_button_selectLocation);
-        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+        MaterialCardView materialCardViewSelectPlace = (MaterialCardView) view.findViewById(R.id.editFragment_materialCardView_selectPlace);
+        materialCardViewSelectPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((ReminderActivity)getActivity()).selectLocation();
@@ -338,10 +348,16 @@ public class EditComponent extends Fragment {
             // 날짜 대입
             if(!component.date.equals("")) {
                 mDate = component.date;
+                String[] date = mDate.split("/");
+                calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
+                calendarView.setDate(calendar.getTimeInMillis());
                 ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
                 ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
                 if(!component.time.equals("")){
                     mTime = component.time;
+                    String[] time = mTime.split(":");
+                    timePicker.setHour(Integer.parseInt(time[0]));
+                    timePicker.setMinute(Integer.parseInt(time[1]));
                     ((RadioButton)view.findViewById(R.id.editFragment_radioTime)).setText(mTime);
                 }
             }

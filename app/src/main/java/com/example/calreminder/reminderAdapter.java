@@ -2,19 +2,19 @@ package com.example.calreminder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.RectF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements ItemTouchHelperListener {
 
     private List<Component> ReminderData = null;
 
@@ -25,9 +25,8 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.reminder_item , parent , false);
-        ViewHolder viewHolder = new ViewHolder(view);
 
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -47,5 +46,28 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
         return ReminderData.size() ;
+    }
+
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        Component component = ReminderData.get(from_position);
+        ReminderData.remove(to_position);
+        notifyItemMoved(from_position, to_position);
+        return true;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+
+    }
+
+    @Override
+    public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
+
+    }
+
+    @Override
+    public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
+
     }
 }

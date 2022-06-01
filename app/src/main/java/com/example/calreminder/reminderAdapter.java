@@ -17,11 +17,11 @@ import java.util.List;
 public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements ItemTouchHelperListener {
 
     private List<Component> ReminderData = null;
-
+    private Context context;
     reminderAdapter(List<Component> list) { this.ReminderData = list; }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.reminder_item , parent , false);
@@ -33,13 +33,16 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Component component = ReminderData.get(position);
         holder.textView.setText(component.text);
+        holder.Time.setText(component.date);
         holder.textView.setBackgroundColor(component.color);
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ((ReminderActivity)context).onComponentButtonClicked(component.Id + CalreminderData.baseId);
             }
         });
+
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

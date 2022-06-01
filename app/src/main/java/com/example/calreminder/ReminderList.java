@@ -1,31 +1,35 @@
 package com.example.calreminder;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Collections;
 import java.util.List;
 
 public class ReminderList extends Fragment {
-    private AppDatabase db;
+    private RecyclerView recyclerView;
+    private Boolean isButtonClicked = false;
+    private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
+    private Animation animationActionButtonOpen, animationActionButtonClose,
+            animationActionButtonMoreOpen, animationActionButtonMoreClose;
     //리마인더의 Fragment에 관한 Class
     public ReminderList() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,18 +41,44 @@ public class ReminderList extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reminder_list, container, false);
 
+        // FloatingActionButton 애니메이션
+        animationActionButtonOpen = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.action_button_open_animation);
+        animationActionButtonClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.action_button_close_animation);
+        animationActionButtonMoreOpen = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.action_button_rotate_start_animation);
+        animationActionButtonMoreClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.action_button_rotate_end_animation);
+        actionButtonMore = view.findViewById(R.id.listFragment_floatingActionButton);
+        actionButtonAdd = view.findViewById(R.id.listFragment_floatingActionButton_add);
+        actionButtonCalendar = view.findViewById(R.id.listFragment_floatingActionButton_calendar);
+
+        // more 버튼
+        actionButtonMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+            }
+        });
         // + 버튼
-        view.findViewById(R.id.listFragment_button_add).setOnClickListener(new View.OnClickListener() {
+        actionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                anim();
                 ((ReminderActivity)getActivity()).onAddButtonClicked(view);
+            }
+        });
+        // 캘린더 버튼
+        actionButtonCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+                ((ReminderActivity)getActivity()).onTestButtonClicked(v);
             }
         });
 
         // 리마인더 리스트 만들기
         List<Component> list = CalreminderData.componentDataDao.getAllComponent();
+        Collections.reverse(list);
 
-        RecyclerView recyclerView = view.findViewById(R.id.reminder_Recycler);
+        recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         reminderAdapter reminderAdapter = new reminderAdapter(list);
@@ -59,32 +89,42 @@ public class ReminderList extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(query);
-                Log.d("OUT", "QuerySubmit");
-                Log.d("OUT",searchList.toString());
-                for(Component i : searchList)
-                    Log.d("OUT",i.toString());
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("OUT", "QueryChange");
+                List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(newText);
+                Collections.reverse(searchList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                com.example.calreminder.reminderAdapter adapter = new reminderAdapter(searchList);
+                recyclerView.setAdapter(adapter);
                 return false;
-            }
-        });
-        // 테스트 버튼 구현, 나중에 제거할것
-        Button testButton = view.findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReminderActivity)getActivity()).onTestButtonClicked(v);
             }
         });
 
         return view;
     }
 
+    //애니메이션 동작 함수
+    private void anim() {
+        if (!isButtonClicked) {
+            actionButtonMore.startAnimation(animationActionButtonMoreOpen);
+            actionButtonAdd.startAnimation(animationActionButtonOpen);
+            actionButtonCalendar.startAnimation(animationActionButtonOpen);
+            actionButtonAdd.setClickable(true);
+            actionButtonCalendar.setClickable(true);
+            isButtonClicked = true;
+        } else {
+            actionButtonMore.startAnimation(animationActionButtonMoreClose);
+            actionButtonAdd.startAnimation(animationActionButtonClose);
+            actionButtonCalendar.startAnimation(animationActionButtonClose);
+            actionButtonAdd.setClickable(false);
+            actionButtonCalendar.setClickable(false);
+            isButtonClicked = false;
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();

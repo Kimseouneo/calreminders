@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">SimplePlacePicker</string>
 
-    <string name="service_not_available">Service not available ..check network connection</string>
-    <string name="no_address_found">No address found</string>
-    <string name="address_found">address found</string>
-    <string name="not_support_area">This area is not supported yet</string>
-    <string name="confirm_location">Confirm Location</string>
-    <string name="search_place">Search a place</string>
-    <string name="confirm_pickup">Confirm pickup</string>
-    <string name="confirm_dest">Confirm destination</string>
-    <string name="failed_select_location">failed to select location please try again</string>
+    <string name="service_not_available">서비스를 사용할 수 없습니다. 인터넷 연결을 확인하세요.</string>
+    <string name="no_address_found">해당하는 주소를 찾을 수 없습니다.</string>
+    <string name="address_found">주소를 찾았습니다.</string>
+    <string name="not_support_area">이 지역은 아직 지원되지 않습니다.</string>
+    <string name="confirm_location">장소 확인</string>
+    <string name="search_place">장소 검색</string>
+    <string name="confirm_pickup">장소 선택하기</string>
+    <string name="confirm_dest">목적지 확인하기</string>
+    <string name="failed_select_location">위치 선택에 실패하였습니다.</string>
 </resources>

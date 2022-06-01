@@ -6,8 +6,6 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -33,9 +31,3 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
-
-    <!--
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
-        이 부분은 이미지의 바이트 크기가 너무 커 이를 위해 임시로 넣은것임 압축된 이미지를 사용한 후 제거할것
-    -->

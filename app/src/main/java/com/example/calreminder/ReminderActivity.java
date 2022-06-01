@@ -117,6 +117,7 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     public void selectLocation() {
         // 장소 선택 activity를 실행하는 함수
         if (hasPermissionInManifest(ReminderActivity.this,1, Manifest.permission.ACCESS_FINE_LOCATION)) {

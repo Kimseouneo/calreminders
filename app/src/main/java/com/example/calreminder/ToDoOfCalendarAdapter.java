@@ -49,12 +49,6 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarHo
     public void onItemSwipe(int position){
     }
 
-    //오른쪽으로 스와이프 했을 때 나오는 왼쪽 버튼의 수정 기능(삭제 기능만 구현할 거면 안해도 됨)
-    @Override
-    public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
-
-    }
-
     //왼쪽으로 스와이프 했을 때 나오는 오른쪽 버튼의 삭제 기능
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder){

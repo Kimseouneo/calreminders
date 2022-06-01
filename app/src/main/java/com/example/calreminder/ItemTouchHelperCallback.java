@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 enum ButtonsState{
     GONE,
-    LEFT_VISIBLE,
     RIGHT_VISIBLE
 }
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
@@ -58,7 +57,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
         //아이템이 스와이프 됐을경우 버튼을 그려주기 위해서 스와이프가 됐는지 확인
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
             if(buttonsShowedState != ButtonsState.GONE){
-                if(buttonsShowedState == ButtonsState.LEFT_VISIBLE) dX = Math.max(dX, buttonWidth);
                 if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE) dX = Math.min(dX, -buttonWidth);
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
@@ -91,16 +89,9 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
 
 
         //오른쪽으로 스와이프 했을때 (왼쪽에 버튼이 보여지게 될 경우)
-        if(buttonsShowedState == ButtonsState.LEFT_VISIBLE){
-            RectF leftButton = new RectF(itemView.getLeft() + 10, itemView.getTop() + 10, itemView.getLeft() + buttonWidthWithOutPadding,
-                    itemView.getBottom() - 10);
-            p.setColor(Color.BLUE);
-            c.drawRoundRect(leftButton, corners, corners, p);
-            drawText("수정", c, leftButton, p);
-            buttonInstance = leftButton;
 
             //왼쪽으로 스와이프 했을때 (오른쪽에 버튼이 보여지게 될 경우)
-        }else if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
+        if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
             RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithOutPadding, itemView.getTop() + 10, itemView.getRight() -10,
                     itemView.getBottom() - 10);
             p.setColor(Color.RED);
@@ -144,7 +135,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
                 if(swipeBack){
                     if(dX < -buttonWidth) buttonsShowedState = ButtonsState.RIGHT_VISIBLE;
 
-                    else if(dX > buttonWidth) buttonsShowedState = ButtonsState.LEFT_VISIBLE;
 
 
 
@@ -192,9 +182,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
                 swipeBack = false;
 
                 if(listener != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())){
-                    if(buttonsShowedState == ButtonsState.LEFT_VISIBLE){
-                        listener.onLeftClick(viewHolder.getAdapterPosition(), viewHolder);
-                    }else if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
+                    if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
                         listener.onRightClick(viewHolder.getAdapterPosition(), viewHolder);
                     }
                 }

@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:iconifiedByDefault="false"
+            android:focusable="false"
             android:queryHint="검색할 항목을 입력해주세요"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

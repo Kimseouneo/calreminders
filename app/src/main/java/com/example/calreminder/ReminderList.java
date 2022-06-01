@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReminderList extends Fragment {
+    private RecyclerView recyclerView;
     private AppDatabase db;
     //리마인더의 Fragment에 관한 Class
     public ReminderList() {
@@ -47,7 +48,7 @@ public class ReminderList extends Fragment {
         // 리마인더 리스트 만들기
         List<Component> list = CalreminderData.componentDataDao.getAllComponent();
 
-        RecyclerView recyclerView = view.findViewById(R.id.reminder_Recycler);
+        recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         reminderAdapter reminderAdapter = new reminderAdapter(list);
@@ -58,17 +59,17 @@ public class ReminderList extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(query);
-                Log.d("OUT", "QuerySubmit");
-                Log.d("OUT",searchList.toString());
-                for(Component i : searchList)
-                    Log.d("OUT",i.toString());
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("OUT", "QueryChange");
+                List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(newText);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                com.example.calreminder.reminderAdapter adapter = new reminderAdapter(searchList);
+                recyclerView.setAdapter(adapter);
                 return false;
             }
         });

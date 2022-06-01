@@ -266,12 +266,6 @@ public class EditComponent extends Fragment {
                     Calendar calendar = Calendar.getInstance();
                     String date[] = mDate.split("/");
                     calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
-                    if(!component.time.equals("")) {
-                        // 시간을 설정한 경우
-                        String time[] = mTime.split(":");
-                        calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(time[0]));
-                        calendar.set(Calendar.MINUTE,Integer.parseInt(time[1]));
-                    }
 
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
                 }
@@ -282,6 +276,7 @@ public class EditComponent extends Fragment {
 
                     alarmManager.cancel(pendingIntent);
                 }
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();

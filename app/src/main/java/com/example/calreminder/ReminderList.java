@@ -1,10 +1,12 @@
 package com.example.calreminder;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,7 @@ public class ReminderList extends Fragment {
     private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
     private Animation animationActionButtonOpen, animationActionButtonClose,
             animationActionButtonMoreOpen, animationActionButtonMoreClose;
+    private ItemTouchHelper helper;
     //리마인더의 Fragment에 관한 Class
     public ReminderList() {
         // Required empty public constructor
@@ -41,6 +44,14 @@ public class ReminderList extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    private void setUpRecyclerView(){
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration(){
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state){
+               helper.onDraw(c,parent,state);}
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +100,10 @@ public class ReminderList extends Fragment {
 
         reminderAdapter reminderAdapter = new reminderAdapter(list);
         recyclerView.setAdapter(reminderAdapter);
+
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(reminderAdapter));
+        helper.attachToRecyclerView(recyclerView);
+
 
         // 검색기능
         SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);

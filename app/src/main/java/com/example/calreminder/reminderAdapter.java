@@ -61,12 +61,14 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
 
     @Override
     public void onItemSwipe(int position) {
-
+        ReminderData.remove(position);
+        notifyItemRemoved(position);
     }
 
 
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
-
+        ReminderData.remove(position);
+        notifyItemChanged(position);
     }
 }

@@ -68,7 +68,9 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
 
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
+        CalreminderData.componentDataDao.deleteComponent(ReminderData.get(position).Id);
         ReminderData.remove(position);
         notifyItemChanged(position);
+
     }
 }

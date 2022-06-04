@@ -14,6 +14,7 @@ import androidx.room.Room;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -21,11 +22,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -159,5 +164,43 @@ public class ReminderActivity extends AppCompatActivity{
                 addressTextView.setText(data.getStringExtra(SimplePlacePicker.SELECTED_ADDRESS));
             }
         }
+    }
+
+    // 빈 공간 터치시 focus가 해제됨
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            try {
+                ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentById(R.id.reminderListFragment);
+
+                Rect floatingActionButtonRect = new Rect();
+                Rect floatingActionButtonAddRect = new Rect();
+                Rect floatingActionButtonCalendarRect = new Rect();
+                findViewById(R.id.listFragment_floatingActionButton_add).getGlobalVisibleRect(floatingActionButtonAddRect);
+                findViewById(R.id.listFragment_floatingActionButton_calendar).getGlobalVisibleRect(floatingActionButtonCalendarRect);
+                findViewById(R.id.listFragment_floatingActionButton).getGlobalVisibleRect(floatingActionButtonRect);
+                if (reminderList.isButtonClicked &&
+                        !floatingActionButtonRect.contains((int) event.getRawX(), (int) event.getY()) &&
+                        !floatingActionButtonAddRect.contains((int)event.getRawX(), (int)event.getRawY()) &&
+                        !floatingActionButtonCalendarRect.contains((int)event.getRawX(), (int)event.getRawY()))
+                {
+                    Log.d("OUT", "OUT");
+                    reminderList.anim();
+                }
+            } catch (ClassCastException e) {
+                Log.d("EXCEPTION", "ReminderList is not exist");
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

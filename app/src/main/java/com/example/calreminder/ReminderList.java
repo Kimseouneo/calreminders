@@ -1,17 +1,23 @@
 package com.example.calreminder;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -22,7 +28,7 @@ import java.util.List;
 
 public class ReminderList extends Fragment {
     private RecyclerView recyclerView;
-    private Boolean isButtonClicked = false;
+    public Boolean isButtonClicked = false;
     private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
     private Animation animationActionButtonOpen, animationActionButtonClose,
             animationActionButtonMoreOpen, animationActionButtonMoreClose;
@@ -108,7 +114,7 @@ public class ReminderList extends Fragment {
     }
 
     //애니메이션 동작 함수
-    private void anim() {
+    public void anim() {
         if (!isButtonClicked) {
             actionButtonMore.startAnimation(animationActionButtonMoreOpen);
             actionButtonAdd.startAnimation(animationActionButtonOpen);
@@ -129,4 +135,5 @@ public class ReminderList extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
 }

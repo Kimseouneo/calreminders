@@ -9,22 +9,27 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -395,6 +400,5 @@ public class EditComponent extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
     }
 }

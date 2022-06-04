@@ -2,16 +2,19 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editFragmnet_frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     tools:context=".EditComponent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editFragment_constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/scrollView3"
+            android:id="@+id/editFragment_scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -22,6 +25,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
+                android:id="@+id/editFragment_linearLayout_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

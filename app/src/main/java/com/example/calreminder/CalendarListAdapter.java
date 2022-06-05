@@ -2,6 +2,8 @@ package com.example.calreminder;
 
 
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -16,7 +18,11 @@ public class CalendarListAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new CalendarMonth(position%12+1);
+        CalendarMonth calendarMonth = new CalendarMonth();
+        Bundle args = new Bundle();
+        args.putInt("month",position%12+1);
+        calendarMonth.setArguments(args);
+        return calendarMonth;
     }
 
     @Override

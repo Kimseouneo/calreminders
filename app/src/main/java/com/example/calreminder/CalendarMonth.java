@@ -27,12 +27,11 @@ public class CalendarMonth extends Fragment {
     RecyclerView recyclerView;
     TextView monthText;
     int month;
-    public CalendarMonth(int months){
-        month = months;
-        if(Integer.parseInt(CalendarFragment.years.getText().toString()) % 4 == 0){
-            dayOfMonth[1] = 29;
-        }
+
+    public CalendarMonth() {
+
     }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -51,6 +50,10 @@ public class CalendarMonth extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        this.month = getArguments().getInt("month");
+        if(Integer.parseInt(CalendarFragment.years.getText().toString()) % 4 == 0){
+            dayOfMonth[1] = 29;
+        }
         if(v==null) {
             CalendarFragment.plus.setEnabled(false);
             v = inflater.inflate(R.layout.fragment_calendar_month, container, false);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                 }
             }
-
         });
     }
 

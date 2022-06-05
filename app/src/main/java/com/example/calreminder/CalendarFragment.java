@@ -30,9 +30,9 @@ public class CalendarFragment extends Fragment {
     static Button plus;
     static int year;
     static Context Calendarcontext;
-    public CalendarFragment(Context context) {
+
+    public CalendarFragment() {
         // Required empty public constructor
-        Calendarcontext = context;
     }
 
     @Override
@@ -53,6 +53,7 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         c = Calendar.getInstance();
         v = inflater.inflate(R.layout.fragment_calendar, container, false);
+        Calendarcontext = getActivity();
         years = (TextView)v.findViewById(R.id.years);
         yearMinus = (Button)v.findViewById(R.id.button_minus);
         yearPlus = (Button)v.findViewById(R.id.button_plus);

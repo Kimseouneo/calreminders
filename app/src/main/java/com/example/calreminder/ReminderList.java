@@ -87,7 +87,7 @@ public class ReminderList extends Fragment {
             @Override
             public void onClick(View v) {
                 anim();
-                ((ReminderActivity)getActivity()).onTestButtonClicked(v);
+                ((ReminderActivity)getActivity()).onCalendarButtonClicked(v);
             }
         });
 

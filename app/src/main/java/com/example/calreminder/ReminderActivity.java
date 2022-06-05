@@ -1,48 +1,31 @@
 package com.example.calreminder;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.Fragment;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
 import com.essam.simpleplacepicker.MapActivity;
 import com.essam.simpleplacepicker.utils.SimplePlacePicker;
-
-import java.util.Calendar;
-import java.util.Locale;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
@@ -50,7 +33,6 @@ public class ReminderActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-            
         //데이터베이스 지정
         CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-Component").
@@ -58,8 +40,24 @@ public class ReminderActivity extends AppCompatActivity{
         CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
 
         FragmentManager fm = getSupportFragmentManager();
-        ReminderList listFragment = new ReminderList();
-        fm.beginTransaction().add(R.id.reminderListFragment, listFragment).commit();
+        if(findViewById(R.id.mainActivity_fragmentContainerView) != null) {
+            // 세로 모드일경우
+            ReminderList listFragment = (ReminderList) fm.findFragmentByTag("listFragment_portrait");
+            if(listFragment == null) {
+                listFragment = new ReminderList();
+                fm.beginTransaction().add(R.id.mainActivity_fragmentContainerView, listFragment, "listFragment_portrait").commit();
+            }
+        }
+        else {
+            // 가로 모드일 경우
+            ReminderList listFragment = (ReminderList) fm.findFragmentByTag("listFragment_landScape");
+            if(listFragment == null) {
+                listFragment = new ReminderList();
+                CalendarFragment calendarFragment = new CalendarFragment();
+                fm.beginTransaction().add(R.id.reminderList, listFragment, "listFragment_landScape").
+                        add(R.id.calendar, calendarFragment,"calendarFragment_landScape").commit();
+            }
+        }
     }
 
     public void onAddButtonClicked(View view) {
@@ -69,7 +67,7 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.reminderListFragment, editEditComponentFragment);
+        transaction.replace(R.id.mainActivity_fragmentContainerView, editEditComponentFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -83,7 +81,7 @@ public class ReminderActivity extends AppCompatActivity{
 
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.reminderListFragment, editEditComponentFragment);
+        transaction.replace(R.id.mainActivity_fragmentContainerView, editEditComponentFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -95,7 +93,7 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         reminderList.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.reminderListFragment, reminderList);
+        transaction.replace(R.id.mainActivity_fragmentContainerView, reminderList);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -107,18 +105,18 @@ public class ReminderActivity extends AppCompatActivity{
         args.putString("Date",date);
         editComponent.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.reminderListFragment, editComponent);
+        transaction.replace(R.id.mainActivity_fragmentContainerView, editComponent);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public void onTestButtonClicked(View view) {
-        // 테스트용, 실제 구현시 제거
-        CalendarFragment calendarFragment = new CalendarFragment(this);
+    public void onCalendarButtonClicked(View view) {
+        // 캘린더 프레그먼트로 이동
+        CalendarFragment calendarFragment = new CalendarFragment();
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.reminderListFragment, calendarFragment);
+        transaction.replace(R.id.mainActivity_fragmentContainerView, calendarFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -184,7 +182,7 @@ public class ReminderActivity extends AppCompatActivity{
             }
             // 빈 공간 터치시 floacting action button의 애니메이션 동작
             try {
-                ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentById(R.id.reminderListFragment);
+                ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentById(R.id.mainActivity_fragmentContainerView);
 
                 Rect floatingActionButtonRect = new Rect();
                 Rect floatingActionButtonAddRect = new Rect();

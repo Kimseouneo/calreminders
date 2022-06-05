@@ -1,16 +1,25 @@
 package com.example.calreminder;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.RectF;
+import android.os.Build;
+import android.os.Handler;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.List;
 
 
@@ -42,7 +51,6 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
                 ((ReminderActivity)context).onComponentButtonClicked(component.Id + CalreminderData.baseId);
             }
         });
-
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

@@ -169,9 +169,11 @@ public class ReminderActivity extends AppCompatActivity{
     // 빈 공간 터치시 focus가 해제됨
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
+        // 빈공간 터치시 search view와 edit text의 focus 해제
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (v instanceof EditText) {
+                Log.d("OUT","OUT FOCUS");
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
@@ -180,6 +182,7 @@ public class ReminderActivity extends AppCompatActivity{
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
+            // 빈 공간 터치시 floacting action button의 애니메이션 동작
             try {
                 ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentById(R.id.reminderListFragment);
 

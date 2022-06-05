@@ -33,6 +33,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
 import com.github.dhaval2404.colorpicker.listener.ColorListener;
@@ -181,6 +182,9 @@ public class EditComponent extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast toast = Toast.makeText(getActivity(),"취소되었습니다.",Toast.LENGTH_SHORT);
+                toast.show();
+
                 FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
@@ -292,6 +296,9 @@ public class EditComponent extends Fragment {
                     alarmManager.cancel(pendingIntent);
                 }
 
+                Toast toast = Toast.makeText(getActivity(),"저장이 완료되었습니다.",Toast.LENGTH_SHORT);
+                toast.show();
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
@@ -338,6 +345,9 @@ public class EditComponent extends Fragment {
                     Integer id = args.getInt("ID");
                     CalreminderData.componentDataDao.deleteComponent(id - CalreminderData.baseId);
 
+                    Toast toast = Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT);
+                    toast.show();
+                    
                     FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     fragmentManager.popBackStack();

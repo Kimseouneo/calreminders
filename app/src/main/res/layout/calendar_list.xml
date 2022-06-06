@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="#FFFFFF"
+    android:background="@drawable/ic_baseline_calendarbackground"
     android:visibility="visible">
 
     <TextView
@@ -10,11 +10,13 @@
         android:layout_width="154dp"
         android:layout_height="match_parent"
         android:text="TextView"
+        android:layout_marginLeft = "2dp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/schedule"
         android:layout_width="67dp"
+        android:layout_marginLeft="2dp"
         android:layout_height="38dp"
         android:layout_alignEnd="@+id/days"
         android:layout_alignParentBottom="true"

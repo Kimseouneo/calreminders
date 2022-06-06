@@ -33,7 +33,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     long checktime = 0;
     int month;
     int year;
-    static boolean is = false;
     List<Component> componentArrayList;
     Calendar checkCalendar = Calendar.getInstance();
     public MonthOfListAdapter(Context context, ArrayList<String> list, int month){
@@ -57,8 +56,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         //리사이클러뷰의 아이템을 설정하는 메소드
         ArrayList<Component> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
-        if(holder.day.getText().toString() == "")
-            holder.itemView.setBackgroundColor(Color.LTGRAY);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
         try {
             for (int i = 0; i < componentArrayList.size(); i++) {
@@ -97,15 +94,15 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         if (context.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
                             if (saveData == null) {
                                 saveData = v;
-                                v.setBackgroundColor(Color.GREEN);
+                                v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
                                 ((ReminderActivity) context).setDateLand(Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
                             } else if (saveData == v) {
-                                v.setBackgroundColor(Color.WHITE);
+                                v.setBackgroundResource(R.drawable.ic_baseline_calendarbackground);
                                 saveData = null;
                                 ((ReminderActivity)context).setDateLand("");
                             } else {
-                                saveData.setBackgroundColor(Color.WHITE);
-                                v.setBackgroundColor(Color.GREEN);
+                                saveData.setBackgroundResource(R.drawable.ic_baseline_calendarbackground);
+                                v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
                                 saveData = v;
                                 ((ReminderActivity) context).setDateLand(Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
                             }
@@ -113,18 +110,15 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                             checktime = System.currentTimeMillis();
                             if (saveData == null) {
                                 saveData = v;
-                                v.setBackgroundColor(Color.GREEN);
-                                plusButton = v;
+                                v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
                                 CalendarFragment.selectedDate = Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString();
                             } else if (saveData == v) {
-                                v.setBackgroundColor(Color.WHITE);
+                                v.setBackgroundResource(R.drawable.ic_baseline_calendarbackground);
                                 saveData = null;
-                                plusButton = null;
                             } else {
-                                saveData.setBackgroundColor(Color.WHITE);
-                                v.setBackgroundColor(Color.GREEN);
+                                saveData.setBackgroundResource(R.drawable.ic_baseline_calendarbackground);
+                                v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
                                 saveData = v;
-                                plusButton = v;
                                 CalendarFragment.selectedDate = Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString();
                             }
                         }

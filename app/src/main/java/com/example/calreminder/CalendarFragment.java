@@ -2,12 +2,14 @@ package com.example.calreminder;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,11 +28,9 @@ public class CalendarFragment extends Fragment {
     View v;
     FragmentTransaction transaction;
     static TextView years;
-    Button yearMinus;
-    Button yearPlus;
-    Button check;
+    ImageButton yearMinus;
+    ImageButton yearPlus;
     static String selectedDate;
-    static Button plus;
     static int year;
     static Context Calendarcontext;
 
@@ -47,8 +47,6 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        if(MonthOfListAdapter.plusButton != null)
-            plus.setEnabled(true);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,20 +56,11 @@ public class CalendarFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_calendar, container, false);
         Calendarcontext = getActivity();
         years = (TextView)v.findViewById(R.id.years);
-        yearMinus = (Button)v.findViewById(R.id.button_minus);
-        yearPlus = (Button)v.findViewById(R.id.button_plus);
-        check = (Button)v.findViewById(R.id.check);
-        plus = (Button)v.findViewById(R.id.calendarFragment_button_plus);
-        plus.setEnabled(false);
+        yearMinus = (ImageButton)v.findViewById(R.id.button_minus);
+        yearPlus = (ImageButton) v.findViewById(R.id.button_plus);
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
-        Button button = (Button) v.findViewById(R.id.calendarFragment_button_plus);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReminderActivity)getActivity()).onPlusClicked(v,selectedDate);
-            }
-        });
+
 
         Thread thread = new Thread(){
             public void run(){

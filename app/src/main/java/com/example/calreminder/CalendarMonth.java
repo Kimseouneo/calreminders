@@ -25,7 +25,7 @@ public class CalendarMonth extends Fragment {
     Context context;
     Calendar check = Calendar.getInstance();
     int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    ArrayList<String> b = new ArrayList<>();
+    ArrayList<String> calendarMonthList = new ArrayList<>();
     MonthOfListAdapter adapter;
     RecyclerView recyclerView;
     TextView monthText;
@@ -58,19 +58,28 @@ public class CalendarMonth extends Fragment {
             dayOfMonth[1] = 29;
         }
         if(v==null) {
-            CalendarFragment.plus.setEnabled(false);
             v = inflater.inflate(R.layout.fragment_calendar_month, container, false);
             monthText = (TextView) v.findViewById(R.id.months);
             monthText.setText(month+"월");
             }
         check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-1, 1);
         for(int i = 1; i < check.get(Calendar.DAY_OF_WEEK); i++){
-            b.add("");
+            calendarMonthList.add("");
         }
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
-            b.add(Integer.toString(i));
+            calendarMonthList.add(Integer.toString(i));
         }
-        adapter = new MonthOfListAdapter(getActivity(), b, month);
+        if (calendarMonthList.size() < 35){
+            for(int i = calendarMonthList.size(); i < 35; i++){
+                calendarMonthList.add("");
+            }
+        }
+        else if (calendarMonthList.size() < 42){
+            for(int i = calendarMonthList.size(); i < 42; i++){
+                calendarMonthList.add("");
+            }
+        }
+        adapter = new MonthOfListAdapter(getActivity(), calendarMonthList, month);
         recyclerView = v.findViewById(R.id.monthList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
         recyclerView.setAdapter(adapter);

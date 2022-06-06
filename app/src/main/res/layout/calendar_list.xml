@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:background="@drawable/ic_baseline_calendarbackground"
@@ -9,19 +10,21 @@
         android:id="@+id/days"
         android:layout_width="154dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="2dp"
         android:text="TextView"
-        android:layout_marginLeft = "2dp"
         android:textStyle="bold" />
 
-    <TextView
+    <ImageView
         android:id="@+id/schedule"
-        android:layout_width="67dp"
-        android:layout_marginLeft="2dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/days"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="23dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_baseline_filter_tilt_shift_24" />
 
 
 </RelativeLayout>

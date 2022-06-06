@@ -72,9 +72,9 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                 for (int i = 0; i < componentArrayList.size(); i++) {
                     if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
                         //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                        if (holder.schedule.getText() == "") {
+                        if (holder.schedule.getVisibility() == View.INVISIBLE) {
                             Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
-                            holder.schedule.setText("일정");
+                            holder.schedule.setVisibility(View.VISIBLE);
                             toDo.add(componentArrayList.get(i));
                         } else {
                             toDo.add(componentArrayList.get(i));
@@ -135,7 +135,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         }
                         return;
                     }
-                    if (System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정") {
+                    if (System.currentTimeMillis() <= 500 + checktime && holder.schedule.getVisibility() == View.VISIBLE) {
                         Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
                         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             dialog = new CalendarDialog(context, toDo);

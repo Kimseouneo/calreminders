@@ -10,6 +10,7 @@ import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,7 +29,7 @@ import com.essam.simpleplacepicker.utils.SimplePlacePicker;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
-    private String mDate;
+    private String mDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,8 @@ public class ReminderActivity extends AppCompatActivity{
 
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
+        if (!mDate.equals(""))
+            args.putString("Date",mDate);
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainActivity_flameLayout_center_land, editEditComponentFragment);
@@ -183,6 +186,10 @@ public class ReminderActivity extends AppCompatActivity{
 
     public void setDateLand(String date) {
         mDate = date;
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentByTag("listFragment_landScape");
+            reminderList.setComponent(CalreminderData.componentDataDao.getSelectedDateData(mDate));
+        }
     }
 
     @Override

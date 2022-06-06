@@ -96,6 +96,9 @@ interface ComponentDataDao {
     @Query("SELECT * FROM ComponentData WHERE text LIKE '%' || :input || '%'")
     public List<Component> getSearchedData(String input);
 
+    @Query("SELECT * FROM ComponentData WHERE date LIKE '%' || :date || '%'")
+    public List<Component> getSelectedDateData(String date);
+
     @Query("UPDATE ComponentData " +
             "SET text = :text," +
             "date = :date," +

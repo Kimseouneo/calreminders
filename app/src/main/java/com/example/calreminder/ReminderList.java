@@ -1,9 +1,7 @@
 package com.example.calreminder;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,16 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -117,11 +110,7 @@ public class ReminderList extends Fragment {
         recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        reminderAdapter reminderAdapter = new reminderAdapter(list);
-        recyclerView.setAdapter(reminderAdapter);
-
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(reminderAdapter));
-        helper.attachToRecyclerView(recyclerView);
+        setComponent(list);
 
         // 검색기능
         SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);
@@ -163,6 +152,15 @@ public class ReminderList extends Fragment {
             actionButtonCalendar.setClickable(false);
             isButtonClicked = false;
         }
+    }
+
+    public void setComponent(List<Component> list) {
+
+        reminderAdapter reminderAdapter = new reminderAdapter(list);
+        recyclerView.setAdapter(reminderAdapter);
+
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(reminderAdapter));
+        helper.attachToRecyclerView(recyclerView);
     }
     @Override
     public void onResume() {

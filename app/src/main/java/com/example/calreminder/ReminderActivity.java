@@ -118,18 +118,6 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void onCheckClicked(View view) {
-        // Calendar Fragment에서 check버튼을 눌렀을 때 실행되는 코드
-
-        ReminderList reminderList = new ReminderList();
-        Bundle args = new Bundle();
-        reminderList.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_frameLayout, reminderList);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
     public void onPlusClicked(View view, String date) {
         // Calendar Fragment에서 plus버튼을 눌렀을 때 실행되는 코드
         EditComponent editComponent = new EditComponent();

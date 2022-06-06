@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -151,7 +152,9 @@ public class CalendarFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     anim();
-                    ((ReminderActivity) getActivity()).onCheckClicked(v);
+                    FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().remove(CalendarFragment.this).commit();
+                    fragmentManager.popBackStack();
                 }
             });
         }

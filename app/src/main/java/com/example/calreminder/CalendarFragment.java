@@ -1,6 +1,7 @@
 package com.example.calreminder;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
@@ -27,9 +30,11 @@ public class CalendarFragment extends Fragment {
     FragmentStateAdapter set;
     View v;
     FragmentTransaction transaction;
+    LinearLayout yearsList;
     static TextView years;
     ImageButton yearMinus;
     ImageButton yearPlus;
+    FloatingActionButton button;
     static String selectedDate;
     static int year;
     static Context Calendarcontext;
@@ -58,6 +63,19 @@ public class CalendarFragment extends Fragment {
         years = (TextView)v.findViewById(R.id.years);
         yearMinus = (ImageButton)v.findViewById(R.id.button_minus);
         yearPlus = (ImageButton) v.findViewById(R.id.button_plus);
+        yearsList = (LinearLayout)v.findViewById(R.id.calendarFragment_yearlist);
+        button = (FloatingActionButton)v.findViewById(R.id.calendarFragment_floatingActionButton);
+        yearsList.setVisibility(View.VISIBLE);
+        years.setVisibility(View.VISIBLE);
+        yearMinus.setVisibility(View.VISIBLE);
+        yearPlus.setVisibility(View.VISIBLE);
+        if(getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
+            button.setVisibility(View.GONE);
+            years.setVisibility(View.GONE);
+            yearMinus.setVisibility(View.GONE);
+            yearPlus.setVisibility(View.GONE);
+            yearsList.setVisibility(View.GONE);
+        }
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
 

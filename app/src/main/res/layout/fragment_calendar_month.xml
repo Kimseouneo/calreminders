@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/months"
             android:layout_width="match_parent"
-            android:layout_height="104dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Month"
             android:textColor="@color/black"

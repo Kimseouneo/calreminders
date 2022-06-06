@@ -1,6 +1,7 @@
 package com.example.calreminder;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -61,6 +62,9 @@ public class CalendarMonth extends Fragment {
             v = inflater.inflate(R.layout.fragment_calendar_month, container, false);
             monthText = (TextView) v.findViewById(R.id.months);
             monthText.setText(month+"월");
+            monthText.setTextSize(0, 150);
+            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT)
+                monthText.setTextSize(0, 100);
             }
         check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-1, 1);
         for(int i = 1; i < check.get(Calendar.DAY_OF_WEEK); i++){

@@ -3,6 +3,7 @@ package com.example.calreminder;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -13,17 +14,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarMonth extends Fragment {
     //뷰페이저2에 사용할 페이지
     View v;
-    Context context;
     Calendar check = Calendar.getInstance();
     int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     ArrayList<String> calendarMonthList = new ArrayList<>();
@@ -31,7 +34,8 @@ public class CalendarMonth extends Fragment {
     RecyclerView recyclerView;
     TextView monthText;
     int month;
-
+    int beforeMonthDays;
+    int afterMonthDays = 1;
     public CalendarMonth() {
 
     }
@@ -50,7 +54,6 @@ public class CalendarMonth extends Fragment {
     public void onResume(){
         super.onResume();
     }
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -66,24 +69,33 @@ public class CalendarMonth extends Fragment {
             if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT)
                 monthText.setTextSize(0, 100);
             }
+        int beforeMonth = month - 2;
+        if(beforeMonth == -1)
+            beforeMonth = 11;
+        check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-2, dayOfMonth[beforeMonth]);
+        beforeMonthDays = check.get(Calendar.DAY_OF_WEEK);
         check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-1, 1);
+
         for(int i = 1; i < check.get(Calendar.DAY_OF_WEEK); i++){
-            calendarMonthList.add("");
+            calendarMonthList.add(dayOfMonth[beforeMonth] - beforeMonthDays + 1 +"");
+            --beforeMonthDays;
         }
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
             calendarMonthList.add(Integer.toString(i));
         }
-        if (calendarMonthList.size() < 35){
+        if (calendarMonthList.size() <= 35){
             for(int i = calendarMonthList.size(); i < 35; i++){
-                calendarMonthList.add("");
+                calendarMonthList.add(afterMonthDays+"");
+                ++afterMonthDays;
             }
         }
-        else if (calendarMonthList.size() < 42){
+        else if (calendarMonthList.size() <= 42){
             for(int i = calendarMonthList.size(); i < 42; i++){
-                calendarMonthList.add("");
+                calendarMonthList.add(afterMonthDays+"");
+                ++afterMonthDays;
             }
         }
-        adapter = new MonthOfListAdapter(getActivity(), calendarMonthList, month);
+        adapter = new MonthOfListAdapter(getActivity(), calendarMonthList, month, dayOfMonth);
         recyclerView = v.findViewById(R.id.monthList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
         recyclerView.setAdapter(adapter);

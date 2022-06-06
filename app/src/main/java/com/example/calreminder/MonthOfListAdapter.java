@@ -27,19 +27,24 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
     ArrayList<String> list;
     CalendarDialog dialog;
+    Calendar check = Calendar.getInstance();
+    Calendar check2 = Calendar.getInstance();
     Context context;
-    static View plusButton = null;
     View saveData = null;
     long checktime = 0;
     int month;
     int year;
     List<Component> componentArrayList;
+    int[] monthList;
     Calendar checkCalendar = Calendar.getInstance();
-    public MonthOfListAdapter(Context context, ArrayList<String> list, int month){
+    public MonthOfListAdapter(Context context, ArrayList<String> list, int month, int[] monthList){
         this.context = CalendarFragment.Calendarcontext;
         this.list = list;
         this.month = month;
         this.year = CalendarFragment.year;
+        this.monthList = monthList;
+        check.set(year, month-1, 1);
+        check2.set(year, month-1, monthList[month-1]);
         componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
     }
     @NonNull
@@ -56,23 +61,29 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         //리사이클러뷰의 아이템을 설정하는 메소드
         ArrayList<Component> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
+        if(position < check.get(Calendar.DAY_OF_WEEK) - 1) {
+            holder.day.setTextColor(Color.LTGRAY);
+        }
+        if(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))
+            holder.day.setTextColor(Color.LTGRAY);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-        try {
-            for (int i = 0; i < componentArrayList.size(); i++) {
-                if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
-                    //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                    if(holder.schedule.getText() == "") {
-                        Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
-                        holder.schedule.setText("일정");
-                        toDo.add(componentArrayList.get(i));
-                    }
-                    else{
-                        toDo.add(componentArrayList.get(i));
+        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))) {
+            try {
+                for (int i = 0; i < componentArrayList.size(); i++) {
+                    if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
+                        //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
+                        if (holder.schedule.getText() == "") {
+                            Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
+                            holder.schedule.setText("일정");
+                            toDo.add(componentArrayList.get(i));
+                        } else {
+                            toDo.add(componentArrayList.get(i));
+                        }
                     }
                 }
-            }
-        }catch(Exception e){
+            } catch (Exception e) {
 
+            }
         }
         try {
             if (position % 7 == 0)
@@ -84,7 +95,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         }catch(NumberFormatException e){
 
         }
-        if(holder.day.getText().toString() != "") {
+        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 //리사이클러뷰의 아이템을 클릭했을 때 작동하는 메서드
@@ -151,7 +162,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(position < list.indexOf("1"))
+                    if(position < check.get(Calendar.DAY_OF_WEEK) - 1)
                         CalendarFragment.leftPageMove();
                     else
                         CalendarFragment.rightPageMove();

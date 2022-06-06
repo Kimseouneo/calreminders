@@ -26,16 +26,11 @@
                 android:orientation="horizontal"
                 android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
                 <ImageButton
                     android:id="@+id/button_minus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:src="@drawable/ic_baseline_arrow_back_ios_24" />
@@ -54,15 +49,11 @@
                     android:id="@+id/button_plus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="30dp"
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
             </LinearLayout>
 
 

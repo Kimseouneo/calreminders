@@ -17,14 +17,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:background="@color/white">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="102dp"
-                android:orientation="horizontal"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/button_minus"
@@ -33,7 +37,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
                     android:id="@+id/years"
@@ -52,7 +57,8 @@
                     android:layout_marginRight="30dp"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
@@ -60,10 +66,63 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/Calendar_list"
                 android:layout_width="match_parent"
-                android:layout_height="552dp" />
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/calendarFragment_floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="TODO"
+            android:foregroundGravity="bottom"
+            android:padding="0sp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_more"
+            app:backgroundTint="@color/teal_600"
+            app:borderWidth="0dp"
+            app:elevation="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:pressedTranslationZ="12dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/calendarFragment_floatingActionButton_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:foregroundGravity="bottom"
+            android:src="@drawable/ic_action_add"
+            android:visibility="invisible"
+            app:backgroundTint="@color/white"
+            app:borderWidth="0dp"
+            app:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/calendarFragment_floatingActionButton"
+            app:layout_constraintEnd_toStartOf="@+id/calendarFragment_floatingActionButton"
+            app:pressedTranslationZ="12dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/calendarFragment_floatingActionButton_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:foregroundGravity="bottom"
+            android:src="@drawable/ic_action_calendar"
+            android:visibility="invisible"
+            app:backgroundTint="@color/white"
+            app:borderWidth="0dp"
+            app:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/calendarFragment_floatingActionButton_add"
+            app:layout_constraintEnd_toStartOf="@+id/calendarFragment_floatingActionButton_add"
+            app:pressedTranslationZ="12dp"
+            tools:ignore="SpeakableTextPresentCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -148,7 +148,7 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_frameLayout, calendarFragment);
+        transaction.replace(R.id.mainActivity_frameLayout, calendarFragment,"calendarFragment_portrait");
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -243,8 +243,36 @@ public class ReminderActivity extends AppCompatActivity{
 
             } catch (ClassCastException e) {
                 Log.d("EXCEPTION", "ReminderList is not exist");
-            } catch (Exception e) {
-                Log.d("EXCEPTION", "Can't get orientation");
+            }
+            catch (Exception e) {
+                Log.d("EXCEPTION", "Exception");
+            }
+
+            try {
+                CalendarFragment calendarFragment;
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentByTag("calendarFragment_portrait");
+
+                    Rect floatingActionButtonRect = new Rect();
+                    Rect floatingActionButtonAddRect = new Rect();
+                    Rect floatingActionButtonReminderRect = new Rect();
+                    findViewById(R.id.calendarFragment_floatingActionButton_add).getGlobalVisibleRect(floatingActionButtonAddRect);
+                    findViewById(R.id.calendarFragment_floatingActionButton_reminder).getGlobalVisibleRect(floatingActionButtonReminderRect);
+                    findViewById(R.id.calendarFragment_floatingActionButton).getGlobalVisibleRect(floatingActionButtonRect);
+                    if (calendarFragment.isButtonClicked &&
+                            !floatingActionButtonRect.contains((int) event.getRawX(), (int) event.getY()) &&
+                            !floatingActionButtonAddRect.contains((int)event.getRawX(), (int)event.getRawY()) &&
+                            !floatingActionButtonReminderRect.contains((int)event.getRawX(), (int)event.getRawY()))
+                    {
+                        calendarFragment.anim();
+                    }
+                }
+
+            } catch (ClassCastException e) {
+                Log.d("EXCEPTION", "ReminderList is not exist");
+            }
+            catch (Exception e) {
+                Log.d("EXCEPTION", "ExceptionCalendar");
             }
         }
         return super.dispatchTouchEvent(event);

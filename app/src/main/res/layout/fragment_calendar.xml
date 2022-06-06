@@ -109,7 +109,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/calendarFragment_floatingActionButton_calendar"
+            android:id="@+id/calendarFragment_floatingActionButton_reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"

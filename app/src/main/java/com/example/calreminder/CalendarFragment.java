@@ -2,14 +2,12 @@ package com.example.calreminder;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +36,10 @@ public class CalendarFragment extends Fragment {
     static String selectedDate;
     static int year;
     static Context Calendarcontext;
+    public Boolean isButtonClicked = false;
+    private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
+    private Animation animationActionButtonOpen, animationActionButtonClose,
+            animationActionButtonMoreOpen, animationActionButtonMoreClose;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -115,6 +117,45 @@ public class CalendarFragment extends Fragment {
                 year = year+1;
             }
         });
+
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // 세로 모드일경우 실행
+
+            // FloatingActionButton 애니메이션
+            animationActionButtonOpen = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.action_button_open_animation);
+            animationActionButtonClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.action_button_close_animation);
+            animationActionButtonMoreOpen = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.action_button_rotate_start_animation);
+            animationActionButtonMoreClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.action_button_rotate_end_animation);
+            actionButtonMore = v.findViewById(R.id.calendarFragment_floatingActionButton);
+            actionButtonAdd = v.findViewById(R.id.calendarFragment_floatingActionButton_add);
+            actionButtonCalendar = v.findViewById(R.id.calendarFragment_floatingActionButton_reminder);
+
+            // more 버튼
+            actionButtonMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    anim();
+                }
+            });
+            // + 버튼
+            actionButtonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    anim();
+                    ((ReminderActivity) getActivity()).onAddButtonClicked(view);
+                }
+            });
+            // 리마인더 버튼
+            actionButtonCalendar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    anim();
+                    ((ReminderActivity) getActivity()).onCheckClicked(v);
+                }
+            });
+        }
+
         thread.start();
         return v;
     }
@@ -125,5 +166,24 @@ public class CalendarFragment extends Fragment {
 
     static void rightPageMove(){
         CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()+1);
+    }
+
+
+    public void anim() {
+        if (!isButtonClicked) {
+            actionButtonMore.startAnimation(animationActionButtonMoreOpen);
+            actionButtonAdd.startAnimation(animationActionButtonOpen);
+            actionButtonCalendar.startAnimation(animationActionButtonOpen);
+            actionButtonAdd.setClickable(true);
+            actionButtonCalendar.setClickable(true);
+            isButtonClicked = true;
+        } else {
+            actionButtonMore.startAnimation(animationActionButtonMoreClose);
+            actionButtonAdd.startAnimation(animationActionButtonClose);
+            actionButtonCalendar.startAnimation(animationActionButtonClose);
+            actionButtonAdd.setClickable(false);
+            actionButtonCalendar.setClickable(false);
+            isButtonClicked = false;
+        }
     }
 }

@@ -102,6 +102,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                             } else if (saveData == v) {
                                 v.setBackgroundColor(Color.WHITE);
                                 saveData = null;
+                                ((ReminderActivity)context).setDateLand("");
                             } else {
                                 saveData.setBackgroundColor(Color.WHITE);
                                 v.setBackgroundColor(Color.GREEN);

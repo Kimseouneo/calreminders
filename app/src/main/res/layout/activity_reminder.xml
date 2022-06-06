@@ -11,7 +11,7 @@
     <!-- Fragment Container View-->
 
     <FrameLayout
-        android:id="@+id/mainActivity_fragmentContainerView"
+        android:id="@+id/mainActivity_frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

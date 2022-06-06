@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editFragment_constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <ScrollView
             android:id="@+id/editFragment_scrollView"
@@ -39,7 +40,8 @@
                     android:layout_height="wrap_content"
                     android:padding="6dp"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeColor="@null">
 
                     <TextView
                         android:id="@+id/editFragment_textView_title"
@@ -158,7 +160,8 @@
                         android:layout_height="wrap_content"
                         android:padding="6dp"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="0dp">
+                        app:cardElevation="0dp"
+                        app:strokeColor="@null">
 
                         <LinearLayout
                             android:id="@+id/editFragment_Linearlayout_selectPlace"

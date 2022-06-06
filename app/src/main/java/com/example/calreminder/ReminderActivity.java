@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
@@ -14,6 +13,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +21,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.essam.simpleplacepicker.MapActivity;
@@ -29,6 +28,8 @@ import com.essam.simpleplacepicker.utils.SimplePlacePicker;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
+    private String mDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +41,14 @@ public class ReminderActivity extends AppCompatActivity{
         CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
 
         FragmentManager fm = getSupportFragmentManager();
-        if(findViewById(R.id.mainActivity_fragmentContainerView) != null) {
+        if(findViewById(R.id.mainActivity_frameLayout) != null) {
             // 세로 모드일경우
             ReminderList listFragment = (ReminderList) fm.findFragmentByTag("listFragment_portrait");
+
             if(listFragment == null) {
                 listFragment = new ReminderList();
-                fm.beginTransaction().add(R.id.mainActivity_fragmentContainerView, listFragment, "listFragment_portrait").commit();
+                CalendarFragment calendarFragment = new CalendarFragment();
+                fm.beginTransaction().add(R.id.mainActivity_frameLayout, listFragment, "listFragment_portrait").commit();
             }
         }
         else {
@@ -54,8 +57,8 @@ public class ReminderActivity extends AppCompatActivity{
             if(listFragment == null) {
                 listFragment = new ReminderList();
                 CalendarFragment calendarFragment = new CalendarFragment();
-                fm.beginTransaction().add(R.id.reminderList, listFragment, "listFragment_landScape").
-                        add(R.id.calendar, calendarFragment,"calendarFragment_landScape").commit();
+                fm.beginTransaction().add(R.id.mainActivity_flameLayout_right_land, listFragment, "listFragment_landScape").
+                        add(R.id.mainActivity_flameLayout_left_land, calendarFragment,"calendarFragment_landScape").commit();
             }
         }
     }
@@ -67,7 +70,21 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_fragmentContainerView, editEditComponentFragment);
+        transaction.replace(R.id.mainActivity_frameLayout, editEditComponentFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+
+    public void onAddButtonClickedLand(View view) {
+        //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
+        //가로 모드일경우 실행
+
+        EditComponent editEditComponentFragment = new EditComponent();
+        Bundle args = new Bundle();
+        editEditComponentFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainActivity_flameLayout_center_land, editEditComponentFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -81,7 +98,19 @@ public class ReminderActivity extends AppCompatActivity{
 
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_fragmentContainerView, editEditComponentFragment);
+        transaction.replace(R.id.mainActivity_frameLayout, editEditComponentFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+    public void onComponentButtonClickedLand(int id) {
+        // Reminder Fragment에서 항목을 눌렀을때 실행되는 코드
+        EditComponent editEditComponentFragment = new EditComponent();
+        Bundle args = new Bundle();
+        args.putInt("ID", id);
+
+        editEditComponentFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainActivity_flameLayout_center_land, editEditComponentFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -93,7 +122,7 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         reminderList.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_fragmentContainerView, reminderList);
+        transaction.replace(R.id.mainActivity_frameLayout, reminderList);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -105,7 +134,7 @@ public class ReminderActivity extends AppCompatActivity{
         args.putString("Date",date);
         editComponent.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_fragmentContainerView, editComponent);
+        transaction.replace(R.id.mainActivity_frameLayout, editComponent);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -116,7 +145,7 @@ public class ReminderActivity extends AppCompatActivity{
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_fragmentContainerView, calendarFragment);
+        transaction.replace(R.id.mainActivity_frameLayout, calendarFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -152,6 +181,10 @@ public class ReminderActivity extends AppCompatActivity{
         return false;
     }
 
+    public void setDateLand(String date) {
+        mDate = date;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -182,24 +215,29 @@ public class ReminderActivity extends AppCompatActivity{
             }
             // 빈 공간 터치시 floacting action button의 애니메이션 동작
             try {
-                ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentById(R.id.mainActivity_fragmentContainerView);
+                ReminderList reminderList;
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    reminderList = (ReminderList) getSupportFragmentManager().findFragmentByTag("listFragment_portrait");
 
-                Rect floatingActionButtonRect = new Rect();
-                Rect floatingActionButtonAddRect = new Rect();
-                Rect floatingActionButtonCalendarRect = new Rect();
-                findViewById(R.id.listFragment_floatingActionButton_add).getGlobalVisibleRect(floatingActionButtonAddRect);
-                findViewById(R.id.listFragment_floatingActionButton_calendar).getGlobalVisibleRect(floatingActionButtonCalendarRect);
-                findViewById(R.id.listFragment_floatingActionButton).getGlobalVisibleRect(floatingActionButtonRect);
-                if (reminderList.isButtonClicked &&
-                        !floatingActionButtonRect.contains((int) event.getRawX(), (int) event.getY()) &&
-                        !floatingActionButtonAddRect.contains((int)event.getRawX(), (int)event.getRawY()) &&
-                        !floatingActionButtonCalendarRect.contains((int)event.getRawX(), (int)event.getRawY()))
-                {
-                    Log.d("OUT", "OUT");
-                    reminderList.anim();
+                    Rect floatingActionButtonRect = new Rect();
+                    Rect floatingActionButtonAddRect = new Rect();
+                    Rect floatingActionButtonCalendarRect = new Rect();
+                    findViewById(R.id.listFragment_floatingActionButton_add).getGlobalVisibleRect(floatingActionButtonAddRect);
+                    findViewById(R.id.listFragment_floatingActionButton_calendar).getGlobalVisibleRect(floatingActionButtonCalendarRect);
+                    findViewById(R.id.listFragment_floatingActionButton).getGlobalVisibleRect(floatingActionButtonRect);
+                    if (reminderList.isButtonClicked &&
+                            !floatingActionButtonRect.contains((int) event.getRawX(), (int) event.getY()) &&
+                            !floatingActionButtonAddRect.contains((int)event.getRawX(), (int)event.getRawY()) &&
+                            !floatingActionButtonCalendarRect.contains((int)event.getRawX(), (int)event.getRawY()))
+                    {
+                        reminderList.anim();
+                    }
                 }
+
             } catch (ClassCastException e) {
                 Log.d("EXCEPTION", "ReminderList is not exist");
+            } catch (Exception e) {
+                Log.d("EXCEPTION", "Can't get orientation");
             }
         }
         return super.dispatchTouchEvent(event);

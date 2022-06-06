@@ -3,6 +3,7 @@ package com.example.calreminder;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.shadow.ShadowRenderer;
 
 import java.util.EventListener;
 import java.util.EventObject;
@@ -48,7 +51,22 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ReminderActivity)context).onComponentButtonClicked(component.Id + CalreminderData.baseId);
+                if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    ((ReminderActivity)context).onComponentButtonClicked(component.Id + CalreminderData.baseId);
+                else if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    ((ReminderActivity)context).onComponentButtonClickedLand(component.Id + CalreminderData.baseId);
+                else
+                    Log.d("EXCEPTION", "Can't get orientation");
+            }
+        });
+        holder.itemView.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        return true;
+                }
+                return false;
             }
         });
     }

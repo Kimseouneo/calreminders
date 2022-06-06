@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -129,7 +128,6 @@ public class EditComponent extends Fragment {
         // 날짜를 선택했을때 캘린더 위젯의 작동을 구현
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.editFragment_calendarView);
         Calendar calendar = Calendar.getInstance();
-        calendarView.setMinDate(calendar.getTimeInMillis());
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
@@ -398,6 +396,9 @@ public class EditComponent extends Fragment {
                 mDate = args.getString("Date");
                 ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
                 ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
+                String[] date = mDate.split("/");
+                calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
+                calendarView.setDate(calendar.getTimeInMillis());
             }
             // 배경색 대입
             TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);

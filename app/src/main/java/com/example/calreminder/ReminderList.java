@@ -1,6 +1,7 @@
 package com.example.calreminder;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -67,29 +68,47 @@ public class ReminderList extends Fragment {
         actionButtonAdd = view.findViewById(R.id.listFragment_floatingActionButton_add);
         actionButtonCalendar = view.findViewById(R.id.listFragment_floatingActionButton_calendar);
 
-        // more 버튼
-        actionButtonMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                anim();
-            }
-        });
-        // + 버튼
-        actionButtonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                anim();
-                ((ReminderActivity)getActivity()).onAddButtonClicked(view);
-            }
-        });
-        // 캘린더 버튼
-        actionButtonCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                anim();
-                ((ReminderActivity)getActivity()).onCalendarButtonClicked(v);
-            }
-        });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // 세로 모드일경우 실행
+            // more 버튼
+            actionButtonMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    anim();
+                }
+            });
+            // + 버튼
+            actionButtonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    anim();
+                    ((ReminderActivity) getActivity()).onAddButtonClicked(view);
+                }
+            });
+            // 캘린더 버튼
+            actionButtonCalendar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    anim();
+                    ((ReminderActivity) getActivity()).onCalendarButtonClicked(v);
+                }
+            });
+        }
+        else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //가로 모드일 경우 실행
+            // more 버튼
+            actionButtonMore.setImageResource(R.drawable.ic_action_add);
+            actionButtonMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ReminderActivity) getActivity()).onAddButtonClickedLand(view);
+                }
+            });
+        }
+
+        else {
+            Log.d("EXCEPTION", "Can't get orientation");
+        }
 
         // 리마인더 리스트 만들기
         List<Component> list = CalreminderData.componentDataDao.getAllComponent();
@@ -103,7 +122,6 @@ public class ReminderList extends Fragment {
 
         helper = new ItemTouchHelper(new ItemTouchHelperCallback(reminderAdapter));
         helper.attachToRecyclerView(recyclerView);
-
 
         // 검색기능
         SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);

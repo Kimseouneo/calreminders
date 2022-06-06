@@ -2,6 +2,7 @@ package com.example.calreminder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -91,47 +92,58 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
             //리사이클러뷰의 아이템을 클릭했을 때 작동하는 메서드
             //현재 더블탭 구현
             public void onClick(View v) {
-                if(System.currentTimeMillis() > checktime + 500){
-                    checktime = System.currentTimeMillis();
-                    if (saveData == null) {
-                        saveData = v;
-                        v.setBackgroundColor(Color.GREEN);
-                        plusButton = v;
-                        CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
-                    }
-                    else if (saveData == v){
-                        v.setBackgroundColor(Color.WHITE);
-                        saveData = null;
-
+                if(System.currentTimeMillis() > checktime + 500) {
+                    if (context.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
+                        if (saveData == null) {
+                            saveData = v;
+                            v.setBackgroundColor(Color.GREEN);
+                            ((ReminderActivity)context).setDateLand(Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
+                        }
+                        else if (saveData == v) {
+                            v.setBackgroundColor(Color.WHITE);
+                            saveData = null;
+                        }
+                        else {
+                            saveData.setBackgroundColor(Color.WHITE);
+                            v.setBackgroundColor(Color.GREEN);
+                            saveData = v;
+                            ((ReminderActivity)context).setDateLand(Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
+                        }
                     }
                     else {
-                        saveData.setBackgroundColor(Color.WHITE);
-                        v.setBackgroundColor(Color.GREEN);
-                        saveData = v;
-                        plusButton = v;
-                        CalendarFragment.selectedDate = Integer.toString(year)+'/'+Integer.toString(month)+'/'+holder.day.getText().toString();
-                    }
-                    if (holder.schedule.getText().toString() == "일정") {
-                        for (int i = 0; i < toDo.size(); i++) {
-                            Log.d("!!!!!!!!!!!!!!!!!!", toDo.get(i).text);
+                        checktime = System.currentTimeMillis();
+                        if (saveData == null) {
+                            saveData = v;
+                            v.setBackgroundColor(Color.GREEN);
+                            plusButton = v;
+                            CalendarFragment.selectedDate = Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString();
+                        } else if (saveData == v) {
+                            v.setBackgroundColor(Color.WHITE);
+                            saveData = null;
+                            plusButton = null;
+                        } else {
+                            saveData.setBackgroundColor(Color.WHITE);
+                            v.setBackgroundColor(Color.GREEN);
+                            saveData = v;
+                            plusButton = v;
+                            CalendarFragment.selectedDate = Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString();
                         }
                     }
                     return;
                 }
                 if(System.currentTimeMillis() <= 500 + checktime && holder.schedule.getText().toString() == "일정"){
                     Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
-                    /*CalreminderData.componentDataDao.deleteComponent(toDo.get(0).Id);
-                    componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
-                    notifyItemChanged(position);*/
-                    dialog = new CalendarDialog(context, toDo);
-                    if (saveData.getParent() != null)
-                        ((ViewGroup) saveData.getParent()).removeView(saveData);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(saveData);
-                    dialog.show();
-                    componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
-                    notifyItemChanged(position);
-                    Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
+                    if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        dialog = new CalendarDialog(context, toDo);
+                        if (saveData.getParent() != null)
+                            ((ViewGroup) saveData.getParent()).removeView(saveData);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setContentView(saveData);
+                        dialog.show();
+                        componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                        notifyItemChanged(position);
+                        Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
+                    }
                 }
             }
         });

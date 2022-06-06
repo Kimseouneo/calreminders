@@ -138,6 +138,12 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                             Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                         }
                     }
+                    else if(System.currentTimeMillis() <= 500 + checktime && v != saveData){
+                        saveData.setBackgroundResource(R.drawable.ic_baseline_calendarbackground);
+                        saveData = v;
+                        v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
+
+                    }
                 }
             });
         }

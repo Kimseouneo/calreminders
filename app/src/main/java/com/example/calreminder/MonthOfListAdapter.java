@@ -32,17 +32,19 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     private Context context;
     private View saveData = null;
     long checktime = 0;
+    int afterMonthDays;
     int month;
     int year;
     List<Component> componentArrayList;
     int[] monthList;
     Calendar checkCalendar = Calendar.getInstance();
-    public MonthOfListAdapter(Context context, ArrayList<String> list, int month, int[] monthList){
+    public MonthOfListAdapter(Context context, ArrayList<String> list, int month, int[] monthList, int afterMonthDays){
         this.context = CalendarFragment.Calendarcontext;
         this.list = list;
         this.month = month;
         this.year = CalendarFragment.year;
         this.monthList = monthList;
+        this.afterMonthDays = afterMonthDays;
         check.set(year, month-1, 1);
         check2.set(year, month-1, monthList[month-1]);
         componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
@@ -61,13 +63,22 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         //리사이클러뷰의 아이템을 설정하는 메소드
         ArrayList<Component> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
-        if(position < check.get(Calendar.DAY_OF_WEEK) - 1) {
-            holder.day.setTextColor(Color.LTGRAY);
+        try {
+            if (position % 7 == 0)
+                holder.day.setTextColor(Color.BLUE);
+            if ((position + 1) % 7 == 0)
+                holder.day.setTextColor(Color.RED);
+            if (Integer.parseInt(list.get(position)) == checkCalendar.get(Calendar.DATE) && month == checkCalendar.get(Calendar.MONTH)+1 && year == checkCalendar.get(Calendar.YEAR))
+                holder.day.setTextColor(Color.MAGENTA);
+        }catch(NumberFormatException e){
+
         }
-        if(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))
+        if(position < check.get(Calendar.DAY_OF_WEEK) - 1)
+            holder.day.setTextColor(Color.LTGRAY);
+        if(position >= list.size() - afterMonthDays + 1)
             holder.day.setTextColor(Color.LTGRAY);
         Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))) {
+        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - afterMonthDays + 1)) {
             try {
                 for (int i = 0; i < componentArrayList.size(); i++) {
                     if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
@@ -85,17 +96,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
 
             }
         }
-        try {
-            if (position % 7 == 0)
-                holder.day.setTextColor(Color.BLUE);
-            if ((position + 1) % 7 == 0)
-                holder.day.setTextColor(Color.RED);
-            if (Integer.parseInt(list.get(position)) == checkCalendar.get(Calendar.DATE) && month == checkCalendar.get(Calendar.MONTH)+1 && year == checkCalendar.get(Calendar.YEAR))
-                holder.day.setTextColor(Color.MAGENTA);
-        }catch(NumberFormatException e){
-
-        }
-        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - (7 - check2.get(Calendar.DAY_OF_WEEK)))) {
+        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - afterMonthDays + 1)) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 //리사이클러뷰의 아이템을 클릭했을 때 작동하는 메서드

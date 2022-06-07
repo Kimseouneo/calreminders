@@ -75,27 +75,19 @@ public class CalendarMonth extends Fragment {
         check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-2, dayOfMonth[beforeMonth]);
         beforeMonthDays = check.get(Calendar.DAY_OF_WEEK);
         check.set(Integer.parseInt(CalendarFragment.years.getText().toString()), month-1, 1);
-
         for(int i = 1; i < check.get(Calendar.DAY_OF_WEEK); i++){
             calendarMonthList.add(dayOfMonth[beforeMonth] - beforeMonthDays + 1 +"");
             --beforeMonthDays;
         }
-        for(int i = 1; i<= dayOfMonth[month-1]; i++){
+        for(int i = 1; i<= dayOfMonth[month-1]; i++)
             calendarMonthList.add(Integer.toString(i));
-        }
-        if(calendarMonthList.size() <= 35){
-            for(int i = calendarMonthList.size(); i < 35; i++){
-                calendarMonthList.add(afterMonthDays+"");
-                ++afterMonthDays;
-            }
-        }
-        else if (calendarMonthList.size() <= 42){
+        if (calendarMonthList.size() <= 42){
             for(int i = calendarMonthList.size(); i < 42; i++){
                 calendarMonthList.add(afterMonthDays+"");
                 ++afterMonthDays;
             }
         }
-        adapter = new MonthOfListAdapter(getActivity(), calendarMonthList, month, dayOfMonth);
+        adapter = new MonthOfListAdapter(getActivity(), calendarMonthList, month, dayOfMonth, afterMonthDays);
         recyclerView = v.findViewById(R.id.monthList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
         recyclerView.setAdapter(adapter);

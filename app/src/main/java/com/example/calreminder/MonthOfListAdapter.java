@@ -30,13 +30,13 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     private CalendarDialog dialog;
     private Calendar check = Calendar.getInstance();
     private Calendar check2 = Calendar.getInstance();
-    private Context context;
+    Context context;
     private View saveData = null;
     long checktime = 0;
     int afterMonthDays;
     int month;
     int year;
-    List<Component> componentArrayList;
+    static List<Component> componentArrayList;
     int[] monthList;
     Calendar checkCalendar = Calendar.getInstance();
     public MonthOfListAdapter(Context context, ArrayList<String> list, int month, int[] monthList, int afterMonthDays){
@@ -180,7 +180,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
             });
         }
     }
-
 
     @Override
     public int getItemCount() {

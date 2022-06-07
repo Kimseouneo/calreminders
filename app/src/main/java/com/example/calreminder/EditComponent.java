@@ -300,6 +300,7 @@ public class EditComponent extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
+                ((ReminderActivity)getActivity()).refreshCalendarFragment();
             }
         });
 
@@ -345,7 +346,6 @@ public class EditComponent extends Fragment {
 
                     Toast toast = Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT);
                     toast.show();
-                    
                     FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     fragmentManager.popBackStack();

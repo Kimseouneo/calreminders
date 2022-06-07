@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -157,6 +158,13 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         v.setBackgroundResource(R.drawable.ic_baseline_selectedcalendarbackground);
 
                     }
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    ((ReminderActivity)context).onPlusClicked(view, Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
+                    return true;
                 }
             });
         }

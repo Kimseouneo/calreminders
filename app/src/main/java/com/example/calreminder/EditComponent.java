@@ -50,7 +50,7 @@ public class EditComponent extends Fragment {
     private String mPlace = "";
     private String mColorHex = "#e0e0e0";
     private Integer mColor = -2039584;
-
+    private Boolean isFromCalendar = false;
     public EditComponent() {
         // Required empty public constructor
     }
@@ -182,8 +182,6 @@ public class EditComponent extends Fragment {
             public void onClick(View view) {
                 Toast toast = Toast.makeText(getActivity(),"취소되었습니다.",Toast.LENGTH_SHORT);
                 toast.show();
-                if(((ReminderActivity)getActivity()).longClickCheck)
-                    ((ReminderActivity)getActivity()).setLongClickCheckInCalendarFragment();
                 FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
@@ -298,9 +296,8 @@ public class EditComponent extends Fragment {
                 Toast toast = Toast.makeText(getActivity(),"저장이 완료되었습니다.",Toast.LENGTH_SHORT);
                 toast.show();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                if(((ReminderActivity)getActivity()).longClickCheck) {
+                if(isFromCalendar) {
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
-                    ((ReminderActivity)getActivity()).setLongClickCheckInCalendarFragment();
                     MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                     fragmentManager.popBackStack();
                 }
@@ -401,11 +398,14 @@ public class EditComponent extends Fragment {
 
             if (args.containsKey("Date")) {
                 mDate = args.getString("Date");
-                ((Switch)view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
-                ((RadioButton)view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
-                String[] date = mDate.split("/");
-                calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
-                calendarView.setDate(calendar.getTimeInMillis());
+                isFromCalendar = true;
+                if (!mDate.equals("")) {
+                    ((Switch) view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
+                    ((RadioButton) view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
+                    String[] date = mDate.split("/");
+                    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
+                    calendarView.setDate(calendar.getTimeInMillis());
+                }
             }
             // 배경색 대입
             TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);

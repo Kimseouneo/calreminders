@@ -167,7 +167,7 @@ public class CalendarFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     anim();
-                    ((ReminderActivity) getActivity()).onAddButtonClicked(view);
+                    ((ReminderActivity) getActivity()).onPlusClicked(view,"");
                 }
             });
             // 리마인더 버튼

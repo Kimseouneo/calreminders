@@ -20,6 +20,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
         void onItemClick(View v, int pos);
     }
     private OnItemClickListener mListener = null;
+    private View view;
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
@@ -50,7 +51,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
     }
     ArrayList<Component> todos;
     Context context;
-    public ToDoOfCalendarAdapter(Context context, ArrayList<Component> todos){
+     ToDoOfCalendarAdapter(Context context, ArrayList<Component> todos){
         this.context = context;
         this.todos = todos;
     }
@@ -60,7 +61,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
     public ToDoOfCalendarHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.todolist_item, parent, false);
+        view = inflater.inflate(R.layout.todolist_item, parent, false);
         return new ToDoOfCalendarHolder(view);
     }
 
@@ -73,6 +74,16 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
         else
             holder.time.setText("하루 종일");
         holder.todoList.setBackgroundColor(todos.get(position).color);
+        holder.itemView.setTag(new Boolean(false));
+
+        view.findViewById(R.id.todolist_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalreminderData.componentDataDao.deleteComponent(todos.get(position).Id);
+                todos.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
     }
 
     //구현해야 되는 함수 시작

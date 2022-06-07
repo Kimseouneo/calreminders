@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -55,8 +56,18 @@ public class CalendarDialog extends Dialog {
         recyclerView = findViewById(R.id.todolist);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
+
+        ItemTouchHelperCallback touchHelperCallback = new ItemTouchHelperCallback(adapter, 200f);
+        helper = new ItemTouchHelper(touchHelperCallback);
         helper.attachToRecyclerView(recyclerView);
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touchHelperCallback.removePreviousClamp(recyclerView);
+                return false;
+            }
+        });
     }
 
     private void setUpRecyclerView(){

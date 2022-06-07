@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,7 +33,6 @@ import java.util.ArrayList;
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
     private String mDate = "";
-    boolean longClickCheck = false;
     private ArrayList<Integer>positions = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +85,7 @@ public class ReminderActivity extends AppCompatActivity{
 
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
-        if (!mDate.equals(""))
-            args.putString("Date",mDate);
+        args.putString("Date",mDate);
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainActivity_flameLayout_center_land, editEditComponentFragment);
@@ -124,7 +123,8 @@ public class ReminderActivity extends AppCompatActivity{
         // Calendar Fragment에서 plus버튼을 눌렀을 때 실행되는 코드
         EditComponent editComponent = new EditComponent();
         Bundle args = new Bundle();
-        args.putString("Date",date);
+        if (!date.equals(""))
+            args.putString("Date",date);
         editComponent.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainActivity_frameLayout, editComponent);
@@ -157,10 +157,6 @@ public class ReminderActivity extends AppCompatActivity{
             intent.putExtras(bundle);
             startActivityForResult(intent, SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE);
         }
-    }
-    public void setLongClickCheckInCalendarFragment(){
-        //캘린더에서 롱클릭을 확인하는 함수
-        longClickCheck = !longClickCheck;
     }
 
     public static boolean hasPermissionInManifest(Activity activity, int requestCode, String permissionName) {
@@ -239,7 +235,7 @@ public class ReminderActivity extends AppCompatActivity{
                 Log.d("EXCEPTION", "ReminderList is not exist");
             }
             catch (Exception e) {
-                Log.d("EXCEPTION", "Exception");
+                Log.d("EXCEPTION", "ExceptionReminder");
             }
 
             try {
@@ -263,7 +259,7 @@ public class ReminderActivity extends AppCompatActivity{
                 }
 
             } catch (ClassCastException e) {
-                Log.d("EXCEPTION", "ReminderList is not exist");
+                Log.d("EXCEPTION", "Calendar is not exist");
             }
             catch (Exception e) {
                 Log.d("EXCEPTION", "ExceptionCalendar");

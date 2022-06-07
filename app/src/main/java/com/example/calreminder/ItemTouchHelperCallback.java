@@ -1,31 +1,25 @@
 package com.example.calreminder;
 
-import android.content.ClipData;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-enum ButtonsState{
-    GONE,
-    RIGHT_VISIBLE
-}
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     private ItemTouchHelperListener listener;
     private boolean swipeBack = false;
-    private ButtonsState buttonsShowedState = ButtonsState.GONE;
-    private static final float buttonWidth = 115;
-    private RectF buttonInstance = null;
-    private RecyclerView.ViewHolder currenrtItemViewHolder = null;
+    private float buttonWidth;
+    private Integer currentPosition = null;
+    private Integer previousPostion = null;
+    private float currentdX = 0f;
 
-    public ItemTouchHelperCallback(ItemTouchHelperListener listener){
+    public ItemTouchHelperCallback(ItemTouchHelperListener listener, float width){
         this.listener = listener;
+        buttonWidth = width;
     }
 
     @Override
@@ -56,62 +50,29 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         //아이템이 스와이프 됐을경우 버튼을 그려주기 위해서 스와이프가 됐는지 확인
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-            if(buttonsShowedState != ButtonsState.GONE){
-                if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE) dX = Math.min(dX, -buttonWidth);
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            View view = getView(viewHolder);
+            Boolean isClamped = getTag(viewHolder);
+            Float newX = clampViewPositionHorizontal(dX, isClamped, isCurrentlyActive);
 
-            }else{
-                setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            if(newX == -buttonWidth) {
+                getView(viewHolder).animate().translationX(-buttonWidth).setDuration(100L).start();
+                return;
             }
 
-            if(buttonsShowedState == ButtonsState.GONE){
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-
+            currentdX = newX;
+            getDefaultUIUtil().onDraw(c, recyclerView, view, newX, dY, actionState, isCurrentlyActive);
         }
-        currenrtItemViewHolder = viewHolder;
-
-        //버튼을 그려주는 함수
-        drawButtons(c, currenrtItemViewHolder);
-
-
     }
 
-    private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder){
-
-        float buttonWidthWithOutPadding = buttonWidth - 10;
-        float corners = 5;
-
-        View itemView = viewHolder.itemView;
-        Paint p = new Paint();
-
-        buttonInstance = null;
-
-
-        //오른쪽으로 스와이프 했을때 (왼쪽에 버튼이 보여지게 될 경우)
-
-            //왼쪽으로 스와이프 했을때 (오른쪽에 버튼이 보여지게 될 경우)
-        if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
-            RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithOutPadding, itemView.getTop() + 10, itemView.getRight() -10,
-                    itemView.getBottom() - 10);
-            p.setColor(Color.RED);
-            c.drawRoundRect(rightButton, corners, corners, p);
-            drawText("삭제", c, rightButton, p);
-
-            buttonInstance = rightButton;
-        }
-
+    @Override
+    public float getSwipeEscapeVelocity(float defaultValue) {
+        return defaultValue * 10;
     }
 
-    //버튼의 텍스트 그려주기
-    private void drawText(String text, Canvas c, RectF button, Paint p){
-        float textSize = 25;
-        p.setColor(Color.WHITE);
-        p.setAntiAlias(true);
-        p.setTextSize(textSize);
-
-        float textWidth = p.measureText(text);
-        c.drawText(text, button.centerX() - (textWidth/2), button.centerY() + (textSize/2), p);
+    @Override
+    public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
+        setTag(viewHolder, currentdX <= buttonWidth);
+        return 2f;
     }
 
     @Override
@@ -123,81 +84,84 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
 
-
-    private void setTouchListener(final Canvas c, final RecyclerView recyclerView,
-                                  final RecyclerView.ViewHolder viewHolder,
-                                  final float dX, final float dY, final int actionState,
-                                  final boolean isCurrentlyActive){
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                swipeBack = event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_UP;
-                if(swipeBack){
-                    if(dX < -buttonWidth) buttonsShowedState = ButtonsState.RIGHT_VISIBLE;
-
-
-
-
-
-                    if(buttonsShowedState != ButtonsState.GONE){
-                        setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                        setItemsClickable(recyclerView, false);
-                    }
-                }
-                return false;
-            }
-        });
+    private void setTag(RecyclerView.ViewHolder viewHolder, Boolean isClamped) {
+        viewHolder.itemView.setTag(isClamped);
     }
 
-    private void setTouchDownListener(final Canvas c, final RecyclerView recyclerView
-            , final RecyclerView.ViewHolder viewHolder, final float dX, final float dY
-            , final int actionState, final boolean isCurrentlyActive){
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    setTouchUpListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                }
-                return false;
-            }
-        });
+    @Override
+    public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+        if(viewHolder == null) return;
+        currentPosition = viewHolder.getAdapterPosition();
+        getDefaultUIUtil().clearView(viewHolder.itemView);
     }
 
-    private void setTouchUpListener(final Canvas c, final RecyclerView recyclerView
-            , final RecyclerView.ViewHolder viewHolder, final float dX, final float dY
-            , final int actionState, final boolean isCurrentlyActive){
-
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ItemTouchHelperCallback.super.onChildDraw(c, recyclerView, viewHolder, 0F, dY, actionState, isCurrentlyActive);
-                recyclerView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return false;
-                    }
-                });
-
-                setItemsClickable(recyclerView, true);
-                swipeBack = false;
-
-                if(listener != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())){
-                    if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
-                        listener.onRightClick(viewHolder.getAdapterPosition(), viewHolder);
-                    }
-                }
-
-                buttonsShowedState = ButtonsState.GONE;
-                currenrtItemViewHolder = null;
-                return false;
-            }
-        });
+    @Override
+    public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        currentdX = 0f;
+        previousPostion = viewHolder.getAdapterPosition();
+        getDefaultUIUtil().clearView(viewHolder.itemView);
     }
 
-    private void setItemsClickable(RecyclerView recyclerView, boolean isClickable){
-        for(int i = 0; i < recyclerView.getChildCount(); i++){
-            recyclerView.getChildAt(i).setClickable(isClickable);
+    private Boolean getTag(RecyclerView.ViewHolder viewHolder) {
+        try {
+            Boolean bool = (Boolean) viewHolder.itemView.getTag();
+            return bool;
+        }
+        catch (ClassCastException e){
+            e.printStackTrace();
+            return false;
         }
     }
 
+    private Float clampViewPositionHorizontal(float dX, Boolean isClamped, Boolean isCurrentlyActive) {
+        float max = 0f;
+
+        float newX;
+        if (isClamped) {
+            if(isCurrentlyActive) {
+                if(dX < 0)
+                    newX = dX/3 - buttonWidth;
+                else
+                    newX = dX - buttonWidth;
+            }
+            else
+                newX = -buttonWidth;
+        }
+        else
+            newX = dX /2;
+
+        return Math.min(newX,max);
+    }
+
+    public void removePreviousClamp(RecyclerView recyclerView) {
+        if (previousPostion == null) {
+            Log.d("Helper", "previous Position is null");
+            return;
+        }
+
+        Log.d("Helper", "StartRemovePreviousClamp");
+        try {
+            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(previousPostion);
+            getView(viewHolder).animate().x(0f).setDuration(200L).start();
+            setTag(viewHolder, false);
+            previousPostion = null;
+        }
+        catch (Exception e) {
+            Log.d("EXCEPTION", "Can't find previous Component");
+            return;
+        }
+
+    }
+
+    private View getView(RecyclerView.ViewHolder viewHolder) {
+        try {
+            View swipeView = viewHolder.itemView.findViewById(R.id.reminderItem_swipe_view);
+            if(swipeView == null)
+                swipeView = viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
+            return swipeView;
+        }
+        catch (Exception e) {
+            return viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
+        }
+    }
 }

@@ -5,12 +5,14 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -25,6 +27,7 @@ import java.util.List;
 public class ReminderList extends Fragment {
     private RecyclerView recyclerView;
     public Boolean isButtonClicked = false;
+    public ItemTouchHelperCallback touchHelperCallback;
     private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
     private Animation animationActionButtonOpen, animationActionButtonClose,
             animationActionButtonMoreOpen, animationActionButtonMoreClose;
@@ -109,7 +112,6 @@ public class ReminderList extends Fragment {
 
         recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         setComponent(list);
 
         // 검색기능
@@ -159,8 +161,17 @@ public class ReminderList extends Fragment {
         reminderAdapter reminderAdapter = new reminderAdapter(list);
         recyclerView.setAdapter(reminderAdapter);
 
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(reminderAdapter));
+        touchHelperCallback = new ItemTouchHelperCallback(reminderAdapter, getResources().getDisplayMetrics().widthPixels / 4f);
+        helper = new ItemTouchHelper(touchHelperCallback);
         helper.attachToRecyclerView(recyclerView);
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touchHelperCallback.removePreviousClamp(recyclerView);
+                return false;
+            }
+        });
     }
     @Override
     public void onResume() {

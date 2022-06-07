@@ -3,6 +3,7 @@ package com.example.calreminder;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.RectF;
 import android.os.Build;
@@ -12,9 +13,11 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,13 +33,14 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
 
     private List<Component> ReminderData = null;
     private Context context;
+    private View view;
     reminderAdapter(List<Component> list) { this.ReminderData = list; }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.reminder_item , parent , false);
+        view = inflater.inflate(R.layout.reminder_item , parent , false);
 
         return new ViewHolder(view);
     }
@@ -59,14 +63,14 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
                     Log.d("EXCEPTION", "Can't get orientation");
             }
         });
-        holder.itemView.setOnDragListener(new View.OnDragListener() {
+        holder.itemView.setTag(new Boolean(false));
+
+        view.findViewById(R.id.reminderItem_button_remove).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onDrag(View v, DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        return true;
-                }
-                return false;
+            public void onClick(View v) {
+                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(position).Id);
+                ReminderData.remove(position);
+                notifyItemRemoved(position);
             }
         });
     }
@@ -79,24 +83,37 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
 
     @Override
     public boolean onItemMove(int from_position, int to_position) {
-        Component component = ReminderData.get(from_position);
-        ReminderData.remove(to_position);
         notifyItemMoved(from_position, to_position);
         return true;
     }
 
     @Override
     public void onItemSwipe(int position) {
-        ReminderData.remove(position);
-        notifyItemRemoved(position);
+
     }
 
 
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
-        CalreminderData.componentDataDao.deleteComponent(ReminderData.get(position).Id);
-        ReminderData.remove(position);
-        notifyItemChanged(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("삭제");
+        builder.setMessage("삭제하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(position).Id);
+                ReminderData.remove(position);
+                Toast.makeText(context.getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                notifyItemChanged(position);
+            }
+        });
 
+        builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        builder.show();
     }
 }

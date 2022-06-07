@@ -79,16 +79,6 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void refreshCalendarFragment(){
-        //Calendar Fragment를 새로고침 하는 코드
-        CalendarFragment calendarFragment = new CalendarFragment();
-        Bundle args = new Bundle();
-        calendarFragment.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainActivity_frameLayout, calendarFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
     public void onAddButtonClickedLand(View view) {
         //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
         //가로 모드일경우 실행

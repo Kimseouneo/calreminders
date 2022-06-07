@@ -93,6 +93,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
         todos.remove(position);
         Toast.makeText(context.getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
         notifyItemRemoved(position);
+        MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
     }
 
     //구현해야 되는 함수 끝

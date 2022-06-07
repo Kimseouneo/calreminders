@@ -213,4 +213,9 @@ public class CalendarFragment extends Fragment {
             isButtonClicked = false;
         }
     }
+
+    public void removeCalendar(){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(CalendarFragment.this).commit();
+    }
 }

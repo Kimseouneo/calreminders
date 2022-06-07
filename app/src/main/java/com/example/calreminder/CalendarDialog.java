@@ -32,8 +32,6 @@ public class CalendarDialog extends Dialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-
-        Log.d("!!!!", "다이얼로그 오픈");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -41,7 +39,6 @@ public class CalendarDialog extends Dialog {
         bottomText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ReminderActivity)mContext).refreshCalendarFragment();
                 dismiss();
             }
         });

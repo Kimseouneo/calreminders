@@ -182,7 +182,8 @@ public class EditComponent extends Fragment {
             public void onClick(View view) {
                 Toast toast = Toast.makeText(getActivity(),"취소되었습니다.",Toast.LENGTH_SHORT);
                 toast.show();
-
+                if(((ReminderActivity)getActivity()).longClickCheck)
+                    ((ReminderActivity)getActivity()).setLongClickCheckInCalendarFragment();
                 FragmentManager fragmentManager = ((ReminderActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
@@ -296,13 +297,16 @@ public class EditComponent extends Fragment {
 
                 Toast toast = Toast.makeText(getActivity(),"저장이 완료되었습니다.",Toast.LENGTH_SHORT);
                 toast.show();
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(EditComponent.this).commit();
-                fragmentManager.popBackStack();
                 if(((ReminderActivity)getActivity()).longClickCheck) {
+                    fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     ((ReminderActivity)getActivity()).setLongClickCheckInCalendarFragment();
-                    ((ReminderActivity) getActivity()).refreshCalendarFragment();
+                    MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                    fragmentManager.popBackStack();
+                }
+                else{
+                    fragmentManager.beginTransaction().remove(EditComponent.this).commit();
+                    fragmentManager.popBackStack();
                 }
             }
         });

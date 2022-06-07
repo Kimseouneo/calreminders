@@ -138,7 +138,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         return;
                     }
                     if (System.currentTimeMillis() <= 500 + checktime && holder.schedule.getVisibility() == View.VISIBLE) {
-                        Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
                         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             saveData = v;
                             dialog = new CalendarDialog(context, toDo);
@@ -149,7 +148,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                             dialog.show();
                             componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                             notifyItemChanged(position);
-                            Log.d("!!!!!!!!!!!!!!!!!", "다이얼로그 성공");
                         }
                     }
                     else if(System.currentTimeMillis() <= 500 + checktime && v != saveData){

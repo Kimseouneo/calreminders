@@ -45,7 +45,6 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
             });
             todoList = itemView.findViewById(R.id.todos);
             time = itemView.findViewById(R.id.time);
-            place = itemView.findViewById(R.id.place);
         }
 
     }
@@ -68,8 +67,11 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
     @Override
     public void onBindViewHolder(@NonNull ToDoOfCalendarHolder holder, @SuppressLint("RecyclerView") int position){
         holder.todoList.setText(todos.get(position).text);
-        holder.time.setText(todos.get(position).time);
-        holder.place.setText(todos.get(position).place);
+        String time = todos.get(position).time;
+        if (!time.equals(""))
+            holder.time.setText(todos.get(position).time);
+        else
+            holder.time.setText("하루 종일");
         holder.todoList.setBackgroundColor(todos.get(position).color);
     }
 

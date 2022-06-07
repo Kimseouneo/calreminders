@@ -3,6 +3,7 @@ package com.example.calreminder;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +21,25 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
+    //음... 구현을 어떻게 하지?
     //캘린더를 생성하는 프래그먼트
     private static ViewPager2 CalendarPager;
+    FragmentTransaction ft;
     Calendar c;
     FragmentStateAdapter set;
     View v;
+    String name = "";
     FragmentTransaction transaction;
     LinearLayout yearsList;
     static TextView years;
     ImageButton yearMinus;
     ImageButton yearPlus;
     FloatingActionButton button;
+    // 일단 position을 현재 달로 설정할까 그리고 오른쪽 스와이프 왼쪽 스와이프 이벤트를 받아서 처리할까?
     static String selectedDate;
     static int year;
     static Context Calendarcontext;
@@ -55,11 +61,14 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ft = getFragmentManager().beginTransaction();
         c = Calendar.getInstance();
         v = inflater.inflate(R.layout.fragment_calendar, container, false);
         Calendarcontext = getActivity();
@@ -81,8 +90,6 @@ public class CalendarFragment extends Fragment {
         }
         CalendarPager = v.findViewById(R.id.Calendar_list);
         set = new CalendarListAdapter(getActivity());
-
-
         Thread thread = new Thread(){
             public void run(){
                 try {
@@ -101,15 +108,32 @@ public class CalendarFragment extends Fragment {
         });
         year = c.get(Calendar.YEAR);
         years.setText(year + "");
+        name = ((ReminderActivity)getActivity()).setPositions(CalendarPager.getCurrentItem()%12);
+        if(name == "연도+"){
+            year = year+1;
+            years.setText(year + "");
+            set.notifyDataSetChanged();
+            name = "";
+        }
+        else if(name == "연도-"){
+            year = year-1;
+            years.setText(year+"");
+
+            set.notifyDataSetChanged();
+            name = "";
+        }
+
 
         yearMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 years.setText(year-1+"");
                 CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()-12);
+                set.notifyDataSetChanged();
                 year = year-1;
             }
         });
+
         yearPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +194,7 @@ public class CalendarFragment extends Fragment {
     static void rightPageMove(){
         CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()+1);
     }
+
 
 
     public void anim() {

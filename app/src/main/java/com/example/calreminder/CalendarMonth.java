@@ -83,7 +83,7 @@ public class CalendarMonth extends Fragment {
         for(int i = 1; i<= dayOfMonth[month-1]; i++){
             calendarMonthList.add(Integer.toString(i));
         }
-        if (calendarMonthList.size() <= 35){
+        if(calendarMonthList.size() <= 35){
             for(int i = calendarMonthList.size(); i < 35; i++){
                 calendarMonthList.add(afterMonthDays+"");
                 ++afterMonthDays;

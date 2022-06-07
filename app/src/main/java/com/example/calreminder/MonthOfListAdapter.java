@@ -25,12 +25,12 @@ import java.util.List;
 //삭제버튼 테스트 성공! 커스텀 다이얼로그 제작해야함
 public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     //캘린더를 구현하기 위해 사용할 리사이클러뷰의 어댑터
-    ArrayList<String> list;
-    CalendarDialog dialog;
-    Calendar check = Calendar.getInstance();
-    Calendar check2 = Calendar.getInstance();
-    Context context;
-    View saveData = null;
+    private ArrayList<String> list;
+    private CalendarDialog dialog;
+    private Calendar check = Calendar.getInstance();
+    private Calendar check2 = Calendar.getInstance();
+    private Context context;
+    private View saveData = null;
     long checktime = 0;
     int month;
     int year;
@@ -138,6 +138,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     if (System.currentTimeMillis() <= 500 + checktime && holder.schedule.getVisibility() == View.VISIBLE) {
                         Log.d("!!!!!!!!!!!!!!!!!", "더블 탭 성공!");
                         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            saveData = v;
                             dialog = new CalendarDialog(context, toDo);
                             if (saveData.getParent() != null)
                                 ((ViewGroup) saveData.getParent()).removeView(saveData);

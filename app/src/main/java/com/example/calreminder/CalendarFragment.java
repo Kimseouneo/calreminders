@@ -62,7 +62,6 @@ public class CalendarFragment extends Fragment {
     public void onResume(){
         super.onResume();
 
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

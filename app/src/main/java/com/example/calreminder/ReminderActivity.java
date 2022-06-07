@@ -78,7 +78,8 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void refresh(){
+    public void refreshCalendarFragment(){
+        //Calendar Fragment를 새로고침 하는 코드
         CalendarFragment calendarFragment = new CalendarFragment();
         Bundle args = new Bundle();
         calendarFragment.setArguments(args);

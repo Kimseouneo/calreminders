@@ -41,7 +41,7 @@ public class CalendarDialog extends Dialog {
         bottomText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ReminderActivity)mContext).refresh();
+                ((ReminderActivity)mContext).refreshCalendarFragment();
                 dismiss();
             }
         });

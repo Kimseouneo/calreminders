@@ -214,8 +214,4 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    public void removeCalendar(){
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().remove(CalendarFragment.this).commit();
-    }
 }

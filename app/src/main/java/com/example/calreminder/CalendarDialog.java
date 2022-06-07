@@ -41,6 +41,8 @@ public class CalendarDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 dismiss();
+                MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                CalendarMonth.adapter.notifyDataSetChanged();
             }
         });
         //주석 추가

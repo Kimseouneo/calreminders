@@ -30,7 +30,7 @@ public class CalendarMonth extends Fragment {
     Calendar check = Calendar.getInstance();
     int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     ArrayList<String> calendarMonthList = new ArrayList<>();
-    public static MonthOfListAdapter adapter;
+    static MonthOfListAdapter adapter;
     RecyclerView recyclerView;
     TextView monthText;
     int month;

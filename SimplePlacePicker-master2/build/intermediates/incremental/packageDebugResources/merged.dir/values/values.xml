@@ -4,7 +4,7 @@
     <color name="colorPrimary">#228BB3</color>
     <color name="colorPrimaryDark">#228BB3</color>
     <string name="address_found">주소를 찾았습니다.</string>
-    <string name="app_name">SimplePlacePicker</string>
+    <string name="app_name">Calreminder</string>
     <string name="confirm_dest">목적지 확인하기</string>
     <string name="confirm_location">장소 확인</string>
     <string name="confirm_pickup">장소 선택하기</string>

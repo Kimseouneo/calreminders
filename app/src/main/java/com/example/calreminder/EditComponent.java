@@ -300,7 +300,10 @@ public class EditComponent extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                 fragmentManager.popBackStack();
-                ((ReminderActivity)getActivity()).refreshCalendarFragment();
+                if(((ReminderActivity)getActivity()).longClickCheck) {
+                    ((ReminderActivity)getActivity()).setLongClickCheckInCalendarFragment();
+                    ((ReminderActivity) getActivity()).refreshCalendarFragment();
+                }
             }
         });
 

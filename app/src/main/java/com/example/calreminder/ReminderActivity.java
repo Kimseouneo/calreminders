@@ -32,6 +32,7 @@ import java.util.ArrayList;
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
     private String mDate = "";
+    boolean longClickCheck = false;
     private ArrayList<Integer>positions = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +167,10 @@ public class ReminderActivity extends AppCompatActivity{
             intent.putExtras(bundle);
             startActivityForResult(intent, SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE);
         }
+    }
+    public void setLongClickCheckInCalendarFragment(){
+        //캘린더에서 롱클릭을 확인하는 함수
+        longClickCheck = !longClickCheck;
     }
 
     public static boolean hasPermissionInManifest(Activity activity, int requestCode, String permissionName) {

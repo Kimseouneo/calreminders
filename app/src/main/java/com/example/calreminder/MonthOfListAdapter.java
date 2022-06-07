@@ -163,6 +163,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    ((ReminderActivity)context).setLongClickCheckInCalendarFragment();
                     ((ReminderActivity)context).onPlusClicked(view, Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
                     return true;
                 }

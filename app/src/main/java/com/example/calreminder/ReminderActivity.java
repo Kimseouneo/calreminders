@@ -123,8 +123,7 @@ public class ReminderActivity extends AppCompatActivity{
         // Calendar Fragment에서 plus버튼을 눌렀을 때 실행되는 코드
         EditComponent editComponent = new EditComponent();
         Bundle args = new Bundle();
-        if (!date.equals(""))
-            args.putString("Date",date);
+        args.putString("Date",date);
         editComponent.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainActivity_frameLayout, editComponent);

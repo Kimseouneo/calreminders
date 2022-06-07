@@ -16,6 +16,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     private Integer currentPosition = null;
     private Integer previousPostion = null;
     private float currentdX = 0f;
+    private View deleteButton = null;
 
     public ItemTouchHelperCallback(ItemTouchHelperListener listener, float width){
         this.listener = listener;
@@ -91,6 +92,9 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         if(viewHolder == null) return;
+        Log.d("!!","!!");
+        if (deleteButton != null)
+            deleteButton.setEnabled(false);
         currentPosition = viewHolder.getAdapterPosition();
         getDefaultUIUtil().clearView(viewHolder.itemView);
     }
@@ -127,9 +131,10 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
             else
                 newX = -buttonWidth;
         }
-        else
-            newX = dX /2;
-
+        else {
+            newX = dX / 2;
+            // 지우는 함수 가능하게 만들기
+        }
         return Math.min(newX,max);
     }
 
@@ -144,6 +149,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
             RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(previousPostion);
             getView(viewHolder).animate().x(0f).setDuration(200L).start();
             setTag(viewHolder, false);
+            if (deleteButton != null) {
+                Log.d("!!!",deleteButton.toString());
+                deleteButton.setEnabled(false);
+            }
+            //지우는 함수 불가능하게 만들기
             previousPostion = null;
         }
         catch (Exception e) {
@@ -154,13 +164,20 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     }
 
     private View getView(RecyclerView.ViewHolder viewHolder) {
+        Log.d("!!","!!!");
         try {
             View swipeView = viewHolder.itemView.findViewById(R.id.reminderItem_swipe_view);
-            if(swipeView == null)
+            deleteButton = viewHolder.itemView.findViewById(R.id.reminderItem_button_delete);
+            if(swipeView == null) {
                 swipeView = viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
+                deleteButton = viewHolder.itemView.findViewById(R.id.todolist_delete);
+            }
+            deleteButton.setEnabled(true);
             return swipeView;
         }
         catch (Exception e) {
+            deleteButton = viewHolder.itemView.findViewById(R.id.todolist_delete);
+            deleteButton.setEnabled(true);
             return viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
         }
     }

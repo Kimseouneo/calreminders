@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAdapter.ToDoOfCalendarHolder> implements ItemTouchHelperListener{
     //캘린더 다이얼로그를 만들 때 쓸 리사이클러뷰 어댑터
@@ -21,6 +22,9 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
     }
     private OnItemClickListener mListener = null;
     private View view;
+    private List<Component> todos;
+    private Context context;
+    private String mDate;
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
@@ -49,11 +53,10 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
         }
 
     }
-    ArrayList<Component> todos;
-    Context context;
-     ToDoOfCalendarAdapter(Context context, ArrayList<Component> todos){
+     ToDoOfCalendarAdapter(Context context, String date, List<Component> components){
         this.context = context;
-        this.todos = todos;
+        this.mDate = date;
+        this.todos = components;
     }
 
     @NonNull
@@ -67,6 +70,7 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
 
     @Override
     public void onBindViewHolder(@NonNull ToDoOfCalendarHolder holder, @SuppressLint("RecyclerView") int position){
+        todos = CalreminderData.componentDataDao.getSelectedDateData(mDate);
         holder.todoList.setText(todos.get(position).text);
         String time = todos.get(position).time;
         if (!time.equals(""))
@@ -79,9 +83,10 @@ public class ToDoOfCalendarAdapter extends RecyclerView.Adapter<ToDoOfCalendarAd
         view.findViewById(R.id.todolist_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalreminderData.componentDataDao.deleteComponent(todos.get(position).Id);
-                todos.remove(position);
-                notifyItemRemoved(position);
+                CalreminderData.componentDataDao.deleteComponent(todos.get(holder.getLayoutPosition()).Id);
+                todos.remove(holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
+                v.setEnabled(false);
             }
         });
     }

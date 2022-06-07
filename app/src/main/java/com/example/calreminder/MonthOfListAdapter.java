@@ -3,6 +3,7 @@ package com.example.calreminder;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -158,13 +159,16 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                     }
                 }
             });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    ((ReminderActivity)context).onPlusClicked(view, Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
-                    return true;
-                }
-            });
+
+            if (((ReminderActivity)context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        ((ReminderActivity) context).onPlusClicked(view, Integer.toString(year) + '/' + Integer.toString(month) + '/' + holder.day.getText().toString());
+                        return true;
+                    }
+                });
+            }
         }
         else{
             holder.itemView.setOnClickListener(new View.OnClickListener() {

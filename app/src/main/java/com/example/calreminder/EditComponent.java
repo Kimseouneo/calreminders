@@ -299,6 +299,7 @@ public class EditComponent extends Fragment {
                 if(isFromCalendar) {
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                    CalendarMonth.adapter.notifyDataSetChanged();
                     fragmentManager.popBackStack();
                 }
                 else{

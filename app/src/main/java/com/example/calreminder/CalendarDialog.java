@@ -44,7 +44,7 @@ public class CalendarDialog extends Dialog {
             }
         });
         //주석 추가
-        adapter = new ToDoOfCalendarAdapter(this.getContext(), components);
+        adapter = new ToDoOfCalendarAdapter(this.getContext(), components.get(0).date, components);
         adapter.setOnItemClickListener(new ToDoOfCalendarAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {

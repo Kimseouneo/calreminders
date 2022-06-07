@@ -1,31 +1,19 @@
 package com.example.calreminder;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.graphics.RectF;
-import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.shadow.ShadowRenderer;
-
-import java.util.EventListener;
-import java.util.EventObject;
 import java.util.List;
 
 
@@ -34,7 +22,9 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
     private List<Component> ReminderData = null;
     private Context context;
     private View view;
-    reminderAdapter(List<Component> list) { this.ReminderData = list; }
+    reminderAdapter(List<Component> list) {
+        ReminderData = list;
+    }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         context = parent.getContext();
@@ -65,12 +55,13 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
         });
         holder.itemView.setTag(new Boolean(false));
 
-        view.findViewById(R.id.reminderItem_button_remove).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.reminderItem_button_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(position).Id);
-                ReminderData.remove(position);
-                notifyItemRemoved(position);
+                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(holder.getLayoutPosition()).Id);
+                ReminderData = CalreminderData.componentDataDao.getAllComponent();
+                notifyItemRemoved(holder.getLayoutPosition());
+                v.setEnabled(false);
             }
         });
     }

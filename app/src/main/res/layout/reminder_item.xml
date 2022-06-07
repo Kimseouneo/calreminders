@@ -24,11 +24,12 @@
                             android:background="@color/red_A700" />
 
                         <Button
-                            android:id="@+id/reminderItem_button_remove"
+                            android:id="@+id/reminderItem_button_delete"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:background="@color/red_A700"
+                            android:enabled="false"
                             android:scaleType="fitCenter"
                             android:text="삭제"
                             android:textColor="@color/white" />

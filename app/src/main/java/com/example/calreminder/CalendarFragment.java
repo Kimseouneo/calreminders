@@ -25,21 +25,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
-    //음... 구현을 어떻게 하지?
-    //캘린더를 생성하는 프래그먼트
     private static ViewPager2 CalendarPager;
+    ArrayList<Integer> positions = new ArrayList<>();
     FragmentTransaction ft;
     Calendar c;
     FragmentStateAdapter set;
     View v;
-    String name = "";
     FragmentTransaction transaction;
     LinearLayout yearsList;
     static TextView years;
     ImageButton yearMinus;
     ImageButton yearPlus;
     FloatingActionButton button;
-    // 일단 position을 현재 달로 설정할까 그리고 오른쪽 스와이프 왼쪽 스와이프 이벤트를 받아서 처리할까?
     static String selectedDate;
     static int year;
     static Context Calendarcontext;
@@ -62,6 +59,11 @@ public class CalendarFragment extends Fragment {
     public void onResume(){
         super.onResume();
 
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d("!!!!!!!!!!!!!!!!!!!!!!!","더해짐");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,28 +109,35 @@ public class CalendarFragment extends Fragment {
         });
         year = c.get(Calendar.YEAR);
         years.setText(year + "");
-        name = ((ReminderActivity)getActivity()).setPositions(CalendarPager.getCurrentItem()%12);
-        if(name == "연도+"){
-            year = year+1;
-            years.setText(year + "");
-            set.notifyDataSetChanged();
-            name = "";
-        }
-        else if(name == "연도-"){
-            year = year-1;
-            years.setText(year+"");
-
-            set.notifyDataSetChanged();
-            name = "";
-        }
-
-
+        ViewPager2.OnPageChangeCallback callback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                positions.add(position%12);
+                if(positions.size() >= 2) {
+                    if (positions.get(positions.size() - 2) == 11 && positions.get(positions.size() - 1) == 0) {
+                        year = year + 1;
+                        years.setText(year + "");
+                        CalendarMonth.adapter.notifyDataSetChanged();
+                        CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()+12, false);
+                    } else if (positions.get(positions.size() - 2) == 0 && positions.get(positions.size() - 1) == 11) {
+                        year = year - 1;
+                        years.setText(year + "");
+                        CalendarMonth.adapter.notifyDataSetChanged();
+                        CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()-12, false);
+                    }
+                }
+                if(positions.size()>1000){
+                    positions.clear();
+                }
+            }
+        };
+        CalendarPager.registerOnPageChangeCallback(callback);
         yearMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 years.setText(year-1+"");
                 CalendarPager.setCurrentItem(CalendarPager.getCurrentItem()-12);
-                set.notifyDataSetChanged();
                 year = year-1;
             }
         });

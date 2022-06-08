@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
     private String mDate = "";
-    private ArrayList<Integer>positions = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +40,9 @@ public class ReminderActivity extends AppCompatActivity{
         //데이터베이스 지정
         CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-Component").
-                allowMainThreadQueries().build();
+                allowMainThreadQueries().fallbackToDestructiveMigration().build();
         CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
-
+        CalreminderData.componentDataDao.deleteAllComponent();
         FragmentManager fm = getSupportFragmentManager();
         if(findViewById(R.id.mainActivity_frameLayout) != null) {
             // 세로 모드일경우
@@ -66,7 +65,6 @@ public class ReminderActivity extends AppCompatActivity{
             }
         }
     }
-
     public void onAddButtonClicked(View view) {
         //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
 
@@ -78,7 +76,6 @@ public class ReminderActivity extends AppCompatActivity{
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
     public void onAddButtonClickedLand(View view) {
         //Reminder Fragment에서 +버튼을 눌렀을때 실행되는 코드
         //가로 모드일경우 실행
@@ -265,19 +262,5 @@ public class ReminderActivity extends AppCompatActivity{
             }
         }
         return super.dispatchTouchEvent(event);
-    }
-    public String setPositions(int position) {
-        //뷰페이저의 포지션을 저장하는 함수
-        positions.add(position);
-        Log.d("!!!!!!!!!!!!!",positions.get(positions.size()-1).toString());
-        if (positions.size() > 1) {
-            if (positions.get(positions.size() - 1) == 0 && positions.get(positions.size() - 2) == 11){
-                return "연도+";
-            }
-            else if (positions.get(positions.size() - 1) == 11 && positions.get(positions.size() - 2) == 0){
-                return "연도-";
-            }
-        }
-        return "";
     }
 }

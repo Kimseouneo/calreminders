@@ -25,14 +25,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReminderList extends Fragment {
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     public static reminderAdapter reminderAdapter;
     public Boolean isButtonClicked = false;
-    private ItemTouchHelperCallback touchHelperCallback;
+    public static ItemTouchHelperCallback touchHelperCallback;
     private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
     private Animation animationActionButtonOpen, animationActionButtonClose,
             animationActionButtonMoreOpen, animationActionButtonMoreClose;
     private ItemTouchHelper helper;
+    private List<Component> mList;
     //리마인더의 Fragment에 관한 Class
     public ReminderList() {
         // Required empty public constructor
@@ -107,12 +108,14 @@ public class ReminderList extends Fragment {
         }
 
         // 리마인더 리스트 만들기
-        List<Component> list = CalreminderData.componentDataDao.getAllComponent();
-        Collections.reverse(list);
+        mList = CalreminderData.componentDataDao.getAllComponent();
+        Collections.reverse(mList);
 
         recyclerView = view.findViewById(R.id.reminder_Recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        setComponent(list);
+        reminderAdapter = new reminderAdapter(mList);
+        recyclerView.setAdapter(reminderAdapter);
+        setComponent(mList);
 
         // 검색기능
         SearchView searchView = (SearchView) view.findViewById(R.id.listFragment_SearchView);
@@ -127,9 +130,9 @@ public class ReminderList extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 List<Component> searchList = CalreminderData.componentDataDao.getSearchedData(newText);
                 Collections.reverse(searchList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                com.example.calreminder.reminderAdapter adapter = new reminderAdapter(searchList);
-                recyclerView.setAdapter(adapter);
+
+                reminderAdapter.ReminderData = searchList;
+                reminderAdapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -157,10 +160,6 @@ public class ReminderList extends Fragment {
     }
 
     public void setComponent(List<Component> list) {
-
-        reminderAdapter = new reminderAdapter(list);
-        recyclerView.setAdapter(reminderAdapter);
-
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             touchHelperCallback = new ItemTouchHelperCallback(reminderAdapter, getResources().getDisplayMetrics().widthPixels / 4f);
         else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

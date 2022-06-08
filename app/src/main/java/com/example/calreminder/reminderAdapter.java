@@ -24,7 +24,7 @@ import java.util.List;
 
 public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements ItemTouchHelperListener {
 
-    private List<Component> ReminderData = null;
+    public static List<Component> ReminderData;
     private Context context;
     reminderAdapter(List<Component> list) {
         ReminderData = list;
@@ -90,7 +90,7 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
                     // 알람이 설정되지 않은 상태일 경우
                     Calendar calendar = Calendar.getInstance();
                     if (component.date.equals("")) {
-                        Toast toast = Toast.makeText(context,"날짜가 지정되어 있지 않아 알림을 설정할 수 없습니다.",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(context,"날짜를 설정해 주십시오",Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     else {
@@ -111,14 +111,20 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(holder.getLayoutPosition()).Id);
-                ReminderData.remove(holder.getLayoutPosition());
-                notifyItemRemoved(holder.getLayoutPosition());
 
                 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(context, AlertReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context,component.Id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.cancel(pendingIntent);
+
+                ReminderList.touchHelperCallback.removePreviousClamp(ReminderList.recyclerView);
+
+                CalreminderData.componentDataDao.deleteComponent(ReminderData.get(holder.getLayoutPosition()).Id);
+                ReminderData.remove(holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
+                MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
+                if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    CalendarMonth.adapter.notifyDataSetChanged();
                 v.setEnabled(false);
             }
         });

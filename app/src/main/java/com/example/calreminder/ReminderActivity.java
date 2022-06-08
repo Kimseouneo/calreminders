@@ -29,6 +29,8 @@ import com.essam.simpleplacepicker.MapActivity;
 import com.essam.simpleplacepicker.utils.SimplePlacePicker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ReminderActivity extends AppCompatActivity{
     //Main Activity
@@ -108,6 +110,7 @@ public class ReminderActivity extends AppCompatActivity{
         EditComponent editEditComponentFragment = new EditComponent();
         Bundle args = new Bundle();
         args.putInt("ID", id);
+        args.putString("Date","");
 
         editEditComponentFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -174,7 +177,12 @@ public class ReminderActivity extends AppCompatActivity{
         mDate = date;
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ReminderList reminderList = (ReminderList) getSupportFragmentManager().findFragmentByTag("listFragment_landScape");
-            reminderList.setComponent(CalreminderData.componentDataDao.getSelectedDateData(mDate));
+            List<Component> list = CalreminderData.componentDataDao.getSelectedDateData(mDate);
+            Collections.reverse(list);
+
+            reminderAdapter.ReminderData = list;
+            ReminderList.reminderAdapter.notifyDataSetChanged();
+
         }
     }
 

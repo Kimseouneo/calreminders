@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,6 +42,8 @@ import com.github.dhaval2404.colorpicker.listener.ColorListener;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class EditComponent extends Fragment {
@@ -274,15 +279,24 @@ public class EditComponent extends Fragment {
                 Toast toast = Toast.makeText(getActivity(),"저장이 완료되었습니다.",Toast.LENGTH_SHORT);
                 toast.show();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                List<Component> changeData;
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && args.containsKey("Date"))
+                    changeData = CalreminderData.componentDataDao.getSelectedDateData(args.getString("Date"));
+                else
+                    changeData = CalreminderData.componentDataDao.getAllComponent();
+                Collections.reverse(changeData);
+
+                reminderAdapter.ReminderData = changeData;
+                ReminderList.reminderAdapter.notifyDataSetChanged();
+
                 if(isFromCalendar) {
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                     CalendarMonth.adapter.notifyDataSetChanged();
-                    ReminderList.reminderAdapter.notifyDataSetChanged();
                     fragmentManager.popBackStack();
                 }
                 else{
-                    ReminderList.reminderAdapter.notifyDataSetChanged();
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     fragmentManager.popBackStack();
                 }
@@ -316,6 +330,19 @@ public class EditComponent extends Fragment {
 
         // 기존 데이터 여부에 따라 기존값 대입
         Bundle args = getArguments();
+
+        if (args.containsKey("Date")) {
+            mDate = args.getString("Date");
+            isFromCalendar = true;
+            if (!mDate.equals("")) {
+                ((Switch) view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
+                ((RadioButton) view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
+                String[] date = mDate.split("/");
+                calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
+                calendarView.setDate(calendar.getTimeInMillis());
+            }
+        }
+
         if (args.containsKey("ID")) {
             // 만약 새로 추가 버튼이 아닌 이미 존재하는 Component를 선택할 경우 값을 대입해줌
 
@@ -377,17 +404,6 @@ public class EditComponent extends Fragment {
             buttonDelete.setVisibility(View.GONE);
             saveButton.setEnabled(false);
 
-            if (args.containsKey("Date")) {
-                mDate = args.getString("Date");
-                isFromCalendar = true;
-                if (!mDate.equals("")) {
-                    ((Switch) view.findViewById(R.id.editFragment_switch_time)).setChecked(true);
-                    ((RadioButton) view.findViewById(R.id.editFragment_radioDate)).setText(mDate);
-                    String[] date = mDate.split("/");
-                    calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
-                    calendarView.setDate(calendar.getTimeInMillis());
-                }
-            }
             // 배경색 대입
             TextView titleTextView = (TextView) view.findViewById(R.id.editFragment_textView_title);
             titleTextView.setBackgroundColor(mColor);

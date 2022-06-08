@@ -72,6 +72,9 @@ public class reminderAdapter extends RecyclerView.Adapter<ViewHolder> implements
                 Boolean isNotified = component.isNotified;
                 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(context, AlertReceiver.class);
+                intent.putExtra("Title",component.text);
+                intent.putExtra("Text",component.date + " " + component.time);
+                intent.putExtra("Id",component.Id);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context,component.Id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
                 if(isNotified) {

@@ -92,7 +92,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         if(viewHolder == null) return;
-        Log.d("!!","!!");
         if (deleteButton != null)
             deleteButton.setEnabled(false);
         currentPosition = viewHolder.getAdapterPosition();
@@ -133,7 +132,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
         }
         else {
             newX = dX / 2;
-            // 지우는 함수 가능하게 만들기
         }
         return Math.min(newX,max);
     }
@@ -173,11 +171,13 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
                 deleteButton = viewHolder.itemView.findViewById(R.id.todolist_delete);
             }
             deleteButton.setEnabled(true);
+            Log.d("!!",deleteButton.toString());
             return swipeView;
         }
         catch (Exception e) {
             deleteButton = viewHolder.itemView.findViewById(R.id.todolist_delete);
             deleteButton.setEnabled(true);
+            Log.d("!!",deleteButton.toString());
             return viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
         }
     }

@@ -278,9 +278,11 @@ public class EditComponent extends Fragment {
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     MonthOfListAdapter.componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
                     CalendarMonth.adapter.notifyDataSetChanged();
+                    ReminderList.reminderAdapter.notifyDataSetChanged();
                     fragmentManager.popBackStack();
                 }
                 else{
+                    ReminderList.reminderAdapter.notifyDataSetChanged();
                     fragmentManager.beginTransaction().remove(EditComponent.this).commit();
                     fragmentManager.popBackStack();
                 }

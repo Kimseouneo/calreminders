@@ -26,8 +26,9 @@ import java.util.List;
 
 public class ReminderList extends Fragment {
     private RecyclerView recyclerView;
+    public static reminderAdapter reminderAdapter;
     public Boolean isButtonClicked = false;
-    public ItemTouchHelperCallback touchHelperCallback;
+    private ItemTouchHelperCallback touchHelperCallback;
     private FloatingActionButton actionButtonMore, actionButtonAdd, actionButtonCalendar;
     private Animation animationActionButtonOpen, animationActionButtonClose,
             animationActionButtonMoreOpen, animationActionButtonMoreClose;
@@ -157,10 +158,15 @@ public class ReminderList extends Fragment {
 
     public void setComponent(List<Component> list) {
 
-        reminderAdapter reminderAdapter = new reminderAdapter(list);
+        reminderAdapter = new reminderAdapter(list);
         recyclerView.setAdapter(reminderAdapter);
 
-        touchHelperCallback = new ItemTouchHelperCallback(reminderAdapter, getResources().getDisplayMetrics().widthPixels / 4f);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            touchHelperCallback = new ItemTouchHelperCallback(reminderAdapter, getResources().getDisplayMetrics().widthPixels / 4f);
+        else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            touchHelperCallback = new ItemTouchHelperCallback(reminderAdapter, getResources().getDisplayMetrics().widthPixels / 8f);
+            Log.d("LANDSCAPE", "SET 8f");
+        }
         helper = new ItemTouchHelper(touchHelperCallback);
         helper.attachToRecyclerView(recyclerView);
 

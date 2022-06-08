@@ -40,9 +40,9 @@ public class ReminderActivity extends AppCompatActivity{
         //데이터베이스 지정
         CalreminderData.db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-Component").
-                allowMainThreadQueries().fallbackToDestructiveMigration().build();
+                allowMainThreadQueries().build();
         CalreminderData.componentDataDao = CalreminderData.db.componentDataDao();
-        CalreminderData.componentDataDao.deleteAllComponent();
+
         FragmentManager fm = getSupportFragmentManager();
         if(findViewById(R.id.mainActivity_frameLayout) != null) {
             // 세로 모드일경우

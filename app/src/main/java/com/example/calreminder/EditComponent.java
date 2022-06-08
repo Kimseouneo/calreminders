@@ -266,31 +266,9 @@ public class EditComponent extends Fragment {
                     // 배경색 설정
                     component.colorHex = mColorHex;
                     component.color = mColor;
+                    component.isNotified = false;
                     long rowId = CalreminderData.componentDataDao.insertComponent(new ComponentData(component));
                     id = CalreminderData.componentDataDao.getId(rowId);
-                }
-
-                // 날짜를 설정한 경우 알림을 설정함
-                if(!component.date.equals("")) {
-                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(getActivity(), AlertReceiver.class);
-                    intent.putExtra("Title", component.text);
-                    intent.putExtra("Text",component.date + " " + component.place);
-                    intent.putExtra("Id",id);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    Calendar calendar = Calendar.getInstance();
-                    String date[] = mDate.split("/");
-                    calendar.set(Integer.parseInt(date[0]),Integer.parseInt(date[1]) - 1,Integer.parseInt(date[2]));
-
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-                }
-                else {
-                    AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(getActivity(), AlertReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    alarmManager.cancel(pendingIntent);
                 }
 
                 Toast toast = Toast.makeText(getActivity(),"저장이 완료되었습니다.",Toast.LENGTH_SHORT);

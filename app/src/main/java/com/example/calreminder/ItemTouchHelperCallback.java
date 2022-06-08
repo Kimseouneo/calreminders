@@ -167,7 +167,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
         Log.d("!!","!!!");
         try {
             View swipeView = viewHolder.itemView.findViewById(R.id.reminderItem_swipe_view);
-            deleteButton = viewHolder.itemView.findViewById(R.id.reminderItem_button_delete);
+            deleteButton = viewHolder.itemView.findViewById(R.id.reminder_Item_delete);
             if(swipeView == null) {
                 swipeView = viewHolder.itemView.findViewById(R.id.todoListItem_swipe_view);
                 deleteButton = viewHolder.itemView.findViewById(R.id.todolist_delete);

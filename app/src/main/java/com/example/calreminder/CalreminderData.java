@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import androidx.core.app.NotificationCompat;
+import androidx.room.AutoMigration;
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Database;
@@ -15,6 +16,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.Query;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +49,10 @@ class ComponentData{
     @ColumnInfo(name = "color")
     public Integer color;
 
-    public ComponentData(String text, String date, String time, String place, String colorHex, Integer color) {
+    @ColumnInfo(name = "isNotified")
+    public Boolean isNotified;
+
+    public ComponentData(String text, String date, String time, String place, String colorHex, Integer color, Boolean isNotified) {
         this.Id = null;
         this.text = text;
         this.date = date;
@@ -55,6 +60,7 @@ class ComponentData{
         this.place = place;
         this.colorHex = colorHex;
         this.color = color;
+        this.isNotified = isNotified;
     }
 
     @Ignore
@@ -66,6 +72,7 @@ class ComponentData{
         this.place = component.place;
         this.colorHex = component.colorHex;
         this.color = component.color;
+        this.isNotified = component.isNotified;
     }
 }
 
@@ -98,6 +105,9 @@ interface ComponentDataDao {
 
     @Query("SELECT * FROM ComponentData WHERE date LIKE '%' || :date || '%'")
     public List<Component> getSelectedDateData(String date);
+
+    @Query("UPDATE ComponentData SET isNotified = :notified WHERE Id == :id")
+    public void updateNotified(Integer id, Boolean notified);
 
     @Query("UPDATE ComponentData " +
             "SET text = :text," +
@@ -132,11 +142,17 @@ class Component {
     @ColumnInfo(name = "color")
     public Integer color;
 
+    @ColumnInfo(name = "isNotified")
+    public Boolean isNotified;
 }
 
-@Database(entities = {ComponentData.class}, version = 1, exportSchema = false)
+@Database(
+        entities = {ComponentData.class},
+        version = 2,
+        exportSchema = false)
 abstract class AppDatabase extends RoomDatabase {
     public abstract ComponentDataDao componentDataDao();
+
 }
 
 public class CalreminderData {

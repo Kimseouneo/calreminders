@@ -24,7 +24,7 @@
                             android:background="@color/red_A700" />
 
                         <Button
-                            android:id="@+id/reminderItem_button_delete"
+                            android:id="@+id/reminder_Item_delete"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
@@ -40,26 +40,76 @@
                     android:id="@+id/reminderItem_swipe_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="#FFFFFF"
                     android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/Time"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:background="#FFFFFF"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+                            android:id="@+id/reminder_item_componentColor"
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent" />
 
-                        <TextView
-                            android:id="@+id/text"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center|left"
-                            android:paddingLeft="6dp" />
+                            android:background="#FFFFFF"
+                            android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/reminder_item_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center|left"
+                                    android:paddingLeft="6dp"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/reminder_item_date"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:gravity="center|top"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/reminder_item_time"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:clickable="true"
+                                            android:focusable="true"
+                                            android:gravity="top|left"
+                                            android:textSize="12sp"
+                                            tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                                        <TextView
+                                            android:id="@+id/reminder_item_place"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="top|left"
+                                            android:textSize="10sp" />
+
+                                </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/reminder_item_notification"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:background="@drawable/ic_action_notifi_active"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                 </LinearLayout>
 

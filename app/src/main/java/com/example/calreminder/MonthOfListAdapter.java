@@ -85,12 +85,22 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
 
                 for (int i = 0; i < componentArrayList.size(); i++) {
                     if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
-                        //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
-                        if (holder.schedule.getVisibility() == View.INVISIBLE) {
-                            Log.d("!!!!!!!!!!!!!!!!!!", "실행된다");
-                            holder.schedule.setVisibility(View.VISIBLE);
+                        if(holder.schedule1.getVisibility() == View.INVISIBLE){
+                            holder.schedule1.setVisibility(View.VISIBLE);
+                            holder.schedule1.setBackgroundColor(componentArrayList.get(i).color);
                             toDo.add(componentArrayList.get(i));
-                        } else {
+                        }
+                        else if(holder.schedule2.getVisibility() == View.INVISIBLE){
+                            holder.schedule2.setVisibility(View.VISIBLE);
+                            holder.schedule2.setBackgroundColor(componentArrayList.get(i).color);
+                            toDo.add(componentArrayList.get(i));
+                        }
+                        else if(holder.schedule3.getVisibility() == View.INVISIBLE){
+                            holder.schedule3.setVisibility(View.VISIBLE);
+                            holder.schedule3.setBackgroundColor(componentArrayList.get(i).color);
+                            toDo.add(componentArrayList.get(i));
+                        }
+                         else {
                             toDo.add(componentArrayList.get(i));
                         }
                     }
@@ -139,7 +149,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
                         }
                         return;
                     }
-                    if (System.currentTimeMillis() <= 500 + checktime && holder.schedule.getVisibility() == View.VISIBLE) {
+                    if (System.currentTimeMillis() <= 500 + checktime && toDo.size() > 0) {
                         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             saveData = v;
                             dialog = new CalendarDialog(context, toDo);

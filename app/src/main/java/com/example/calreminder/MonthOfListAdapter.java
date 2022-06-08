@@ -1,5 +1,7 @@
 package com.example.calreminder;
 
+import static android.graphics.Color.rgb;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -30,7 +32,6 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
     private ArrayList<String> list;
     private CalendarDialog dialog;
     private Calendar check = Calendar.getInstance();
-    private Calendar check2 = Calendar.getInstance();
     Context context;
     private View saveData = null;
     long checktime = 0;
@@ -47,8 +48,7 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         this.year = CalendarFragment.year;
         this.monthList = monthList;
         this.afterMonthDays = afterMonthDays;
-        check.set(year, month-1, 1);
-        check2.set(year, month-1, monthList[month-1]);
+        check.set(year, month - 1, 1);
         componentArrayList = CalreminderData.componentDataDao.getHasDateComponent();
     }
     @NonNull
@@ -65,23 +65,24 @@ public class MonthOfListAdapter extends RecyclerView.Adapter<CalendarHolder> {
         //리사이클러뷰의 아이템을 설정하는 메소드
         ArrayList<Component> toDo = new ArrayList<>();
         holder.day.setText(list.get(position));
+        holder.day.setTextColor(Color.BLACK);
         try {
             if (position % 7 == 0)
                 holder.day.setTextColor(Color.BLUE);
             if ((position + 1) % 7 == 0)
                 holder.day.setTextColor(Color.RED);
             if (Integer.parseInt(list.get(position)) == checkCalendar.get(Calendar.DATE) && month == checkCalendar.get(Calendar.MONTH)+1 && year == checkCalendar.get(Calendar.YEAR))
-                holder.day.setTextColor(Color.MAGENTA);
+                holder.day.setTextColor(rgb(189, 242, 213));
         }catch(NumberFormatException e){
 
         }
         if(position < check.get(Calendar.DAY_OF_WEEK) - 1)
             holder.day.setTextColor(Color.LTGRAY);
-        if(position >= list.size() - afterMonthDays + 1)
+        else if(position >= list.size() - afterMonthDays + 1)
             holder.day.setTextColor(Color.LTGRAY);
-        Log.d("!!!!!!!!!!!!!!!!!!", "만들어짐");
-        if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - afterMonthDays + 1)) {
+        else if(!(position < check.get(Calendar.DAY_OF_WEEK) - 1) && !(position >= list.size() - afterMonthDays + 1)) {
             try {
+
                 for (int i = 0; i < componentArrayList.size(); i++) {
                     if (componentArrayList.get(i).date.equals(Integer.toString(year) + '/' + Integer.toString(month) + '/' + list.get(position))) {
                         //반복문 순회를 통해서 componentArrayList에 있는 date가 현재 날짜와 똑같으면 일정이라는 글자를 추가
